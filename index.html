@@ -14,11 +14,10 @@ body{margin:0;background:#3a3a3a;color:var(--k);font:10.5px/1.27 Arial,"Helvetic
 .warn{background:#fff6e5;border-left:4px solid #e0a100;padding:6px 10px;margin:6px 0;font-size:12px}
 .sheet{width:210mm;min-height:297mm;margin:10px auto;padding:8mm 9mm;background:#fff}
 .hd{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:3px solid var(--y);padding-bottom:3px;margin-bottom:7px;position:relative}
-.hd::after{content:"";position:absolute;left:0;bottom:-3px;width:70px;height:3px;background:var(--o);clip-path:polygon(0 0,100% 0,calc(100% - 7px) 100%,0 100%)}
 h1{margin:0;font:700 26px/1 var(--f);text-transform:uppercase;letter-spacing:1px}
 .sub{color:var(--g);font-size:12px;margin-top:1px}
 .logo{font:700 12px var(--f);text-transform:uppercase;letter-spacing:1.5px;border:2px solid var(--yd);border-radius:6px;background:var(--yl);padding:2px 10px}
-h2{margin:0 -6px 4px;padding:2px 24px 2px 8px;font:700 11.5px/1.2 var(--f);text-transform:uppercase;letter-spacing:1px;background:var(--yb);clip-path:polygon(0 0,calc(100% - 14px) 0,calc(100% - 4px) 100%,0 100%)}
+h2{margin:0 -6px 4px;padding:2px 8px;font:700 11.5px/1.2 var(--f);text-transform:uppercase;letter-spacing:1px;background:var(--yb)}
 section,.fr{border:1.5px solid var(--yd);background:#fff;border-radius:8px;overflow:hidden;padding:0 6px 4px;margin-bottom:6px;break-inside:avoid}
 .fr{padding:4px 6px;margin-bottom:0}
 .r2{display:grid;grid-template-columns:30mm 1fr 38mm;gap:7px;margin-bottom:6px}
@@ -80,7 +79,7 @@ ul{margin:0;padding-left:13px}li{margin:0;break-inside:avoid}
 .p2{margin-top:12px;padding-top:8px;border-top:2px dashed #bbb}
 .hd2{font:700 15px var(--f);text-transform:uppercase;letter-spacing:1px;border-bottom:3px solid var(--y);margin-bottom:7px;padding-bottom:2px}
 .lines{background:repeating-linear-gradient(to bottom,transparent 0,transparent 17px,#e3d9a8 17px,#e3d9a8 18px)}
-@media(max-width:800px){.sheet{width:auto;padding:12px}.r2,.r3,.r4,.r5,.r7{grid-template-columns:1fr}}
+@media screen and (max-width:800px){.sheet{width:auto;padding:12px}.r2,.r3,.r4,.r5,.r7{grid-template-columns:1fr}}
 @media print{@page{size:A4;margin:8mm 9mm}body{background:#fff}.no-print{display:none!important}.sheet{margin:0;width:auto;min-height:0;padding:0}.p2{break-before:page;margin:0;padding:0;border:0}}
 
 #topbar{max-width:none;display:flex;flex-wrap:wrap;gap:6px;align-items:center;border-radius:0;margin:0;padding:8px 12px;position:sticky;top:0;z-index:5}
@@ -107,10 +106,13 @@ label.f{display:block;font:500 9.5px var(--f);color:var(--g);text-transform:uppe
 .nv td,.nv th{font-size:11px}.nv td input{width:80px!important}
 .pr{font:400 10px Arial,sans-serif;text-transform:none;letter-spacing:0;color:#6b5a1a;margin-left:8px}
 #mini{display:none}
-@media(max-width:760px){body{padding-bottom:42px}#mini{display:block;position:fixed;left:0;right:0;bottom:0;background:var(--yb);border-top:2px solid var(--yd);padding:8px 12px;font:700 12px Arial,sans-serif;z-index:6}#crea{grid-template-columns:1fr}#panel{position:static;max-height:none;order:2}.g2{grid-template-columns:1fr}.g2 .w{grid-column:auto}}
+@media screen and (max-width:760px){body{padding-bottom:42px}#mini{display:block;position:fixed;left:0;right:0;bottom:0;background:var(--yb);border-top:2px solid var(--yd);padding:8px 12px;font:700 12px Arial,sans-serif;z-index:6}#crea{grid-template-columns:1fr}#panel{position:static;max-height:none;order:2}.g2{grid-template-columns:1fr}.g2 .w{grid-column:auto}}
 @media print{#crea,#topbar,#mini,#fiche .bar{display:none!important}}
 
 #crea select.ty{width:auto;max-width:150px;flex:none}.mini{font-size:9.5px;color:var(--g);white-space:nowrap}.ef{flex-wrap:wrap}.ef .m{flex-basis:100%;margin-left:4px}.ef input[type=text]{flex:1;min-width:120px;width:auto}.cb .nm{min-width:110px}
+
+.p2.meas{margin:0;padding:0;border:0}
+@media print{.pg1{break-after:page}}
 
 [hidden]{display:none!important}
 </style></head><body>
@@ -262,7 +264,7 @@ function render(f){
   const fld=(l,v,c)=>`<div class="fld${c?' '+c:''}"><span>${l}</span><b>${esc(v||'')}</b></div>`;
   const kws=(id.mots_cles||[]).filter(k=>k!==id.train_de_vie).map(k=>`<span class=kwd>${esc(k)}</span>`).join('');
   const pic=PORT||id.portrait;
-  $('#out').innerHTML=`<div class=sheet>
+  $('#out').innerHTML=`<div class=sheet><div class=pg1>
 <div class=hd><div><h1>${esc(id.pseudo)}</h1><div class=sub>${esc(id.nom)}</div></div><div class=logo>Shadowrun Anarchy 2.0</div></div>
 <div class=r2><div class=por${pic?` style="background-image:url('${esc(pic)}')"`:''}>${pic?'':'Portrait'}</div>
 <div class=mid><div class="fr attrs">${Object.keys(AT).map(k=>`<div class=attr><small><span class=ac>${AN[k][0]}</span>${AN[k][1]}</small><b>${at[k]??''}</b><i>max ${mx[k]??'?'}</i></div>`).join('')}<div class="attr o"><small><span class=ac>Anarchy</span></small><b>${f.anarchy??''}</b><i>&nbsp;</i></div><div class="attr o"><small><span class=ac>Essence</span></small><b>${f.essence??''}</b><i>&nbsp;</i></div></div>
@@ -272,7 +274,7 @@ function render(f){
 <div class=r4><div>${sec('Compétences',`<table class=ct><colgroup><col><col style="width:9mm"><col style="width:10mm"><col style="width:11mm"><col style="width:12mm"></colgroup><thead><tr><th>Compétence</th><th>Ind.</th><th>Att.</th><th>RD</th><th>RR</th></tr></thead>${comps}</table>`)}${sec('Connaissances',lst(A.conn,'cols2'))}</div>
 <div>${sec('Atouts',atouts)}${sec('Armes',armes)}${sec('Sorts',wl(by('sort')))}${sec('Formes complexes',wl(by('forme_complexe')))}</div></div>
 <div class=r5>${sec('Blessures et armure',bless)}${sec('Réduction de risque — niveau de risque',RRT)}</div>
-<div class=p2><div class=hd2>${esc(id.pseudo)} <span class=m>— suite</span></div>
+</div><div class=p2><div class=hd2>${esc(id.pseudo)} <span class=m>— suite</span></div>
 ${vsec('Véhicules','Véhicule')}${vsec('Drones','Drone')}${vsec('Cyberdecks','Cyberdeck')}
 ${sec('Équipement',lst((f.equipement||[]).map(e=>({...e,nom:e.nom+(e.offert?' (offert)':'')})),'cols2'))}
 <div class=r7>${sec('Contacts','<div class=lines style="min-height:62mm"></div>')}${sec('Karma et nuyens',`<div class=idg>${fld('Karma gagné','','s3')}${fld('Karma dépensé','','s3')}${fld('Karma restant','','s6')}${fld('Nuyens dispo','','s3')}${fld('Nuyens total','','s3')}</div><div class=lines style="min-height:40mm;margin-top:6px"></div>`)}</div>
@@ -544,11 +546,23 @@ form.addEventListener('click',e=>{
 });
 
 /* ---------------- onglets, fichiers ---------------- */
+const AVAIL=(297-16-3)*96/25.4;
+function fitPages(){
+  const sh=document.querySelector('#out .sheet');if(!sh)return;
+  [['.pg1',.7],['.p2',.7]].forEach(([q,min])=>{
+    const el=sh.querySelector(q);if(!el)return;el.style.zoom='';
+    const box=document.createElement('div');box.style.cssText='position:absolute;left:-99999px;top:0;width:192mm;visibility:hidden';
+    const cl=el.cloneNode(true);cl.classList.add('meas');box.appendChild(cl);document.body.appendChild(box);
+    const hh=()=>cl.getBoundingClientRect().height;let z=1,h=hh();
+    while(h>AVAIL&&z>min){z=Math.max(min,z*Math.min(.98,AVAIL/h));cl.style.zoom=z;h=hh()}
+    document.body.removeChild(box);if(z<1)el.style.zoom=z;
+  });
+}
 function showTab(t){
   $('#crea').hidden=t!=='crea';$('#mini').hidden=t!=='crea';$('#fiche').hidden=t!=='fiche';
   $$('.tab').forEach(b=>b.classList.toggle('on',b.dataset.tab===t));$('#bprint').hidden=t!=='fiche';
   if(t==='crea'&&PJ)buildForm(),refresh();
-  if(t==='fiche'){render(adapt(PJ));document.title=(PJ.identite.pseudo||'Fiche')+' – fiche Anarchy'}
+  if(t==='fiche'){render(adapt(PJ));fitPages();document.title=(PJ.identite.pseudo||'Fiche')+' – fiche Anarchy'}
 }
 function setPJ(p){PJ=normalize(p);DIRTY=false;$('#dirty').textContent='';rebuild();if(!$('#fiche').hidden)showTab('fiche')}
 function openText(t){
@@ -563,6 +577,7 @@ function save(){
   a.download=(PJ.identite.pseudo||'pj').replace(/[^\w\-]+/g,'_')+'.json';a.click();DIRTY=false;$('#dirty').textContent='';
 }
 $$('.tab').forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
+addEventListener('beforeprint',fitPages);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{if(!$('#fiche').hidden)fitPages()});
 $('#mini').onclick=()=>$('#panel').scrollIntoView({behavior:'smooth'});
 $('#bsave').onclick=save;$('#bprint').onclick=()=>print();
 $('#bnew').onclick=()=>{if(!DIRTY||confirm('Abandonner les modifications non enregistrées ?'))setPJ({})};

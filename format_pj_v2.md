@@ -59,7 +59,9 @@ Les points d'Anarchy ne sont pas stockés : 4 pour un Humain, 3 sinon.
 - `type` : Éveil, Cyberware, Bioware, Pouvoir d'adepte, Équipement, Cyberdeck, Véhicule, Drone, Contact, Trait, Initiation (magie), ou texte libre.
 - `perte_essence` (sur l'atout ou un effet, facultatif) : retirée des 6 points d'Essence.
 - `stats` (véhicule, drone, cyberdeck) : `autopilote`, `structure`, `maniabilite`, `vitesse`, `blindage` ; `firewall`, `attaque`. Les effets qui portent ces valeurs ont `"stat": true`. Elles ne s'affichent pas en notes.
-- Un effet sans `bonus` est un texte libre (effet narratif).
+- Un effet sans `bonus` est un texte libre (effet narratif), avec son niveau libre.
+- Champs ajoutés par l'éditeur : `auto: true` sur un effet dont le niveau suit les paramètres du bonus (dès que le niveau est modifié à la main, `auto` passe à `false`) ; `type_perso: true` sur un atout dont le type est saisi librement ; `perso_comp` et `perso_spec` dans un bonus `rr` quand la compétence ou la spécialisation visée est saisie librement (absente de la liste officielle).
+- Un RR sur une spécialisation non possédée, ou saisie librement, s'affiche sur la fiche comme une ligne « sans +2 » sous la compétence (indice de la compétence, RR indiqué).
 
 ### Bonus typés
 
