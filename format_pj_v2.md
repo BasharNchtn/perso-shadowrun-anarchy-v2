@@ -114,3 +114,22 @@ Sur la fiche de Marsy, ce format redonne exactement les montants de la feuille (
 - Le niveau de chaque atout est contrôlé contre la colonne M de la feuille. La colonne RR de la feuille n'est pas exportée (avertissement si elle est remplie).
 - Le karma de la feuille est converti : `karma × 500` est ajouté aux gains (pour Marsy : 5 × 500 + 7 500 = 10 000), ce qui conserve le même total de nuyens disponibles.
 - Toutes les compétences présentes dans la feuille sont `actif: true`. Les autres compétences du catalogue seront ajoutées (désactivées) par l'application.
+
+---
+
+## Champs ajoutés par l'application (tous facultatifs)
+
+| Où | Champ | Rôle |
+|---|---|---|
+| racine | `contacts` | liste `{ nom, type, description, actif }` ; un atout de type Contact portant le même nom y est rattaché (RR et effets) |
+| `identite` | `portrait_x`, `portrait_y` | cadrage du portrait en % (0 à 100, défaut 50) ; format attendu 3:4 |
+| `armes[]` (sort, forme complexe) | `seuil`, `description` | affichés dans un tableau Nom, Seuil, Description |
+| `atouts[]` (Cyberdeck) | `programmes` | liste de textes ; la fiche réserve au moins 5 lignes |
+| `atouts[]` (Véhicule, Drone) | `vehicule` | modèle détaillé : `micro`, `volant`, `base` (`structure`, `maniabilite`, `vitesse`, somme 12 ou 10 pour un microdrone), `plus` (+1 par indice, +1 niveau chacun) |
+| bonus | `rr_attribut` | `{ type, attribut, valeur }` : RR sur un attribut, appliqué à toutes les compétences et spécialisations qui l'utilisent |
+
+**Véhicules et drones détaillés** : autopilote 6 + améliorations ; structure, maniabilité et vitesse = `base` + améliorations ; blindage = améliorations ; « volant » ajoute 1 niveau et double la vitesse de base ; chaque point d'amélioration ajoute 1 niveau ; une monture d'arme est incluse. La fiche n'affiche que les indices finaux.
+
+**RR cumulés** : sur une spécialisation, le RR affiché est celui de la spécialisation + celui de la compétence + celui de l'attribut de la spécialisation (maximum 3). Sur une compétence : RR de la compétence + celui de son attribut.
+
+**Atouts de type Équipement ou Armure** : un bonus de VD ne s'applique qu'à l'arme du même nom ; un bonus d'armure ne s'applique qu'à l'armure portée (ligne « Armure » des seuils), pas à la ligne « Sans armure ».

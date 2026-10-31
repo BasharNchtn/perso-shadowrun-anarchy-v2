@@ -39,7 +39,7 @@ function exportPj() {
   var ss = SpreadsheetApp.getActive();
   var fiche = ss.getSheetByName('Fiche'), param = ss.getSheetByName('Param');
   if (!fiche || !param) { SpreadsheetApp.getUi().alert('Feuilles "Fiche" et "Param" introuvables.'); return; }
-  var res = buildPj_(fiche.getRange(1, 1, 100, 30).getValues(), param.getRange(1, 1, 129, 19).getValues());
+  var res = buildPj_(fiche.getRange(1, 1, 120, 30).getValues(), param.getRange(1, 1, 129, 19).getValues());
   var json = JSON.stringify(res.pj, null, 2);
   var pseudo = String(res.pj.identite.pseudo || 'pj').replace(/[^\w\-]+/g, '_');
   var name = pseudo + '_' + Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'yyyyMMdd') + '.json';
@@ -65,6 +65,7 @@ function norm_(s) {
   return String(s).toLowerCase().replace(/’/g, "'").normalize('NFD').replace(/[\u0300-\u036f]/g, '')
     .replace(/[-_]/g, ' ').replace(/\s+/g, ' ').trim();
 }
+function loose_(s) { return norm_(s).split(' ').map(function (w) { return w.length > 3 ? w.replace(/s$/, '') : w; }).join(' '); }
 function sq_(s) { return norm_(s).replace(/ /g, ''); }
 
 function buildPj_(g, p) {
@@ -79,6 +80,19 @@ function buildPj_(g, p) {
   function num(v) { if (v === '' || v === null || v === undefined) return null; var n = Number(v); return isNaN(n) ? null : n; }
   function list(refs) { return refs.map(function (r) { return txt(cell(r)); }).filter(Boolean); }
   function keyword(ref) { var t = txt(cell(ref)); return PLACEHOLDERS.indexOf(t.toLowerCase()) >= 0 ? '' : t; }
+
+  // --- ancres : les blocs sont repérés par leurs titres (les lignes varient d'une feuille à l'autre)
+  var wHead = 0, eHead = 0, rrHead = 0, cRow = 0, bRow = 0;
+  for (var r0 = 12; r0 <= g.length; r0++) {
+    var hh = norm_(txt(cell('H' + r0))), aa = norm_(txt(cell('A' + r0)));
+    if (!wHead && hh.indexOf('armes, sorts') === 0) wHead = r0;
+    else if (wHead && !eHead && hh === 'equipement') eHead = r0;
+    else if (eHead && !rrHead && hh.indexOf('reduction du risque') === 0) rrHead = r0;
+    if (!cRow && aa === 'connaissances') cRow = r0;
+    if (cRow && !bRow && aa === 'blessures') bRow = r0;
+  }
+  if (!wHead || !eHead) warnings.push('Titres « Armes, sorts et formes complexes » ou « Equipement » introuvables : disposition par défaut utilisée.');
+  wHead = wHead || 66; eHead = eHead || 81; rrHead = rrHead || eHead + 9; cRow = cRow || 59; bRow = bRow || cRow + 7;
 
   // --- catalogue des compétences (feuille Param, colonnes M et N, lignes 5 à 129)
   var cat = [], cur = null;
@@ -121,7 +135,7 @@ function buildPj_(g, p) {
 
   // --- atouts : blocs repérés par la colonne M (niveau), lignes en H, sous-niveau K, perte d'essence L
   var blocks = [], b = null;
-  for (var ra = 13; ra <= 58; ra++) {
+  for (var ra = 13; ra < wHead; ra++) {
     var niv = cell('M' + ra);
     if (niv !== '' && niv !== null) { b = { niveau: num(niv), lignes: [] }; blocks.push(b); }
     var t = txt(cell('H' + ra));
@@ -130,15 +144,19 @@ function buildPj_(g, p) {
       b.lignes.push({ texte: t, niveau: num(cell('K' + ra)) || 0, perte_essence: num(cell('L' + ra)) || 0 });
     }
   }
-  function parseBonus(t) {
+  function parseBonus(t, atoutNom) {
     var m = /\bRR\s*([123])\b\s*(?:(?:pour|au test de|aux tests de|sur|à|a)\s+)?(.+)$/i.exec(t);
     if (m) {
       var rest = m[2].trim(), pm = /^(.*?)\s*\((.+)\)\s*$/.exec(rest);
       var c1 = norm_(pm ? pm[1] : rest), par = pm ? norm_(pm[2]) : '', hit = null, i, j;
+      var attrs = { force: 'force', agilite: 'agilite', volonte: 'volonte', logique: 'logique', charisme: 'charisme' };
+      var cand = c1.replace(/^(l'|l |un )?attribut\s*/, '').replace(/^(d'|de |du |l'|la |le )/, '');
+      var ak = attrs[cand] ? cand : (attrs[par] && /attribut/.test(c1) ? par : null);
+      if (ak) return { type: 'rr_attribut', attribut: attrs[ak], valeur: +m[1] };
       if (!par) { for (i = 0; i < cat.length; i++) if (norm_(cat[i].nom) === c1) hit = { competence: cat[i].nom, specialisation: null }; }
       for (i = 0; i < cat.length && !hit; i++) for (j = 0; j < cat[i].specs.length; j++) {
-        var sn = norm_(cat[i].specs[j].nom);
-        if (sn === c1 || (par && sn === par && sameComp(cat[i].nom, c1))) { hit = { competence: cat[i].nom, specialisation: cat[i].specs[j].nom }; break; }
+        var sn = loose_(cat[i].specs[j].nom);
+        if (sn === loose_(c1) || (par && sn === loose_(par) && sameComp(cat[i].nom, c1))) { hit = { competence: cat[i].nom, specialisation: cat[i].specs[j].nom }; break; }
       }
       for (i = 0; i < cat.length && !hit; i++) if (sameComp(cat[i].nom, c1)) {
         hit = { competence: cat[i].nom, specialisation: null };
@@ -149,7 +167,11 @@ function buildPj_(g, p) {
       return null;
     }
     m = /^VD\s*\+\s*(\d+)\s*(?:(?:au|aux|à|sur|pour|avec)\s+)?(.*)$/i.exec(t);
-    if (m) return { type: 'vd', cible: m[2].replace(/\([^)]*\)/g, '').trim(), valeur: +m[1] };
+    if (m) {
+      var cib = m[2].replace(/\([^)]*\)/g, '').trim();
+      if (!cib) { cib = atoutNom; warnings.push('VD +' + m[1] + ' sans cible dans l’atout « ' + atoutNom + ' » : appliqué à l’arme du même nom.'); }
+      return { type: 'vd', cible: cib, valeur: +m[1] };
+    }
     m = /\barmure\b(?!\s*:)([^+\d]*)\+\s*(\d+)(.*)$/i.exec(t);
     if (m) { var q = norm_(m[1] + ' ' + m[3]); return { type: 'armure', portee: /mental/.test(q) ? 'mental' : (/tous/.test(q) ? 'tous' : 'physique'), valeur: +m[2] }; }
     var nt = norm_(t), cm = /\bcases?\b/.test(nt) && /(legere|grave|incap)/.exec(nt);
@@ -166,6 +188,7 @@ function buildPj_(g, p) {
     var title = blk.lignes[0], full = title.texte;
     var pm = /^([^:\n]{2,30}?)\s*:\s*([\s\S]+)$/.exec(full), type = null, nom = full;
     if (pm) { type = TYPES[norm_(pm[1])] || pm[1].trim(); nom = pm[2].trim(); }
+    else { var pm2 = /^(trait|equipement|équipement|contact)\s+(.+)$/i.exec(full); if (pm2) { type = TYPES[norm_(pm2[1])]; nom = pm2[2].trim(); } }
     var all = norm_(blk.lignes.map(function (l) { return l.texte; }).join(' | '));
     var nStats = STATS.filter(function (k) { return new RegExp(norm_(k) + '\\s*\\d').test(all); }).length;
     if (!type) {
@@ -174,6 +197,7 @@ function buildPj_(g, p) {
       else if (/\bdrone\b/.test(nf)) type = 'Drone';
       else if (/vehicule/.test(nf) || nStats >= 3) type = 'Véhicule';
       else if (nf === 'eveil') type = 'Éveil';
+      else if (/^initi(e|ee|ation)$/.test(nf)) type = 'Initiation (magie)';
     }
     var atout = { type: type, nom: nom, actif: true, niveau_base: title.niveau, effets: [] };
     if (title.perte_essence) atout.perte_essence = title.perte_essence;
@@ -181,7 +205,7 @@ function buildPj_(g, p) {
     blk.lignes.slice(1).forEach(function (l) {
       var e = { texte: l.texte, niveau: l.niveau };
       if (l.perte_essence) e.perte_essence = l.perte_essence;
-      var bn = parseBonus(l.texte); if (bn) e.bonus = bn;
+      var bn = parseBonus(l.texte, nom); if (bn) e.bonus = bn;
       if (/Cyberdeck|Drone|Véhicule/.test(type || '')) {
         var st = statsOf(l.texte);
         if (st) { e.stat = true; for (var k in st) stats[k] = st[k]; hasStats = true; }
@@ -205,24 +229,37 @@ function buildPj_(g, p) {
     }
     return false;
   }
-  var rrSaisi = [];
-  for (var rc = 13; rc <= 58; rc++) {
+  var fRows = [];
+  for (var rc = 13; rc < cRow; rc++) {
     var nm = txt(cell('A' + rc)); if (!nm) continue;
     var at = ATT[txt(cell('D' + rc))] || null, f = num(cell('F' + rc)) || 0;
+    var rrOnly = /^\(\s*(.+?)\s*\)$/.exec(nm);
     if (nm.indexOf('+2') !== -1 && last) {
       var sm = /^\(\s*(.*?)\s*\+2\s*\)$/.exec(nm), sname = sm ? sm[1] : nm;
       var spec = { nom: sname, actif: true, attribut: at };
       if (!inCat(last.nom, sname)) spec.perso = true;
       last.specialites.push(spec);
-      if (f) rrSaisi.push(sname + ' (' + f + ')');
+      if (f) fRows.push({ comp: last.nom, spec: sname, f: f });
+    } else if (rrOnly && last) {
+      if (f) fRows.push({ comp: last.nom, spec: rrOnly[1], f: f });   // RR sur une spécialisation non possédée : vient des atouts
     } else {
       last = { nom: nm, actif: true, attribut: at, indice: num(cell('C' + rc)) || 0, specialites: [] };
       if (!inCat(nm)) last.perso = true;
       comps.push(last);
-      if (f) rrSaisi.push(nm + ' (' + f + ')');
+      if (f) fRows.push({ comp: nm, spec: null, f: f });
     }
   }
-  if (rrSaisi.length) warnings.push('Colonne RR de la feuille renseignée pour : ' + rrSaisi.join(', ') + '. Elle n’est pas exportée : les RR viennent des effets d’atouts. Vérifie que chaque RR a une ligne « RRn … » dans un atout.');
+  // contrôle : la colonne RR de la feuille doit correspondre aux RR écrits dans les atouts
+  var rrC = {}, rrS = {};
+  atouts.forEach(function (a) { a.effets.forEach(function (e) {
+    if (e.bonus && e.bonus.type === 'rr') {
+      if (e.bonus.specialisation) { var k = norm_(e.bonus.competence) + '|' + loose_(e.bonus.specialisation); rrS[k] = (rrS[k] || 0) + e.bonus.valeur; }
+      else { var k2 = norm_(e.bonus.competence); rrC[k2] = (rrC[k2] || 0) + e.bonus.valeur; }
+    } }); });
+  fRows.forEach(function (x) {
+    var attendu = (rrC[norm_(x.comp)] || 0) + (x.spec ? (rrS[norm_(x.comp) + '|' + loose_(x.spec)] || 0) : 0);
+    if (Math.min(3, attendu) !== x.f) warnings.push('RR : la colonne de la feuille indique ' + x.f + ' pour « ' + x.comp + (x.spec ? ' (' + x.spec + ')' : '') + ' ; les atouts donnent ' + Math.min(3, attendu) + '. À vérifier.');
+  });
 
   // --- armes (lignes 68 à 80) ; la ligne 67 « Mains nues » est automatique
   var armes = [];
@@ -232,15 +269,17 @@ function buildPj_(g, p) {
     if (!ports) n = n.replace(/\(\s*((?:OK|Dés|-)(?:\/(?:OK|Dés|-)){3})\s*\)/i, function (m, pp) { ports = pp; return ''; });
     n = n.replace(/\(([^)]*)\)/g, function (m, x) {
       if (!specialisation) for (var i = 0; i < cat.length; i++) for (var j = 0; j < cat[i].specs.length; j++)
-        if (norm_(cat[i].specs[j].nom) === norm_(x)) { specialisation = cat[i].specs[j].nom; return ''; }
+        if (loose_(cat[i].specs[j].nom) === loose_(x)) { specialisation = cat[i].specs[j].nom; return ''; }
       return m;
     });
     var vd = null;
     if (expr !== null && expr !== '') vd = /^\d+$/.test(expr) ? +expr : expr.toUpperCase().replace(/\s+/g, '');
-    return { nom: n.replace(/\s+/g, ' ').trim(), vd: vd, portees: ports ? ports.split('/').map(function (x) { return x.trim(); }) : null, specialisation: specialisation };
+    var po = ports ? ports.split('/').map(function (x) { return x.trim(); }) : null;
+    if (po && po.length > 4) { warnings.push('Arme « ' + n.trim() + ' » : ' + po.length + ' portées saisies, les 4 premières sont gardées.'); po = po.slice(0, 4); }
+    return { nom: n.replace(/\s+/g, ' ').trim(), vd: vd, portees: po, specialisation: specialisation };
   }
-  for (var rw = 68; rw <= 80; rw++) {
-    var wn = txt(cell('H' + rw)); if (!wn) continue;
+  for (var rw = wHead + 1; rw < eHead; rw++) {
+    var wn = txt(cell('H' + rw)); if (!wn || /^mains nues/i.test(wn)) continue;
     var wt = txt(cell('M' + rw)).toLowerCase();
     var pw = parseW(wn);
     var arme = { nom: pw.nom, actif: true, categorie: TYPE_ARME[wt] || 'arme' };
@@ -259,8 +298,8 @@ function buildPj_(g, p) {
 
   // --- équipement : colonnes H et K, lignes 82 à 88 (ligne 82 offerte)
   var equipement = [];
-  for (var re = 82; re <= 88; re++) ['H', 'K'].forEach(function (col) {
-    var e = txt(cell(col + re)); if (e) equipement.push({ nom: e, actif: true, offert: re === 82 });
+  for (var re = eHead + 1; re < rrHead; re++) ['H', 'K'].forEach(function (col) {
+    var e = txt(cell(col + re)); if (e) equipement.push({ nom: e, actif: true, offert: re === eHead + 1 });
   });
 
   // le karma n'existe plus dans le format : karma × 500 est ajouté aux gains (même total de nuyens que la feuille)
@@ -276,10 +315,10 @@ function buildPj_(g, p) {
     attributs: attributs,
     attributs_max: differ ? maxSheet : null,
     competences: comps,
-    connaissances: list(['A60', 'A61', 'A62', 'A63', 'A64']).map(function (x) { return { nom: x, actif: true }; }),
+    connaissances: (function () { var o = []; for (var rk = cRow + 1; rk < bRow; rk++) { var kn = txt(cell('A' + rk)); if (kn) o.push({ nom: kn, actif: true }); } return o; })(),
     atouts: atouts,
     armes: armes,
-    armure: { nom: txt(cell('K81')).replace(/^Armure\s*:\s*/i, ''), valeur: num(cell('M81')) || 0, actif: true },
+    armure: { nom: txt(cell('K' + eHead)).replace(/^Armure\s*:\s*/i, ''), valeur: num(cell('M' + eHead)) || 0, actif: true },
     equipement: equipement
   };
   if (differ) warnings.push('Maximums d’attributs différents du tableau du métatype « ' + metatype + ' » : exportés dans attributs_max.');
