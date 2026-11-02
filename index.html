@@ -62,7 +62,7 @@ ul{margin:0;padding-left:13px}li{margin:0;break-inside:avoid}
 .tag2{border-radius:3px;font-size:9px;background:var(--y);padding:0 4px;margin-left:4px;font-weight:700}
 .at,.card{position:relative;padding-right:34px;background:#fff;border-radius:4px;border:1px solid var(--ln);border-left:3px solid var(--y);padding-left:5px;margin-bottom:3px;break-inside:avoid}
 .card{border-left-color:var(--o);margin-bottom:4px}
-.at em{font-style:normal;font:700 8.5px var(--f);text-transform:uppercase;letter-spacing:.4px;border-radius:3px;padding:0 4px;margin-right:2px}
+.at em,.card em{font-style:normal;font:700 8.5px var(--f);text-transform:uppercase;letter-spacing:.4px;border-radius:3px;padding:0 4px;margin-right:2px}
 .at .ln{font-size:9.5px;color:#333;padding-left:6px}
 .lv{position:absolute;top:1px;right:5px;color:var(--g);font:500 9.5px var(--f)}
 .card b{font-size:11px}
@@ -127,6 +127,12 @@ label.f{display:block;font:500 9.5px var(--f);color:var(--g);text-transform:uppe
 .mnt{border-top:1px dashed #E5C75C;margin-top:4px;padding-top:2px}.mnt .m{font-size:10px;color:#333}
 
 [hidden]{display:none!important}
+#credit{max-width:210mm;margin:14px auto 70px;padding:0 12px;color:#bbb;font:11px/1.45 Arial,sans-serif;text-align:center}#credit a{color:var(--y)}
+.eline{align-items:flex-start;gap:6px}.eb{flex:1;min-width:0;display:flex;flex-wrap:wrap;gap:4px;align-items:center}.eb select{width:auto;flex:1 1 64px;min-width:0;max-width:none}.eb select.sa{flex:none;width:50px!important}.eb input[type=text]{flex:1 1 90px;width:auto;min-width:70px}.ec{flex:none;margin-left:auto;display:flex;gap:4px;align-items:center;white-space:nowrap}.ec input[type=number]{width:54px!important}
+.sline{flex-wrap:wrap}.sline .nm{flex:1 1 120px}.sline select.ty{max-width:105px}.sline .sd{flex:0 0 56px;width:56px}.sline .ds{flex:2 1 120px;width:auto;min-width:80px}.sline .cv{margin-left:auto}
+.row.sp:has(>.m[data-v^="veh"]:empty){display:none}
+.vp{display:inline-flex;gap:3px;align-items:center;white-space:nowrap}.vp input[type=number]{width:52px!important}
+.vc2{display:grid;grid-template-columns:1fr auto;gap:6px}.vl{min-width:0}.vr{display:grid;grid-template-columns:repeat(3,auto);gap:2px;align-self:start;margin-top:1px}.vr i,.vr b{display:flex;align-items:center;justify-content:center;min-width:26px;padding:1px 4px;border-radius:3px;font-style:normal;white-space:nowrap}.vr b{font-size:11.5px}.vr .wl{background:#FFF3CC}.vr .wg{background:#FFE3B8}.vr .wi{background:#FFD3B5}
 </style></head><body>
 <div class="bar no-print" id="topbar"><b class="t">Anarchy PJ</b>
 <button class="tab on" data-tab="crea">Création</button><button class="tab" data-tab="fiche">Fiche</button>
@@ -135,8 +141,9 @@ label.f{display:block;font:500 9.5px var(--f);color:var(--g);text-transform:uppe
 <div id="mini" class="no-print"></div>
 <div id="crea"><div id="form"></div><aside id="panel"></aside></div>
 <div id="fiche" hidden><div class="bar no-print"><div id="warns"></div></div><div id="out"></div></div>
+<footer id="credit" class="no-print">Outil de fan, indépendant et non officiel, pour Shadowrun Anarchy 2.0. Shadowrun est une marque déposée de Topps Company, Inc. / Catalyst Game Labs ; les règles du jeu appartiennent à leurs auteurs et ayants droit. Code sous licence MIT · <a href="https://github.com/BasharNchtn/perso-shadowrun-anarchy-v2">code source</a></footer>
 <script>
-const CATALOGUE=[{"nom": "Armes à distance", "attribut": "agilite", "specs": [{"nom": "armes de jet", "attribut": "agilite"}, {"nom": "armes de trait", "attribut": "agilite"}, {"nom": "armes lourdes", "attribut": "agilite"}, {"nom": "armes montées", "attribut": "agilite"}, {"nom": "fusils", "attribut": "agilite"}, {"nom": "lance-grenades", "attribut": "agilite"}, {"nom": "mitraillettes", "attribut": "agilite"}, {"nom": "pistolets", "attribut": "agilite"}]}, {"nom": "Athlétisme", "attribut": "force", "specs": [{"nom": "course", "attribut": "force"}, {"nom": "défense à distance", "attribut": "agilite"}, {"nom": "escalade", "attribut": "force"}, {"nom": "natation", "attribut": "force"}, {"nom": "parkour", "attribut": "agilite"}]}, {"nom": "Combat rapproché", "attribut": "agilite", "specs": [{"nom": "armes contondantes", "attribut": "agilite"}, {"nom": "combat astral", "attribut": "volonte"}, {"nom": "défense", "attribut": "agilite"}, {"nom": "lames", "attribut": "agilite"}, {"nom": "arme exotique", "attribut": "agilite"}, {"nom": "mains nues", "attribut": "agilite"}]}, {"nom": "Conjuration", "attribut": "logique", "specs": [{"nom": "bannissement", "attribut": "logique"}, {"nom": "esprits des aînés", "attribut": "logique"}, {"nom": "esprits de l'air", "attribut": "logique"}, {"nom": "esprits des bêtes", "attribut": "logique"}, {"nom": "esprits de l'eau", "attribut": "logique"}, {"nom": "esprits du feu", "attribut": "logique"}, {"nom": "esprits des plantes", "attribut": "logique"}, {"nom": "esprits de la terre", "attribut": "logique"}]}, {"nom": "Electronique", "attribut": "logique", "specs": [{"nom": "appareils personnels", "attribut": "logique"}, {"nom": "protection matricielle", "attribut": "logique"}, {"nom": "recherche matricielle", "attribut": "logique"}]}, {"nom": "Enchantement", "attribut": "volonte", "specs": [{"nom": "dissipation", "attribut": "volonte"}, {"nom": "s. de combat", "attribut": "volonte"}, {"nom": "s. de détection", "attribut": "volonte"}, {"nom": "s. d'illusion", "attribut": "volonte"}, {"nom": "s. de manipulation", "attribut": "volonte"}, {"nom": "s. de santé", "attribut": "volonte"}]}, {"nom": "Furtivité", "attribut": "agilite", "specs": [{"nom": "crochetage", "attribut": "agilite"}, {"nom": "discrétion astrale", "attribut": "agilite"}, {"nom": "discrétion matricielle", "attribut": "logique"}, {"nom": "discrétion physique", "attribut": "agilite"}, {"nom": "escamotage", "attribut": "agilite"}]}, {"nom": "Influence", "attribut": "charisme", "specs": [{"nom": "bluff", "attribut": "charisme"}, {"nom": "étiquette", "attribut": "charisme"}, {"nom": "imposture", "attribut": "charisme"}, {"nom": "intimidation", "attribut": "charisme"}, {"nom": "négociation", "attribut": "charisme"}]}, {"nom": "Ingénierie", "attribut": "logique", "specs": [{"nom": "armes contrôlées à distance", "attribut": "logique"}, {"nom": "C&R appareils électroniques", "attribut": "logique"}, {"nom": "C&R drones", "attribut": "logique"}, {"nom": "C&R engins mécaniques", "attribut": "logique"}, {"nom": "C&R implants cybernétiques", "attribut": "logique"}, {"nom": "C&R véhicules", "attribut": "logique"}, {"nom": "explosifs", "attribut": "logique"}, {"nom": "guerre électronique", "attribut": "logique"}]}, {"nom": "Perception", "attribut": "logique", "specs": [{"nom": "astrale", "attribut": "logique"}, {"nom": "matricielle", "attribut": "logique"}, {"nom": "physique", "attribut": "logique"}, {"nom": "sociale", "attribut": "logique"}]}, {"nom": "Pilotage", "attribut": "agilite", "specs": [{"nom": "camions", "attribut": "agilite"}, {"nom": "drones aquatiques", "attribut": "agilite"}, {"nom": "drones terrestres", "attribut": "agilite"}, {"nom": "drones volants", "attribut": "agilite"}, {"nom": "motos", "attribut": "agilite"}, {"nom": "véhicules aquatiques", "attribut": "agilite"}, {"nom": "véhicules volants", "attribut": "agilite"}, {"nom": "voitures", "attribut": "agilite"}]}, {"nom": "Piratage", "attribut": "logique", "specs": [{"nom": "backdoor", "attribut": "logique"}, {"nom": "cybercombat", "attribut": "volonte"}, {"nom": "force brute", "attribut": "logique"}]}, {"nom": "Réseau", "attribut": "charisme", "specs": [{"nom": "corporatiste", "attribut": "charisme"}, {"nom": "criminel", "attribut": "charisme"}, {"nom": "la rue", "attribut": "charisme"}, {"nom": "gouvernemental", "attribut": "charisme"}, {"nom": "ingénierie", "attribut": "charisme"}, {"nom": "magique", "attribut": "charisme"}, {"nom": "matriciel", "attribut": "charisme"}, {"nom": "médiatique", "attribut": "charisme"}, {"nom": "médical", "attribut": "charisme"}, {"nom": "universitaire", "attribut": "charisme"}]}, {"nom": "Sorcellerie", "attribut": "volonte", "specs": [{"nom": "contresort", "attribut": "volonte"}, {"nom": "sorts de combat", "attribut": "volonte"}, {"nom": "sorts de détection", "attribut": "volonte"}, {"nom": "sorts d'illusion", "attribut": "volonte"}, {"nom": "sorts de manipulation", "attribut": "volonte"}, {"nom": "sorts de santé", "attribut": "volonte"}]}, {"nom": "Survie", "attribut": "logique", "specs": [{"nom": "dressage", "attribut": "charisme"}, {"nom": "orientation", "attribut": "logique"}, {"nom": "milieu hostile", "attribut": "logique"}, {"nom": "premiers soins", "attribut": "logique"}, {"nom": "sang-froid", "attribut": "volonte"}]}, {"nom": "Technomancie", "attribut": "logique", "specs": [{"nom": "compilation", "attribut": "logique"}, {"nom": "décompilation", "attribut": "logique"}, {"nom": "formes compexes", "attribut": "logique"}]}];
+const CATALOGUE=[{"nom": "Armes à distance", "attribut": "agilite", "specs": [{"nom": "armes de jet", "attribut": "agilite"}, {"nom": "armes de trait", "attribut": "agilite"}, {"nom": "armes lourdes", "attribut": "agilite"}, {"nom": "armes montées", "attribut": "agilite"}, {"nom": "fusils", "attribut": "agilite"}, {"nom": "lance-grenades", "attribut": "agilite"}, {"nom": "mitraillettes", "attribut": "agilite"}, {"nom": "pistolets", "attribut": "agilite"}]}, {"nom": "Athlétisme", "attribut": "force", "specs": [{"nom": "course", "attribut": "force"}, {"nom": "défense à distance", "attribut": "agilite"}, {"nom": "escalade", "attribut": "force"}, {"nom": "natation", "attribut": "force"}, {"nom": "parkour", "attribut": "agilite"}]}, {"nom": "Combat rapproché", "attribut": "agilite", "specs": [{"nom": "armes contondantes", "attribut": "agilite"}, {"nom": "combat astral", "attribut": "volonte"}, {"nom": "défense", "attribut": "agilite"}, {"nom": "lames", "attribut": "agilite"}, {"nom": "arme exotique", "attribut": "agilite"}, {"nom": "mains nues", "attribut": "agilite"}]}, {"nom": "Conjuration", "attribut": "logique", "specs": [{"nom": "bannissement", "attribut": "logique"}, {"nom": "esprits des aînés", "attribut": "logique"}, {"nom": "esprits de l'air", "attribut": "logique"}, {"nom": "esprits des bêtes", "attribut": "logique"}, {"nom": "esprits de l'eau", "attribut": "logique"}, {"nom": "esprits du feu", "attribut": "logique"}, {"nom": "esprits des plantes", "attribut": "logique"}, {"nom": "esprits de la terre", "attribut": "logique"}]}, {"nom": "Électronique", "attribut": "logique", "specs": [{"nom": "appareils personnels", "attribut": "logique"}, {"nom": "protection matricielle", "attribut": "logique"}, {"nom": "recherche matricielle", "attribut": "logique"}]}, {"nom": "Enchantement", "attribut": "volonte", "specs": [{"nom": "dissipation", "attribut": "volonte"}, {"nom": "s. de combat", "attribut": "volonte"}, {"nom": "s. de détection", "attribut": "volonte"}, {"nom": "s. d'illusion", "attribut": "volonte"}, {"nom": "s. de manipulation", "attribut": "volonte"}, {"nom": "s. de santé", "attribut": "volonte"}]}, {"nom": "Furtivité", "attribut": "agilite", "specs": [{"nom": "crochetage", "attribut": "agilite"}, {"nom": "discrétion astrale", "attribut": "agilite"}, {"nom": "discrétion matricielle", "attribut": "logique"}, {"nom": "discrétion physique", "attribut": "agilite"}, {"nom": "escamotage", "attribut": "agilite"}]}, {"nom": "Influence", "attribut": "charisme", "specs": [{"nom": "bluff", "attribut": "charisme"}, {"nom": "étiquette", "attribut": "charisme"}, {"nom": "imposture", "attribut": "charisme"}, {"nom": "intimidation", "attribut": "charisme"}, {"nom": "négociation", "attribut": "charisme"}]}, {"nom": "Ingénierie", "attribut": "logique", "specs": [{"nom": "armes contrôlées à distance", "attribut": "logique"}, {"nom": "C&R appareils électroniques", "attribut": "logique"}, {"nom": "C&R drones", "attribut": "logique"}, {"nom": "C&R engins mécaniques", "attribut": "logique"}, {"nom": "C&R implants cybernétiques", "attribut": "logique"}, {"nom": "C&R véhicules", "attribut": "logique"}, {"nom": "explosifs", "attribut": "logique"}, {"nom": "guerre électronique", "attribut": "logique"}]}, {"nom": "Perception", "attribut": "logique", "specs": [{"nom": "astrale", "attribut": "logique"}, {"nom": "matricielle", "attribut": "logique"}, {"nom": "physique", "attribut": "logique"}, {"nom": "sociale", "attribut": "logique"}]}, {"nom": "Pilotage", "attribut": "agilite", "specs": [{"nom": "camions", "attribut": "agilite"}, {"nom": "drones aquatiques", "attribut": "agilite"}, {"nom": "drones terrestres", "attribut": "agilite"}, {"nom": "drones volants", "attribut": "agilite"}, {"nom": "motos", "attribut": "agilite"}, {"nom": "véhicules aquatiques", "attribut": "agilite"}, {"nom": "véhicules volants", "attribut": "agilite"}, {"nom": "voitures", "attribut": "agilite"}]}, {"nom": "Piratage", "attribut": "logique", "specs": [{"nom": "backdoor", "attribut": "logique"}, {"nom": "cybercombat", "attribut": "volonte"}, {"nom": "force brute", "attribut": "logique"}]}, {"nom": "Réseau", "attribut": "charisme", "specs": [{"nom": "corporatiste", "attribut": "charisme"}, {"nom": "criminel", "attribut": "charisme"}, {"nom": "la rue", "attribut": "charisme"}, {"nom": "gouvernemental", "attribut": "charisme"}, {"nom": "ingénierie", "attribut": "charisme"}, {"nom": "magique", "attribut": "charisme"}, {"nom": "matriciel", "attribut": "charisme"}, {"nom": "médiatique", "attribut": "charisme"}, {"nom": "médical", "attribut": "charisme"}, {"nom": "universitaire", "attribut": "charisme"}]}, {"nom": "Sorcellerie", "attribut": "volonte", "specs": [{"nom": "contresort", "attribut": "volonte"}, {"nom": "sorts de combat", "attribut": "volonte"}, {"nom": "sorts de détection", "attribut": "volonte"}, {"nom": "sorts d'illusion", "attribut": "volonte"}, {"nom": "sorts de manipulation", "attribut": "volonte"}, {"nom": "sorts de santé", "attribut": "volonte"}]}, {"nom": "Survie", "attribut": "logique", "specs": [{"nom": "dressage", "attribut": "charisme"}, {"nom": "orientation", "attribut": "logique"}, {"nom": "milieu hostile", "attribut": "logique"}, {"nom": "premiers soins", "attribut": "logique"}, {"nom": "sang-froid", "attribut": "volonte"}]}, {"nom": "Technomancie", "attribut": "logique", "specs": [{"nom": "compilation", "attribut": "logique"}, {"nom": "décompilation", "attribut": "logique"}, {"nom": "formes complexes", "attribut": "logique"}]}];
 /* ===================== Fiche : lecture directe du format anarchy-pj v2 ===================== */
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -153,7 +160,7 @@ const strip=s=>norm(String(s||'').replace(/\([^)]*\)/g,''));
 const near=(a,b)=>!!a&&!!b&&(a===b||(Math.min(a.length,b.length)>3&&(a.includes(b)||b.includes(a))));
 const isEq=t=>['equipement','armure'].includes(norm(t||''));
 const vStats=a=>{const v=a.vehicule;if(!v)return a.stats||null;const pl=v.plus||{},b=v.base||{};
-  return{autopilote:6+(pl.autopilote||0),structure:(b.structure||0)+(pl.structure||0),maniabilite:(b.maniabilite||0)+(pl.maniabilite||0),vitesse:(b.vitesse||0)*(v.volant?2:1)+(pl.vitesse||0),blindage:(pl.blindage||0)}};
+  return{autopilote:6+(pl.autopilote||0),structure:(b.structure||0)+(pl.structure||0),maniabilite:(b.maniabilite||0)+(pl.maniabilite||0),vitesse:(v.volant?((b.vitesse||0)*2||(v.micro?1:0)):(b.vitesse||0))+(pl.vitesse||0),blindage:(pl.blindage||0)}};
 const vLvl=a=>a.vehicule?(a.vehicule.volant?1:0)+Object.values(a.vehicule.plus||{}).reduce((t,x)=>t+(x||0),0):0;
 const lvl=a=>(a.niveau_base||0)+(a.effets||[]).reduce((t,e)=>t+(e.niveau||0),0)+vLvl(a);
 const TC={trait:'#E8710A',"pouvoir d'adepte":'#7C3AED'},TP=['#0F766E','#BE123C','#A16207','#2563EB'];
@@ -203,12 +210,12 @@ function derive(p){
   const have=new Set(comps.map(c=>norm(c.nom)));
   Object.keys(rrC).forEach(k=>{if(!have.has(k))W.push(`RR sur « ${k} » ignoré : la compétence n’est pas sur la fiche.`)});
   Object.keys(rrS).forEach(k=>{if(!used.has(k))W.push(`RR sur « ${rrSn[k].nom} » (${rrSn[k].comp}) ignoré : la compétence n’est pas sur la fiche.`)});
-  const vehs=atoutsAct.filter(a=>VT.includes(a.type)).map(a=>({a,kind:a.type,nom:a.nom,niveau:lvl(a),st:vStats(a),prog:a.programmes||[],notes:(a.effets||[]).filter(e=>!e.stat).map(e=>e.texte).filter(Boolean),mounts:armes.filter(x=>x.mount&&norm(x.mount)===norm(a.nom))}));
+  const vehs=atoutsAct.filter(a=>VT.includes(a.type)).map(a=>({a,kind:a.type,nom:a.nom,type:a.vehicule&&(VMOD.find(y=>y.id===a.vehicule.modele)||{}).nom||'',niveau:lvl(a),st:vStats(a),prog:a.programmes||[],notes:(a.effets||[]).filter(e=>!e.stat).map(e=>e.texte).filter(Boolean),mounts:armes.filter(x=>x.mount&&norm(x.mount)===norm(a.nom))}));
   armes.forEach(x=>{if(x.mount&&!vehs.some(v=>norm(v.nom)===norm(x.mount)))W.push(`Arme « ${x.nom} » : monture « ${x.mount} » introuvable.`)});
   const lim={comp:Math.max(0,...Object.values(rrC)),spec:Math.max(0,...Object.values(rrS))};
   return{W,ess,comps,bon,mn,armes,vehs,eqBadge,ctBadge,lim,rrA,
     atouts:atoutsAct.filter(a=>!VT.includes(a.type)),
-    main:armes.filter(x=>(x.cat==='arme'||x.cat==='arme_specialiste')&&!x.mount),
+    main:armes.filter(x=>x.cat==='arme'||x.cat==='arme_specialiste'),
     sorts:armes.filter(x=>x.cat==='sort'),formes:armes.filter(x=>x.cat==='forme_complexe')};
 }
 
@@ -226,17 +233,19 @@ function render(p){
   /* armes */
   const vdSub=x=>{const s=[];if(typeof x.expr==='string'&&/[A-Z]/.test(x.expr))s.push(x.expr);if(x.bonus)s.push('+atout');return s.length?`<div class=m>${esc(s.join(' '))}</div>`:''};
   const pc=v=>{const t=(v||'').trim();return `<td class="pc${t==='OK'?' ok':t==='Dés'?' de':''}">${t==='-'?'–':esc(t)}</td>`};
-  const wrow=x=>`<tr><td><b>${esc(x.nom)}</b>${x.cat==='arme_specialiste'?'<span class=tag>spé.</span>':''}${x.specTxt&&norm(x.specTxt)!==norm(x.nom)?`<div class=m>${esc(x.specTxt)}</div>`:''}${badge(x.badge)}</td><td class=vd>${x.val!=null?`<b>${x.val+x.bonus}</b>`:''}${vdSub(x)}</td>${[0,1,2,3].map(i=>pc((x.ports||[])[i])).join('')}</tr>`;
+  const wrow=x=>`<tr><td><b>${esc(x.nom)}</b>${x.cat==='arme_specialiste'?'<span class=tag>spé.</span>':''}${x.mount?`<div class=m>${esc(x.specTxt||'armes montées')} (sur <b>${esc(((D.vehs.find(v=>norm(v.nom)===norm(x.mount))||{}).type||'').toLowerCase())} ${esc(x.mount)}</b>)</div>`:x.specTxt&&norm(x.specTxt)!==norm(x.nom)?`<div class=m>${esc(x.specTxt)}</div>`:''}${badge(x.badge)}</td><td class=vd>${x.val!=null?`<b>${x.val+x.bonus}</b>`:''}${vdSub(x)}</td>${[0,1,2,3].map(i=>pc((x.ports||[])[i])).join('')}</tr>`;
   const armes=`<table class=wt><colgroup><col><col style="width:17mm"><col style="width:12mm"><col style="width:12mm"><col style="width:14mm"><col style="width:12mm"></colgroup><thead><tr><th>Arme</th><th>VD</th><th>Contact<br><i>≤ 2 m</i></th><th>Courte<br><i>3-15 m</i></th><th>Moyenne<br><i>16-60 m</i></th><th>Longue<br><i>&gt; 60 m</i></th></tr></thead><tbody>${[D.mn,...D.main].map(wrow).join('')}</tbody></table>`;
   const spl=a=>a.length?`<table class=wt><colgroup><col style="width:34%"><col style="width:13mm"><col></colgroup><thead><tr><th>Nom</th><th>Seuil</th><th>Description</th></tr></thead><tbody>${a.map(x=>`<tr><td><b>${esc(x.nom)}</b>${badge(x.badge)}</td><td class=vd><b>${esc(x.seuil??'')}</b></td><td style="text-align:left">${esc(x.desc||'')}</td></tr>`).join('')}</tbody></table>`:'';
   /* véhicules, drones, cyberdecks */
   const bxs=(n,e,c)=>`<i class="bx ${c}"></i>`.repeat(n)+`<i class="bx e ${c}"></i>`.repeat(e);
   const vwr=x=>`<div class=m><b>${esc(x.nom)}</b>${x.specTxt?` <i>(${esc(x.specTxt)})</i>`:''}${x.val!=null?` · VD ${x.val+x.bonus}`:''}${x.ports?' · '+esc(x.ports.map(t=>t==='-'?'–':t).join(' / ')):''}</div>`;
-  const vc=v=>{const s=v.st||{},isD=v.kind==='Cyberdeck';let dm='';
-    if(!isD&&s.structure!=null){const S=s.structure,B=s.blindage||0,t=(n,b)=>`<tr><td>${n}</td><td class=cl>${b}</td><td class=cg>${b+3}</td><td class=ci>${b+6}</td></tr>`;
-      dm=`<table class="bl dmg"><tr><th></th><th class=tl>Légère<br>${bxs(2,0,'l')}</th><th class=tg>Grave<br>${bxs(1,0,'g')}</th><th class=ti>Incap.<br>${bxs(1,0,'i')}</th></tr>${t('Structure',S)}${B?t('+ blindage '+B,S+B):''}</table>`}
+  const mon=t=>`<div class=vr><i class=wl>${bxs(2,0,'l')}</i><i class=wg>${bxs(1,0,'g')}</i><i class=wi>${bxs(1,0,'i')}</i><b class=wl>${t[0]}</b><b class=wg>${t[1]}</b><b class=wi>${t[2]}</b></div>`;
+  const vc=v=>{const s=v.st||{},isD=v.kind==='Cyberdeck';const nb=v.notes.map(n=>`<div class=m>${esc(n)}</div>`).join(''),mt=v.mounts.length?`<div class=mnt><span class=m>Armes montées</span>${v.mounts.map(vwr).join('')}</div>`:'';
     const prog=isD?`<div class=prog><span class=m>Programmes</span>${[...v.prog,...Array(Math.max(0,5-v.prog.length)).fill('')].map(x=>`<div class=pl>${esc(x)}</div>`).join('')}</div>`:'';
-    return `<div class=card><span class=lv>niv. ${v.niveau}</span><b>${esc(v.nom)}</b><div class=st>${Object.entries(s).map(([k,x])=>`<span>${STL[k]||k} <i>${x}</i></span>`).join('')}</div>${dm}${prog}${v.notes.map(n=>`<div class=m>${esc(n)}</div>`).join('')}${v.mounts.length?`<div class=mnt><span class=m>Armes montées</span>${v.mounts.map(vwr).join('')}</div>`:''}</div>`};
+    let m='';
+    if(isD){if(s.firewall!=null){const F=+s.firewall||0;m=mon([F,F+3,F+6])}}
+    else if(s.structure!=null){const S=+s.structure||0,B=+s.blindage||0;m=mon([S+B,2*S+B,3*S+B])}
+    return `<div class="card${m?' vc2':''}"><span class=lv>niv. ${v.niveau}</span><div class=vl>${v.type?`<em style="color:${tcol(v.kind)};background:${tcol(v.kind)}1f">${esc(v.type)}</em> `:''}<b>${esc(v.nom)}</b><div class=st>${Object.entries(s).map(([k,x])=>`<span>${STL[k]||k} <i>${x}</i></span>`).join('')}</div>${prog}${nb}${mt}</div>${m}</div>`};
   const vsec=(t,k)=>{const h=D.vehs.filter(v=>v.kind===k).map(vc).join('');return h?sec(t,`<div class=cc>${h}</div>`,'brk'):''};
   /* blessures et armure */
   const fo=av('force'),bp=D.bon.phys,bm=D.bon.ment,aP=D.bon.armP,arv=ar.valeur&&act(ar)?ar.valeur:0,cx=D.bon.cases;
@@ -282,13 +291,37 @@ const VIE=['Train de vie squatter','Train de vie bas','Train de vie moyen','Trai
 const CATEG={arme:'Arme',arme_specialiste:'Arme de spécialiste',sort:'Sort',forme_complexe:'Forme complexe'};
 const ATYPES=[['Éveil',1,0],['Cyberware',1,1],['Bioware',2,.5],["Pouvoir d'adepte",1,0],['Équipement',0,0],['Cyberdeck',1,0],['Véhicule',1,0],['Drone',1,0],['Contact',0,0],['Trait',0,0],['Initiation (magie)',3,0]];
 const STK={Cyberdeck:['firewall','attaque'],'Véhicule':['autopilote','structure','maniabilite','vitesse','blindage'],Drone:['autopilote','structure','maniabilite','vitesse','blindage']};
+const VMOD=[
+{id:'micro',k:'Drone',nom:'Microdrone',s:0,m:10,v:0,micro:1,arme:'aucune',note:'avantage en Furtivité (discrétion physique)'},
+{id:'petit',k:'Drone',nom:'Petit drone',s:1,m:9,v:2,arme:'mitraillette'},
+{id:'moyen',k:'Drone',nom:'Drone moyen',s:2,m:7,v:3,arme:'fusil d’assaut'},
+{id:'grand',k:'Drone',nom:'Grand drone',s:4,m:4,v:4},
+{id:'moto-course',k:'Véhicule',nom:'Moto de course',s:4,m:2,v:6,arme:'fusil d’assaut'},
+{id:'moto-tt',k:'Véhicule',nom:'Moto tout-terrain',s:4,m:3,v:5,arme:'fusil d’assaut'},
+{id:'chopper',k:'Véhicule',nom:'Chopper',s:5,m:2,v:5,arme:'fusil d’assaut'},
+{id:'sport',k:'Véhicule',nom:'Voiture de sport',s:5,m:2,v:5},
+{id:'berline',k:'Véhicule',nom:'Berline',s:6,m:2,v:4},
+{id:'suv',k:'Véhicule',nom:'SUV / Pick-up',s:7,m:1,v:4},
+{id:'van',k:'Véhicule',nom:'Van',s:8,m:1,v:3},
+{id:'bus',k:'Véhicule',nom:'Bus / semi-remorque',s:10,m:0,v:2}];
 const GRAV=[['legere','légère',3],['grave','grave',6],['incap','incapacitante',6]];
-const EFP=[{l:'RR sur une spécialisation (2 par RR)',k:'rr',spe:1},{l:'RR sur une compétence (5 par RR)',k:'rr'},{l:'VD + (1 par +1)',k:'vd'},{l:'Armure + (1 par +1)',k:'armure'},{l:'Case de blessure supplémentaire (légère 3, grave 6)',k:'case'},
- {l:'Initiative physique +1 (2)',t:'Initiative physique +1',n:2},{l:'Initiative physique +2 (5)',t:'Initiative physique +2',n:5},{l:'Initiative physique +3 (7)',t:'Initiative physique +3',n:7},
- {l:'Initiative astrale ou matricielle +1 (1)',t:'Initiative astrale/matricielle +1',n:1},{l:'Initiative astrale ou matricielle +2 (3)',t:'Initiative astrale/matricielle +2',n:3},{l:'Initiative astrale ou matricielle +3 (4)',t:'Initiative astrale/matricielle +3',n:4},
- {l:'Portée d’une arme (2)',t:'Portée d’une arme améliorée',n:2},{l:'Sort maintenu supplémentaire (2)',t:'Sort maintenu supplémentaire',n:2},{l:'Esprit supplémentaire (3)',t:'Esprit supplémentaire',n:3},{l:'Focus d’arme (1)',t:'Focus d’arme',n:1},
- {l:'RV Cold-sim (1)',t:'RV Cold-sim',n:1},{l:'RV Hot-sim (3)',t:'RV Hot-sim',n:3},{l:'Firewall +1 (1)',t:'Firewall +1',n:1},{l:'Attaque +1 (1)',t:'Attaque +1',n:1},{l:'RR sur un attribut (10 par RR)',k:'rra'},
- {l:'Équipement intégré (1)',t:'Équipement intégré',n:1},{l:'Effet narratif (1)',t:'Effet narratif',n:1},{l:'Texte et coût libres',t:'',n:0}];
+const EFP=[{l:'RR sur une spécialisation (2 par RR, max 3)',k:'rr',spe:1},{l:'RR sur une compétence (5 par RR, max 1)',k:'rr'},{l:'RR sur un attribut (10 par RR, max 1)',k:'rra'},{l:'VD + (1 par +1, max 2)',k:'vd'},{l:'Armure + (1 par +1, max 1 ; tous dommages 2)',k:'armure'},{l:'Case de blessure supplémentaire (légère 3, grave 6, max 1 chacune)',k:'case'},
+
+{id:'ip1',l:'Initiative physique niv. 1 (2)',t:'Initiative physique +1',n:2},{id:'ip2',l:'Initiative physique niv. 2 (5)',t:'Initiative physique +2',n:5},{id:'ip3',l:'Initiative physique niv. 3 (7)',t:'Initiative physique +3',n:7},
+
+{id:'ia1',l:'Initiative astrale ou matricielle niv. 1 (1)',t:'Initiative astrale/matricielle +1',n:1},{id:'ia2',l:'Initiative astrale ou matricielle niv. 2 (3)',t:'Initiative astrale/matricielle +2',n:3},{id:'ia3',l:'Initiative astrale ou matricielle niv. 3 (4)',t:'Initiative astrale/matricielle +3',n:4},
+
+{id:'port',l:'Portée d’une arme (2 par indice changé)',t:'Portée d’une arme améliorée',n:2,max:8},{id:'maint',l:'Sort maintenu supplémentaire (2 par sort, max 2)',t:'Sort maintenu supplémentaire',n:2,max:2},{id:'esp',l:'Esprit invoqué supplémentaire (3, max 1)',t:'Esprit supplémentaire',n:3,max:1},{id:'foc',l:'Focus d’arme (1)',t:'Focus d’arme',n:1},
+
+{id:'cold',l:'RV Cold-sim (1)',t:'RV Cold-sim',n:1},{id:'hot',l:'RV Cold-sim et Hot-sim (3)',t:'RV Cold-sim et Hot-sim',old:['RV Hot-sim'],n:3},
+
+{id:'fw',l:'Firewall +1 (1 par point, max 5)',u:'Firewall +',t:'Firewall',n:1,max:5,only:['Cyberdeck','Cyberware','Équipement']},{id:'att',l:'Attaque +1 (1 par point, max 5)',u:'Attaque +',t:'Attaque',n:1,max:5,only:['Cyberdeck']},{id:'fwat',l:'Firewall ou attaque +1 (1 par point, max 5 chacun)',u:'Firewall ou attaque +',t:'Firewall ou attaque',n:1,max:10,only:['Cyberdeck']},
+
+{id:'int',l:'Équipement intégré (1 + coût de l’équipement)',t:'Équipement intégré',n:1},{id:'nar',l:'Effet narratif (1)',t:'Effet narratif',n:1},
+
+{id:'drn',l:'Drone supplémentaire identique (2, max 3)',t:'Drone supplémentaire identique',n:2,max:3,only:['Drone']},{id:'mnt',l:'Monture d’arme supplémentaire (1)',t:'Monture d’arme supplémentaire',n:1,max:6,only:['Véhicule','Drone']},{id:'mam',l:'Amélioration de monture d’arme (1 chacune)',t:'Amélioration de monture d’arme',n:1,max:6,only:['Véhicule','Drone']},
+
+{l:'Texte et coût libres (coût saisi à la main)'}];
 function bonusText(b){
   if(b.type==='rr')return `RR${b.valeur||1} sur ${b.competence||'?'}${b.specialisation?` (${b.specialisation})`:''}`;
   if(b.type==='rr_attribut')return `RR${b.valeur||1} sur ${KL[b.attribut]||'?'}`;
@@ -301,8 +334,51 @@ function autoCost(b){const v=b.valeur||1;
   if(b.type==='rr')return (b.specialisation||b.perso_spec?2:5)*v;
   if(b.type==='rr_attribut')return 10*v;
   if(b.type==='case')return (GRAV.find(x=>x[0]===b.gravite)||GRAV[0])[2]*v;
+  if(b.type==='armure')return (b.portee==='tous'?2:1)*v;
   return v}
-function syncEf(e){if(e.bonus){e.texte=bonusText(e.bonus);if(e.auto)e.niveau=autoCost(e.bonus)}}
+function syncEf(e){
+if(e.bonus){e.texte=bonusText(e.bonus);e.niveau=autoCost(e.bonus)}
+else if(e.pre){const x=EFP.find(y=>y.id===e.pre);if(x){const q=e.qte||1;e.niveau=x.n*q;e.texte=x.u?x.u+q:(q>1?x.t+' ×'+q:x.t)}}
+}
+function migVeh(a){
+if(a.vehicule||!a.stats||!/^(Véhicule|Drone)$/.test(a.type||''))return;
+const S=a.stats,eff=a.effets||[],se=eff.find(e=>e.stat),vol=/volant/i.test((se&&se.texte)||''),ap=(S.autopilote==null?6:S.autopilote)-6,bl=S.blindage||0;
+if(ap<0||ap>6||bl>S.structure)return;
+for(const tg of [12,10]){let best=null;
+for(let m=0;m<=tg-S.structure;m++){const v=tg-S.structure-m,pm=S.maniabilite-m,pv=S.vitesse-(vol?2*v:v);
+if(pm<0||pv<0||pm>3||pv>3)continue;const c=pm+pv;if(!best||c<best.c)best={c,m,v,pm,pv}}
+if(best){a.vehicule={micro:tg===10,volant:vol,base:{structure:S.structure,maniabilite:best.m,vitesse:best.v},plus:{autopilote:ap,structure:0,maniabilite:best.pm,vitesse:best.pv,blindage:bl}};a.effets=eff.filter(e=>!e.stat);delete a.stats;return}}
+}
+function syncVeh(a){const v=a.vehicule;if(!v)return;const b=v.base||{};
+if(v.modele===undefined){const c=VMOD.filter(y=>y.s===b.structure&&y.m===b.maniabilite&&y.v===b.vitesse);const x=c.find(y=>y.k===a.type)||c[0];v.modele=x?x.id:'herite'}
+const x=VMOD.find(y=>y.id===v.modele);if(x){v.base={structure:x.s,maniabilite:x.m,vitesse:x.v};v.micro=!!x.micro}
+if(v.plus&&v.plus.blindage>(v.base.structure||0)&&x)v.plus.blindage=v.base.structure||0}
+function fixEf(e){
+delete e.auto;
+if(e.bonus){if(e.bonus.specialisation&&norm(e.bonus.specialisation)==='formes compexes')e.bonus.specialisation='formes complexes';e.niveau=autoCost(e.bonus);return}
+if(!e.pre&&!e.stat&&e.texte){const t=norm(e.texte),x=EFP.find(y=>y.t&&(norm(y.t)===t||(y.old||[]).some(o=>norm(o)===t)));if(x){e.pre=x.id;e.qte=1}}
+if(e.pre)syncEf(e);
+}
+const rng=(c,v)=>Array.from({length:Math.max(c,v||1)},(_,i)=>i+1);
+function capWarns(p){
+const W=[];
+for(const a of p.atouts.filter(on)){
+const S={},nm=a.nom||'(sans nom)',bump=(k,v,cap,lab)=>{const o=S[k]=S[k]||{s:0,cap,lab};o.s+=v};
+for(const e of a.effets||[]){const b=e.bonus,v=b?(b.valeur||1):0;
+if(b){
+if(b.type==='rr'){const sp=b.specialisation||b.perso_spec;bump('rr|'+norm(b.competence||'')+'|'+loose(b.specialisation||''),v,sp?3:1,'RR sur '+(b.specialisation||b.competence||'?'))}
+else if(b.type==='rr_attribut')bump('ra|'+b.attribut,v,1,'RR sur '+(KL[b.attribut]||'?'))
+else if(b.type==='vd')bump('vd|'+norm(b.cible||''),v,2,'VD sur '+(b.cible||'?'))
+else if(b.type==='armure')bump('ar|'+(b.portee||'physique'),v,1,'Armure '+(b.portee==='mental'?'mentale':b.portee==='tous'?'tous dommages':'physique'))
+else if(b.type==='case')bump('cs|'+b.gravite,v,1,'Case de blessure '+((GRAV.find(x=>x[0]===b.gravite)||GRAV[0])[1]))
+}else if(e.pre){const x=EFP.find(y=>y.id===e.pre);if(x&&x.max)bump('p|'+e.pre,e.qte||1,x.max,x.t||x.u)}}
+for(const k in S){const o=S[k];if(o.s>o.cap)W.push(`Atout « ${nm} » : ${o.lab} +${o.s} dépasse le maximum (${o.cap}).`)}
+if(a.vehicule){const v=a.vehicule,pl=v.plus||{},st=(v.base&&v.base.structure)||0;
+if((pl.vitesse||0)>3)W.push(`« ${nm} » : vitesse +${pl.vitesse} (maximum +3).`);
+if((pl.maniabilite||0)>3)W.push(`« ${nm} » : maniabilité +${pl.maniabilite} (maximum +3).`);
+if((pl.autopilote||0)>6)W.push(`« ${nm} » : autopilote +${pl.autopilote} (maximum +6, soit 12).`);
+if((pl.blindage||0)>st)W.push(`« ${nm} » : blindage +${pl.blindage} supérieur à la structure (${st}).`)}}
+return W}
 const fmt=n=>Number(n||0).toLocaleString('fr-FR')+' ¥';
 const catOf=n=>CATALOGUE.find(c=>norm(c.nom)===norm(n));
 let PJ=null,DIRTY=false,SAVE_T=null;
@@ -313,19 +389,19 @@ function normalize(p){
   p=p||{};p.format='anarchy-pj';p.version=2;
   p.identite=Object.assign({pseudo:'',nom:'',metatype:'Humain',mots_cles:[],train_de_vie:'Train de vie bas',naissance:'',taille:'',poids:'',particularites:'',repliques:[],comportements:[]},p.identite);
   {const o=p.identite,old=[o.statut_social,o.origine,o.role,o.autre_mot_cle].filter(Boolean);if(!(o.mots_cles&&o.mots_cles.length)&&old.length)o.mots_cles=old;['statut_social','origine','role','autre_mot_cle'].forEach(k=>delete o[k])}
-  p.niveau_de_jeu=Object.assign({nom:'Choix',nuyens:400000,nb_attributs_max:1,indice_max_competence:5,rr_max_competence:2,rr_max_specialisation:2},p.niveau_de_jeu);
+  p.niveau_de_jeu=Object.assign({nom:'Choix',limites_actives:true,nuyens:400000,nb_attributs_max:1,indice_max_competence:5,rr_max_competence:2,rr_max_specialisation:2},p.niveau_de_jeu);
   p.gains=p.gains||0;
   p.attributs=Object.assign({force:1,agilite:1,volonte:1,logique:1,charisme:1},p.attributs);
   p.attributs_max=p.attributs_max||null;
   const have=p.competences||[],out=[];
-  CATALOGUE.forEach(c=>out.push(have.find(x=>norm(x.nom)===norm(c.nom))||{nom:c.nom,actif:false,attribut:c.attribut,indice:0,specialites:[]}));
+  CATALOGUE.forEach(c=>{const h=have.find(x=>norm(x.nom)===norm(c.nom));if(h)h.nom=c.nom;out.push(h||{nom:c.nom,actif:false,attribut:c.attribut,indice:0,specialites:[]})});
   have.forEach(x=>{if(!out.includes(x))out.push(x)});
   out.forEach(c=>{c.specialites=c.specialites||[];c.indice=c.indice||0;if(c.actif===undefined)c.actif=true;c.specialites.forEach(s=>{if(s.actif===undefined)s.actif=true})});
-  p.competences=out;
+  p.competences=out;p.competences.forEach(c=>c.specialites.forEach(s=>{if(norm(s.nom||'')==='formes compexes')s.nom='formes complexes'}));
   p.contacts=p.contacts||[];p.connaissances=p.connaissances||[];p.atouts=p.atouts||[];
-  p.atouts.forEach(a=>{if(a.vehicule){a.vehicule.base=Object.assign({structure:4,maniabilite:4,vitesse:4},a.vehicule.base);a.vehicule.plus=Object.assign({autopilote:0,structure:0,maniabilite:0,vitesse:0,blindage:0},a.vehicule.plus)}});p.armes=p.armes||[];
+  p.atouts.forEach(migVeh);p.atouts.forEach(a=>{const pr=ATYPES.find(x=>x[0]===a.type);if(pr&&!a.type_perso&&!['Éveil','Trait'].includes(a.type)){a.niveau_base=pr[1];a.perte_essence=pr[2]}});p.atouts.forEach(a=>{if(a.vehicule){a.vehicule.base=Object.assign({structure:4,maniabilite:4,vitesse:4},a.vehicule.base);a.vehicule.plus=Object.assign({autopilote:0,structure:0,maniabilite:0,vitesse:0,blindage:0},a.vehicule.plus);a.vehicule.plus.structure=0}});p.atouts.forEach(syncVeh);p.armes=p.armes||[];p.atouts.forEach(a=>(a.effets||[]).forEach(fixEf));
   p.equipement=p.equipement||[{nom:'Faux SIN',actif:true,offert:true},{nom:'Commlink',actif:true,offert:true}];
-  p.armure=Object.assign({nom:'',valeur:0,actif:true},p.armure);
+  p.armure=Object.assign({nom:'',valeur:p.armure?0:3,actif:true},p.armure);
   return p;
 }
 const maxOf=p=>{const m=p.attributs_max||META[p.identite.metatype];return KEYS.map((k,i)=>m?(Array.isArray(m)?m[i]:m[k]):null)};
@@ -376,7 +452,8 @@ ${F('Comportements (un par ligne)',`<textarea data-l="identite.comportements">${
 ${F('Portrait',`<input id=pic type=file accept="image/*" style="width:auto"> ${I.portrait?'<button class=btn data-act=nopic>Retirer</button>':''}<div class=hint>Format attendu : portrait 3:4 (par exemple 600 × 800 px). Une autre proportion est recadrée : réglez le cadrage avec les curseurs, l’aperçu montre le rendu exact.</div>${I.portrait?`<div class=pvrow><div class=pv style="background-image:url('${esc(I.portrait)}');background-position:${I.portrait_x??50}% ${I.portrait_y??50}%"></div><div><label class=mini>Horizontal <input type=range min=0 max=100 data-p="identite.portrait_x" value="${I.portrait_x??50}"></label><label class=mini>Vertical <input type=range min=0 max=100 data-p="identite.portrait_y" value="${I.portrait_y??50}"></label></div></div>`:''}`,'w')}
 </div></section>`;
   const nv=PJ.niveau_de_jeu,niv=`<section><h2>Niveau de jeu et nuyens</h2><div class=hint>Les colonnes Rue, Runner et Élite rappellent les règles. La colonne « Choix » est ce que le MJ a décidé : elle seule est utilisée.</div>
-<table class=nv><tr><th></th><th>Rue</th><th>Runner</th><th>Élite</th><th>Choix (MJ)</th></tr>${NIVK.map((k,i)=>`<tr><td>${NIVL[i]}</td>${['Rue','Runner','Élite'].map(n=>`<td>${i?NIV[n][i]:fmt(NIV[n][i])}</td>`).join('')}<td>${Nu('niveau_de_jeu.'+k,0,i?20:2000000,i?1:5000)}</td></tr>`).join('')}</table>
+<table class=nv><tr><th></th><th>Rue</th><th>Runner</th><th>Élite</th><th>Choix (MJ)</th></tr>${NIVK.map((k,i)=>`<tr><td>${NIVL[i]}</td>${['Rue','Runner','Élite'].map(n=>`<td>${i?NIV[n][i]:fmt(NIV[n][i])}</td>`).join('')}<td>${Nu('niveau_de_jeu.'+k,0,i?20:2000000,i?1:5000).replace('<input',i&&nv.limites_actives===false?'<input disabled':'<input')}</td></tr>`).join('')}</table>
+<div class=row><label class=mini><input data-act=limtog data-p="niveau_de_jeu.limites_actives" type=checkbox${nv.limites_actives!==false?' checked':''}> Appliquer les limites du niveau de jeu</label></div><div class=hint>À décocher quand le personnage évolue au-delà de la création : le tableau des limites n’affiche alors que les valeurs actuelles, sans contrôle.</div>
 <div class=row><span>Préremplir « Choix » depuis :</span>${['Rue','Runner','Élite'].map(n=>`<button class=btn data-act=preset data-v="${n}">${n}</button>`).join('')}</div>
 <div class=row><span class=n>Gains (somme globale)</span>${Nu('gains',0,9999999,500)}</div>
 <div class=row><span class=n>Nuyens disponibles</span><span class=cv data-v=dispo></span></div></section>`;
@@ -386,38 +463,44 @@ ${F('Portrait',`<input id=pic type=file accept="image/*" style="width:auto"> ${I
       const sel=ct?`<select data-act=specsel data-i=${i} data-j=${j}>${s.perso||(!s.nom&&false)?'':(s.nom?'':'<option value="">— choisir —</option>')}${opt([...sp.map(x=>[x.nom,x.nom]),['__autre','Autre…']],s.perso?'__autre':s.nom)}</select>`:'';
       const txt=s.perso||!ct?`<input data-p="${pre}.nom" type=text placeholder="Nom de la spécialisation" value="${esc(s.nom)}">`:'';
       return `<div class="row sp" data-row="${pre}" data-parent="competences.${i}">${Ck(pre+'.actif')}${sel}${txt}${SA(pre+'.attribut',s.attribut)}<span class=rdv data-v="spec.${i}.${j}.rd"></span><span class=cv data-v="spec.${i}.${j}.cost"></span><button class=btn data-act=delspec data-i=${i} data-j=${j}>✕</button></div>`}).join('');
-    return `<div class=cb data-row="competences.${i}"><div class=row>${Ck(`competences.${i}.actif`)}${perso?`<input class=nm data-p="competences.${i}.nom" type=text placeholder="Nom de la compétence" value="${esc(c.nom)}">`:`<span class=nm>${esc(c.nom)}</span>`}${SA(`competences.${i}.attribut`,c.attribut)}${Nu(`competences.${i}.indice`,0,12)}<span class=rdv data-v="comp.${i}.rd"></span><span class=cv data-v="comp.${i}.cost"></span><button class=btn data-act=addspec data-i=${i} title="Ajouter une spécialisation">+ spé</button>${perso?`<button class=btn data-act=delcomp data-i=${i}>✕</button>`:''}</div>${specs}</div>`}).join('');
+    return `<div class=cb data-row="competences.${i}"><div class=row>${Ck(`competences.${i}.actif`)}${perso?`<input class=nm data-p="competences.${i}.nom" type=text placeholder="Nom de la compétence" value="${esc(c.nom)}">`:`<span class=nm>${esc(c.nom)}</span>`}${SA(`competences.${i}.attribut`,c.attribut)}${Nu(`competences.${i}.indice`,0,8)}<span class=rdv data-v="comp.${i}.rd"></span><span class=cv data-v="comp.${i}.cost"></span><button class=btn data-act=addspec data-i=${i} title="Ajouter une spécialisation">+ spé</button>${perso?`<button class=btn data-act=delcomp data-i=${i}>✕</button>`:''}</div>${specs}</div>`}).join('');
   const competences=`<section><h2>Compétences <small class=pr>2 500 ¥ par point jusqu’à 5, puis 5 000 ¥ · spécialisation 2 500 ¥</small></h2><div class=hint>Cochez les compétences que le personnage possède. Une spécialisation vaut l’indice de la compétence +2.</div><div class=cgrid>${comps}</div><button class=btn data-act=addcomp>+ compétence personnalisée</button></section>`;
   const conn=`<section><h2>Connaissances <small class=pr>2 500 ¥ chacune</small></h2>${p.connaissances.map((c,i)=>`<div class=row data-row="connaissances.${i}">${Ck(`connaissances.${i}.actif`)}<input class=n data-p="connaissances.${i}.nom" type=text value="${esc(c.nom)}"><button class=btn data-act=delconn data-i=${i}>✕</button></div>`).join('')}<button class=btn data-act=addconn style="margin-top:4px">+ connaissance</button></section>`;
   const SN=(p,vals,sel)=>`<select data-p="${p}" data-num=1 class=sa>${vals.map(v=>`<option value="${v}"${v===sel?' selected':''}>${v}</option>`).join('')}</select>`;
   const cibles=[...new Set(['mains nues',...p.armes.map(w=>w.nom),...CATALOGUE.flatMap(c=>c.specs.map(x=>x.nom))])];
   const efRow=(i,j,e)=>{const pre=`atouts.${i}.effets.${j}`,b=e.bonus;let body;
     if(b&&b.type==='rr'){const ct=catOf(b.competence);
-      body=`RR ${SN(pre+'.bonus.valeur',[1,2,3],b.valeur)} sur <select data-act=rrc data-i=${i} data-j=${j}>${opt([...CATALOGUE.map(c=>[c.nom,c.nom]),['__autre','Autre…']],b.perso_comp?'__autre':b.competence)}</select>${b.perso_comp||!ct?`<input data-p="${pre}.bonus.competence" type=text placeholder="Compétence" value="${esc(b.competence||'')}">`:''}
+      body=`RR ${SN(pre+'.bonus.valeur',rng(b.specialisation||b.perso_spec?3:1,b.valeur),b.valeur)} sur <select data-act=rrc data-i=${i} data-j=${j}>${opt([...CATALOGUE.map(c=>[c.nom,c.nom]),['__autre','Autre…']],b.perso_comp?'__autre':b.competence)}</select>${b.perso_comp||!ct?`<input data-p="${pre}.bonus.competence" type=text placeholder="Compétence" value="${esc(b.competence||'')}">`:''}
 <select data-act=rrs data-i=${i} data-j=${j}>${opt([['','— la compétence entière —'],...(ct?ct.specs.map(x=>[x.nom,x.nom]):[]),['__autre','Autre…']],b.perso_spec?'__autre':(b.specialisation||''))}</select>${b.perso_spec?`<input data-p="${pre}.bonus.specialisation" type=text placeholder="Spécialisation" value="${esc(b.specialisation||'')}">`:''}`}
-    else if(b&&b.type==='rr_attribut')body=`RR ${SN(pre+'.bonus.valeur',[1,2,3],b.valeur)} sur l’attribut ${Sl(pre+'.bonus.attribut',KEYS.map(k=>[k,KL[k]]),b.attribut)}`;
-    else if(b&&b.type==='vd')body=`VD + ${SN(pre+'.bonus.valeur',[1,2,3],b.valeur)} sur <input data-p="${pre}.bonus.cible" list=cibles type=text value="${esc(b.cible||'')}">`;
-    else if(b&&b.type==='armure')body=`Armure + ${SN(pre+'.bonus.valeur',[1,2,3],b.valeur)} ${Sl(pre+'.bonus.portee',[['physique','physique'],['mental','mentale'],['tous','tous dommages']],b.portee)}`;
-    else if(b&&b.type==='case')body=`Case de blessure ${Sl(pre+'.bonus.gravite',GRAV.map(x=>[x[0],x[1]]),b.gravite)} + ${SN(pre+'.bonus.valeur',[1,2,3],b.valeur||1)}`;
-    else body=`<input class=n data-p="${pre}.texte" type=text placeholder="Effet (texte libre)" value="${esc(e.texte)}">`;
-    return `<div class="row sp ef">${body}${b?`<span class=m data-t="${pre}.texte"></span>`:''}<span class=mini>niv.</span>${Nu(pre+'.niveau',-20,40,.5)}<button class=btn data-act=delef data-i=${i} data-j=${j}>✕</button></div>`};
-  const vEd=(a,i)=>{const v=a.vehicule,q=`atouts.${i}.vehicule`;
-    return `<div class="row sp ef"><label class=mini><input data-p="${q}.micro" type=checkbox${v.micro?' checked':''}> microdrone (total 10)</label><label class=mini><input data-p="${q}.volant" type=checkbox${v.volant?' checked':''}> volant (+1 niveau, vitesse ×2)</label><span class=mini>Base : Structure</span>${Nu(q+'.base.structure',0,12)}<span class=mini>Maniabilité</span>${Nu(q+'.base.maniabilite',0,12)}<span class=mini>Vitesse</span>${Nu(q+'.base.vitesse',0,12)}</div>
-<div class="row sp ef"><span class=mini>Améliorations, +1 niveau chacune : Autopilote</span>${Nu(q+'.plus.autopilote',0,10)}<span class=mini>Structure</span>${Nu(q+'.plus.structure',0,10)}<span class=mini>Maniabilité</span>${Nu(q+'.plus.maniabilite',0,10)}<span class=mini>Vitesse</span>${Nu(q+'.plus.vitesse',0,10)}<span class=mini>Blindage</span>${Nu(q+'.plus.blindage',0,10)}</div>
-<div class="row sp"><span class=m data-v="veh.${i}"></span></div>`};
-  const atRow=(a,i)=>{const pr=ATYPES.find(x=>x[0]===a.type),cu=a.type_perso||(a.type&&!pr),sk=STK[a.type];
-    return `<div class=cb data-row="atouts.${i}"><div class=row>${Ck(`atouts.${i}.actif`)}<select class=ty data-act=atype data-i=${i}>${opt([['','— type —'],...ATYPES.map(x=>[x[0],x[0]]),['__autre','Personnalisé…']],cu?'__autre':(a.type||''))}</select>${cu?`<input class=ty data-p="atouts.${i}.type" type=text placeholder="Type" value="${esc(a.type||'')}">`:''}<input class=nm data-p="atouts.${i}.nom" type=text placeholder="Nom de l’atout" value="${esc(a.nom)}"><span class=mini>base</span>${Nu(`atouts.${i}.niveau_base`,-10,30,.5)}<span class=mini>ess.</span>${Nu(`atouts.${i}.perte_essence`,0,6,.25)}<span class=rdv data-v="atout.${i}.niv"></span><span class=cv data-v="atout.${i}.cost"></span><button class=btn data-act=delatout data-i=${i}>✕</button></div>
+    else if(b&&b.type==='rr_attribut')body=`RR ${SN(pre+'.bonus.valeur',rng(1,b.valeur),b.valeur)} sur l’attribut ${Sl(pre+'.bonus.attribut',KEYS.map(k=>[k,KL[k]]),b.attribut)}`;
+    else if(b&&b.type==='vd')body=`VD + ${SN(pre+'.bonus.valeur',rng(2,b.valeur),b.valeur)} sur <input data-p="${pre}.bonus.cible" list=cibles type=text value="${esc(b.cible||'')}">`;
+    else if(b&&b.type==='armure')body=`Armure + ${SN(pre+'.bonus.valeur',rng(1,b.valeur),b.valeur)} ${Sl(pre+'.bonus.portee',[['physique','physique'],['mental','mentale'],['tous','tous dommages']],b.portee)}`;
+    else if(b&&b.type==='case')body=`Case de blessure ${Sl(pre+'.bonus.gravite',GRAV.map(x=>[x[0],x[1]]),b.gravite)} + ${SN(pre+'.bonus.valeur',rng(1,b.valeur),b.valeur||1)}`;
+    else if(e.pre){const x=EFP.find(y=>y.id===e.pre)||{};body=`<b>${esc(x.u||x.t||e.texte)}</b>${x.max>1?(x.u?'':' ×')+' '+SN(pre+'.qte',rng(x.max,e.qte),e.qte||1):''}`}
+else body=`<input class=n data-p="${pre}.texte" type=text placeholder="Effet (texte libre)" value="${esc(e.texte)}">`;
+    return `<div class="row eline"><div class=eb>${body}</div><div class=ec><span class=mini>niv.</span>${b||e.pre?`<b data-v="ef.${i}.${j}"></b>`:Nu(pre+'.niveau',-20,40,.5)}<button class=btn data-act=delef data-i=${i} data-j=${j}>✕</button></div></div>`};
+  const vEd=(a,i)=>{const v=a.vehicule,q=`atouts.${i}.vehicule`,b=v.base||{},x=VMOD.find(y=>y.id===v.modele),S=b.structure||0,pl=v.plus||{};
+    const op=k=>VMOD.filter(y=>y.k===k).map(y=>`<option value="${y.id}"${y.id===v.modele?' selected':''}>${esc(y.nom)}</option>`).join('');
+    const sel=`<select class=ty data-act=vmod data-i=${i}>${v.modele?'':'<option value="" selected>— type… —</option>'}${v.modele==='herite'?'<option value=herite selected>Valeurs héritées</option>':''}<optgroup label="Drones">${op('Drone')}</optgroup><optgroup label="Véhicules">${op('Véhicule')}</optgroup></select>`;
+    const vol=(b.vitesse||0)*2||(v.micro?1:0),st=v.modele?`<div class=st><span>Autopilote <i>6</i></span><span>Structure <i>${S}</i></span><span>Maniabilité <i>${b.maniabilite||0}</i></span><span>Vitesse <i>${b.vitesse||0}</i> (volant ${vol})</span><span>Blindage <i>0</i></span></div>`:'<span class=mini>Choisis un type pour fixer les caractéristiques de base.</span>';
+    const inf=x?`<div class=m>${x.arme==='aucune'?'Aucune monture d’arme':'Une monture d’arme incluse'+(x.arme?` (${x.arme} au maximum)`:'')}${x.note?' · '+x.note:''}</div>`:'';
+    const S0=(p,mx,val)=>SN(p,Array.from({length:Math.max(mx,val||0)+1},(_,n)=>n),val||0);
+    return `<div class="row sp ef">${sel}<span class=mini>niveau de base <b>${a.niveau_base||0}</b></span></div>
+<div class="row sp">${st}${inf}</div>
+<div class="row sp ef"><span class=mini>Améliorations (+1 niveau chacune) :</span><span class=vp><span class=mini>Autopilote +</span>${S0(q+'.plus.autopilote',6,pl.autopilote)}</span><span class=vp><span class=mini>Maniabilité +</span>${S0(q+'.plus.maniabilite',3,pl.maniabilite)}</span><span class=vp><span class=mini>Vitesse +</span>${S0(q+'.plus.vitesse',3,pl.vitesse)}</span><span class=vp><span class=mini>Blindage +</span>${S0(q+'.plus.blindage',S,pl.blindage)}</span><label class="mini vp"><input data-p="${q}.volant" type=checkbox${v.volant?' checked':''}> volant (+1 niveau, vitesse ×2)</label></div>`};
+  const atRow=(a,i)=>{const pr=ATYPES.find(x=>x[0]===a.type),cu=a.type_perso||(a.type&&!pr),sk=STK[a.type],fxB=pr&&!cu&&!['Éveil','Trait'].includes(a.type)&&a.niveau_base===pr[1],fxE=pr&&!cu&&(a.perte_essence||0)===pr[2];
+    return `<div class=cb data-row="atouts.${i}"><div class=row>${Ck(`atouts.${i}.actif`)}<select class=ty data-act=atype data-i=${i}>${opt([['','— type —'],...ATYPES.map(x=>[x[0],x[0]]),['__autre','Personnalisé…']],cu?'__autre':(a.type||''))}</select>${cu?`<input class=ty data-p="atouts.${i}.type" type=text placeholder="Type" value="${esc(a.type||'')}">`:''}<input class=nm data-p="atouts.${i}.nom" type=text placeholder="Nom de l’atout" value="${esc(a.nom)}">${fxB?`<span class=mini>base</span><b>${a.niveau_base}</b>`:`<span class=mini>base</span>${Nu(`atouts.${i}.niveau_base`,-10,30,.5)}`}${fxE?(pr[2]?`<span class=mini>ess.</span><b>−${pr[2]}</b>`:''):`<span class=mini>ess.</span>${Nu(`atouts.${i}.perte_essence`,0,6,.25)}`}<span class=rdv data-v="atout.${i}.niv"></span><span class=cv data-v="atout.${i}.cost"></span><button class=btn data-act=delatout data-i=${i}>✕</button></div>
 ${a.vehicule?vEd(a,i):''}${a.type==='Cyberdeck'?`<div class="row sp ef"><span class=mini>Programmes (un par ligne)</span><textarea class=n data-l="atouts.${i}.programmes" style="height:44px">${esc((a.programmes||[]).join('\n'))}</textarea></div>`:''}${sk&&a.stats&&!a.vehicule?`<div class="row sp">${sk.map(k=>`<span class=mini>${STL[k]}</span>${Nu(`atouts.${i}.stats.${k}`,0,30)}`).join('')}</div>`:''}
 ${(a.effets||[]).map((e,j)=>efRow(i,j,e)).join('')}
-<select data-act=efadd data-i=${i} class=ty style="margin:3px 0 2px 20px;max-width:340px"><option value="">+ ajouter un effet ou un bonus…</option>${EFP.map((x,n)=>`<option value="${n}">${esc(x.l)}</option>`).join('')}</select></div>`};
+<select data-act=efadd data-i=${i} class=ty style="margin:3px 0 2px 20px;max-width:340px"><option value="">+ ajouter un effet ou un bonus…</option>${EFP.map((x,n)=>(!x.only||x.only.includes(a.type))?`<option value="${n}">${esc(x.l)}</option>`:'').join('')}</select></div>`};
   const ctc=`<section><h2>Contacts</h2><div class=hint>Un contact peut aussi être un atout de type Contact portant le même nom : il apporte alors ses RR et autres effets.</div><datalist id=ctypes>${['Fixer','Contrebandier','Informateur','Mentor','Médecin','Technicien','Corporatiste','Policier','Journaliste','Magicien','Autre'].map(x=>`<option>${x}`).join('')}</datalist>${p.contacts.map((c,i)=>`<div class=row data-row="contacts.${i}">${Ck(`contacts.${i}.actif`)}<input class=nm data-p="contacts.${i}.nom" type=text placeholder="Nom" value="${esc(c.nom)}"><input data-p="contacts.${i}.type" list=ctypes type=text placeholder="Type" value="${esc(c.type||'')}" style="width:120px;flex:none"><input class=n data-p="contacts.${i}.description" type=text placeholder="Description" value="${esc(c.description||'')}"><button class=btn data-act=delcontact data-i=${i}>✕</button></div>`).join('')}<button class=btn data-act=addcontact style="margin-top:4px">+ contact</button></section>`;
-  const atouts=`<section><h2>Atouts, véhicules, drones, cyberdecks <small class=pr>5 000 ¥ par niveau</small></h2><div class=hint>Le type préremplit le niveau de base (modifiable). Chaque effet a son niveau, même négatif ; le texte et le coût restent libres, et les spécialisations visées par un RR peuvent être saisies librement (« Autre… »).</div><datalist id=cibles>${cibles.map(c=>`<option>${esc(c)}`).join('')}</datalist>${p.atouts.map(atRow).join('')}<button class=btn data-act=addatout>+ atout</button></section>`;
+  const atouts=`<section><h2>Atouts, véhicules, drones, cyberdecks <small class=pr>5 000 ¥ par niveau</small></h2><div class=hint>Le type fixe le niveau de base et la perte d’Essence (modifiables seulement pour Éveil, Trait, type personnalisé ou valeur hors règle). Chaque effet a son niveau, même négatif ; le texte et le coût restent libres, et les spécialisations visées par un RR peuvent être saisies librement (« Autre… »).</div><datalist id=cibles>${cibles.map(c=>`<option>${esc(c)}`).join('')}</datalist>${p.atouts.map(atRow).join('')}<button class=btn data-act=addatout>+ atout</button></section>`;
   const hosts=p.atouts.filter(a=>/Véhicule|Drone|Cyberdeck/.test(a.type||'')).map(a=>a.nom).filter(Boolean),spes=[...new Set(CATALOGUE.flatMap(c=>c.specs.map(x=>x.nom)))];
   const wRow=(w,i)=>{const cat=w.categorie||'arme',arm=cat==='arme'||cat==='arme_specialiste',po=w.portees||['','','',''];
-    return `<div class=cb data-row="armes.${i}"><div class=row>${Ck(`armes.${i}.actif`)}<input class=nm data-p="armes.${i}.nom" type=text placeholder="Nom" value="${esc(w.nom)}"><select class=ty data-act=wcat data-i=${i}>${opt(Object.entries(CATEG),cat)}</select><span class=cv data-v="arme.${i}"></span><button class=btn data-act=delarme data-i=${i}>✕</button></div>
+    return `<div class=cb data-row="armes.${i}"><div class="row${arm?'':' sline'}">${Ck(`armes.${i}.actif`)}<input class=nm data-p="armes.${i}.nom" type=text placeholder="Nom" value="${esc(w.nom)}"><select class=ty data-act=wcat data-i=${i}>${opt(Object.entries(CATEG),cat)}</select>${arm?'':`<input class=sd data-p="armes.${i}.seuil" type=text placeholder="Seuil" value="${esc(w.seuil??'')}"><input class=ds data-p="armes.${i}.description" type=text placeholder="Description" value="${esc(w.description||'')}">`}<span class=cv data-v="arme.${i}"></span><button class=btn data-act=delarme data-i=${i}>✕</button></div>
 ${arm?`<div class="row sp ef"><span class=mini>VD</span><input data-p="armes.${i}.vd" type=text placeholder="7 ou FOR+2" value="${esc(w.vd??'')}" style="width:84px;flex:none"><span class=mini>spécialisation</span><input data-p="armes.${i}.specialisation" list=spes type=text placeholder="mains nues, lames…" value="${esc(w.specialisation||'')}" style="width:140px;flex:none"><span class=mini>monté sur</span><select class=ty data-p="armes.${i}.monte_sur">${opt([['','—'],...hosts.map(h=>[h,h])],w.monte_sur||'')}</select></div>
 <div class="row sp ef"><span class=mini>Portées</span>${['Contact','Courte','Moyenne','Longue'].map((l,k)=>`<span class=mini>${l}</span><select class=sa data-act=port data-i=${i} data-k=${k}>${opt([['','·'],['OK','OK'],['Dés','Dés'],['-','–']],po[k]||'')}</select>`).join('')}</div>`
-:`<div class="row sp ef"><span class=mini>Seuil</span><input data-p="armes.${i}.seuil" type=text style="width:70px;flex:none" value="${esc(w.seuil??'')}"><span class=mini>Description</span><input class=n data-p="armes.${i}.description" type=text value="${esc(w.description||'')}"></div>`}</div>`};
+:''}</div>`};
   const armes=`<section><h2>Armes, sorts, formes complexes <small class=pr>2 500 ¥ · spécialiste, sort, forme complexe 5 000 ¥</small></h2><div class=hint>« Mains nues » est ajoutée automatiquement (VD = Force). VD : un nombre ou une expression avec attributs (FOR+2). Portées : Contact, Courte, Moyenne, Longue.</div><datalist id=spes>${spes.map(x=>`<option>${esc(x)}`).join('')}</datalist>${p.armes.map(wRow).join('')}<button class=btn data-act=addarme>+ arme, sort ou forme complexe</button></section>`;
   const eRow=(e,i)=>`<div class=row data-row="equipement.${i}">${Ck(`equipement.${i}.actif`)}<input class=nm data-p="equipement.${i}.nom" type=text placeholder="Équipement" value="${esc(e.nom)}"><label class=mini><input data-p="equipement.${i}.offert" type=checkbox${e.offert?' checked':''}> offert</label><span class=cv data-v="equip.${i}"></span><button class=btn data-act=delequip data-i=${i}>✕</button></div>`;
   const eq=`<section><h2>Armure et équipement <small class=pr>armure 2 500 ¥ par point · équipement 2 500 ¥ par ligne (hors offert)</small></h2><div class=row data-row="armure">${Ck('armure.actif')}<input class=nm data-p="armure.nom" type=text placeholder="Armure portée" value="${esc(p.armure.nom)}"><span class=mini>points</span>${Nu('armure.valeur',0,20)}<span class=cv data-v=armure></span></div>${p.equipement.map(eRow).join('')}<button class=btn data-act=addequip style="margin-top:4px">+ équipement</button></section>`;
@@ -430,24 +513,27 @@ function vv_(k,C){const[t,a,b]=k.split('.');
   if(t==='comp')return b==='cost'?fmt(C.comp[a].cost):'RD '+C.comp[a].rd;
   if(t==='spec'){const w=k.split('.')[3],s=C.comp[a].specs[b];return w==='cost'?fmt(s.cost):'RD '+s.rd}
   if(t==='atout')return b==='niv'?'niv. '+C.atouts[a].niv:fmt(C.atouts[a].cost);
-  if(t==='arme')return fmt(C.armes[a]);
+  if(t==='ef')return String(PJ.atouts[a].effets[b].niveau||0);
+
+if(t==='arme')return fmt(C.armes[a]);
   if(t==='equip')return C.equip[a]===null?'offert':fmt(C.equip[a]);
   if(t==='armure')return fmt(C.armureCost);
   if(t==='dispo')return fmt(C.dispo);
-  if(t==='veh'){const at=PJ.atouts[a],s=vStats(at),v=at.vehicule,sum=(v.base.structure||0)+(v.base.maniabilite||0)+(v.base.vitesse||0),tg=v.micro?10:12;return 'Indices finaux : '+Object.entries(s).map(([k,x])=>STL[k]+' '+x).join(' · ')+' — répartition de base '+sum+' / '+tg+(sum===tg?' ✔':' ✖')+' — 1 monture d’arme incluse — niveaux : base '+(at.niveau_base||0)+' + volant '+(v.volant?1:0)+' + améliorations '+Object.values(v.plus||{}).reduce((t,x)=>t+(x||0),0)}
+  if(t==='veh'){const at=PJ.atouts[a],s=vStats(at),v=at.vehicule,sum=(v.base.structure||0)+(v.base.maniabilite||0)+(v.base.vitesse||0),tg=v.micro?10:12;return sum===tg?'':'⚠ Répartition de base structure + maniabilité + vitesse : '+sum+' / '+tg+' ✖'}
   return '';
 }
 function panel(C,D){
   const mx=maxOf(PJ),lim=PJ.niveau_de_jeu,L=[],add=(t,ok)=>L.push(`<li class=${ok?'ok':'ko'}>${ok?'✔':'✖'} ${t}</li>`);
   const rows=[['Attributs',C.att,'v × 10 000 ; 20 000 + (v−1) × 10 000 au maximum'],['Compétences',C.compT,'2 500 par point jusqu’à 5, puis 5 000'],['Spécialisations',C.spec,'2 500 chacune'],['Connaissances',C.conn,'2 500 chacune'],['Atouts',C.at,'5 000 par niveau'],['Armes',C.arm,'2 500 (spécialiste 5 000)'],['Sorts, formes complexes',C.sorts,'5 000 chacun'],['Armure',C.armureCost,'2 500 par point'],['Équipement',C.eq,'2 500 par ligne, hors offert']];
   const over=KEYS.filter((k,i)=>mx[i]!=null&&PJ.attributs[k]>mx[i]);
-  add(`Attributs au maximum : ${C.nMax} / ${lim.nb_attributs_max}`,C.nMax<=lim.nb_attributs_max);
+  const LA=lim.limites_actives!==false,chk=(t,v,m)=>LA?add(`${t} : ${v} / ${m}`,v<=m):L.push(`<li class=in>• ${t} : ${v}</li>`);
+  chk('Attributs au maximum',C.nMax,lim.nb_attributs_max);
   add('Attributs dans leur maximum'+(over.length?' ('+over.map(k=>KL[k]).join(', ')+')':''),!over.length);
-  const mi=Math.max(0,...PJ.competences.filter(on).map(c=>c.indice||0));add(`Indice max : ${mi} / ${lim.indice_max_competence}`,mi<=lim.indice_max_competence);
+  const mi=Math.max(0,...PJ.competences.filter(on).map(c=>c.indice||0));chk('Indice max',mi,lim.indice_max_competence);
   const rc=D.lim.comp,rs=D.lim.spec;
-  add(`RR max sur une compétence : ${rc} / ${lim.rr_max_competence}`,rc<=lim.rr_max_competence);
-  add(`RR max sur une spécialisation : ${rs} / ${lim.rr_max_specialisation}`,rs<=lim.rr_max_specialisation);
-  add(`Essence : ${D.ess}`,D.ess>=0);add(`Nuyens restants : ${fmt(C.reste)}`,C.reste>=0);
+  chk('RR max sur une compétence',rc,lim.rr_max_competence);
+  chk('RR max sur une spécialisation',rs,lim.rr_max_specialisation);
+  if(mi>8)add('Indice de compétence au-delà de 8 (maximum absolu)',false);capWarns(PJ).forEach(w=>add(w,false));add(`Essence : ${D.ess}`,D.ess>=0);add(`Nuyens restants : ${fmt(C.reste)}`,C.reste>=0);
   const bad=L.filter(x=>x.includes('class=ko')).length;$('#mini').innerHTML=`Dépensé ${fmt(C.total)} · Reste <span class="${C.reste<0?'ko':'ok'}">${fmt(C.reste)}</span>${bad?` · <span class=ko>✖ ${bad} limite(s)</span>`:''}`;
   $('#panel').innerHTML=`<section><h2>Coûts</h2><table class=ctab>${rows.map(r=>`<tr><td>${r[0]}</td><td>${fmt(r[1])}</td><td>${r[2]}</td></tr>`).join('')}<tr class=tot><td>Dépensé</td><td>${fmt(C.total)}</td><td></td></tr><tr class=tot><td>Disponible</td><td>${fmt(C.dispo)}</td><td></td></tr><tr class=tot><td>Reste</td><td class="${C.reste<0?'ko':'ok'}">${fmt(C.reste)}</td><td></td></tr></table></section>
 <section><h2>Limites</h2><ul>${L.join('')}</ul></section>${D.W.length?`<section><h2>Avertissements</h2><ul>${D.W.map(w=>`<li class=m>⚠ ${esc(w)}</li>`).join('')}</ul></section>`:''}`;
@@ -465,10 +551,10 @@ function rebuild(){buildForm();refresh()}
 
 function upd(t){
   if(t.dataset.p){set(PJ,t.dataset.p,t.type==='checkbox'?t.checked:(t.type==='number'||t.type==='range'||t.dataset.num)?(t.value===''?0:Number(t.value)):t.value);
-    const m=/^atouts\.(\d+)\.effets\.(\d+)\.(bonus\.|niveau)/.exec(t.dataset.p);
+    const m=/^atouts\.(\d+)\.effets\.(\d+)\.(bonus\.|niveau|qte)/.exec(t.dataset.p);
     const m2=/^armes\.(\d+)\.(vd|specialisation|monte_sur)$/.exec(t.dataset.p);
     if(m2){const w=PJ.armes[m2[1]],v=String(w[m2[2]]??'').trim();if(!v)delete w[m2[2]];else if(m2[2]==='vd')w.vd=/^\d+$/.test(v)?+v:v.toUpperCase().replace(/\s+/g,'');else w[m2[2]]=v}
-    if(m){const e=PJ.atouts[m[1]].effets[m[2]];if(m[3]==='niveau')e.auto=false;else{syncEf(e);const n=$(`[data-p="atouts.${m[1]}.effets.${m[2]}.niveau"]`);if(n)n.value=e.niveau}}}
+    if(m&&m[3]!=='niveau')syncEf(PJ.atouts[m[1]].effets[m[2]])}
   else if(t.dataset.l){set(PJ,t.dataset.l,t.value.split('\n').map(s=>s.trim()).filter(Boolean))}
   else return;
   touch();
@@ -478,30 +564,33 @@ const form=$('#form');
 form.addEventListener('input',e=>upd(e.target));
 form.addEventListener('change',e=>{
   const t=e.target,a=t.dataset.act;
-  if(a==='meta'){const I=PJ.identite;if(t.value==='Personnalisé'){const m=maxOf(PJ);PJ.attributs_max=Object.fromEntries(KEYS.map((k,i)=>[k,m[i]||4]));I.metatype=META[I.metatype]?'Personnalisé':I.metatype}else{I.metatype=t.value;PJ.attributs_max=null}touch(true)}
+  if(a==='limtog'){touch(true)}
+  else if(a==='meta'){const I=PJ.identite;if(t.value==='Personnalisé'){const m=maxOf(PJ);PJ.attributs_max=Object.fromEntries(KEYS.map((k,i)=>[k,m[i]||4]));I.metatype=META[I.metatype]?'Personnalisé':I.metatype}else{I.metatype=t.value;PJ.attributs_max=null}touch(true)}
   else if(a==='specsel'){const s=PJ.competences[t.dataset.i].specialites[t.dataset.j],ct=catOf(PJ.competences[t.dataset.i].nom);
     if(t.value==='__autre'){s.perso=true;s.nom=''}else{s.perso=false;s.nom=t.value;const x=ct&&ct.specs.find(y=>y.nom===t.value);if(x)s.attribut=x.attribut}touch(true)}
   else if(a==='atype'){const x=PJ.atouts[t.dataset.i],v=t.value,pr=ATYPES.find(y=>y[0]===v);
     if(v==='__autre'){x.type_perso=true;x.type=''}
     else{delete x.type_perso;x.type=v;if(pr){x.niveau_base=v==='Trait'?(PJ.atouts.some((o,k)=>k!=t.dataset.i&&o.type==='Trait'&&on(o))?3:0):pr[1];x.perte_essence=pr[2]||0}
-      if(v==='Cyberdeck'&&!x.stats)x.stats={firewall:0,attaque:0};if((v==='Véhicule'||v==='Drone')&&!x.stats&&!x.vehicule)x.vehicule={micro:false,volant:false,base:{structure:4,maniabilite:4,vitesse:4},plus:{autopilote:0,structure:0,maniabilite:0,vitesse:0,blindage:0}}}
+      if(v==='Cyberdeck'&&!x.stats)x.stats={firewall:0,attaque:0};if((v==='Véhicule'||v==='Drone')&&!x.stats&&!x.vehicule)x.vehicule={modele:'',micro:false,volant:false,base:{structure:0,maniabilite:0,vitesse:0},plus:{autopilote:0,structure:0,maniabilite:0,vitesse:0,blindage:0}}}
     touch(true)}
+  else if(a==='vmod'){const at=PJ.atouts[t.dataset.i],v=at.vehicule,x=VMOD.find(y=>y.id===t.value);if(!x)return;v.modele=x.id;syncVeh(at);touch(true)}
   else if(a==='wcat'){PJ.armes[t.dataset.i].categorie=t.value;touch(true)}
   else if(a==='port'){const w=PJ.armes[t.dataset.i];w.portees=w.portees||['','','',''];w.portees[+t.dataset.k]=t.value;if(w.portees.every(x=>!x))delete w.portees;touch()}
-  else if(a==='efadd'){const x=EFP[+t.value];if(!x)return;const at=PJ.atouts[t.dataset.i];at.effets=at.effets||[];
-    let e;if(x.k==='rr'){const c=CATALOGUE[0],b={type:'rr',valeur:1,competence:c.nom,specialisation:x.spe?c.specs[0].nom:null};e={bonus:b,auto:true}}
-    else if(x.k==='rra')e={bonus:{type:'rr_attribut',valeur:1,attribut:'force'},auto:true};
-    else if(x.k==='vd')e={bonus:{type:'vd',valeur:1,cible:'mains nues'},auto:true};
-    else if(x.k==='armure')e={bonus:{type:'armure',valeur:1,portee:'physique'},auto:true};
-    else if(x.k==='case')e={bonus:{type:'case',gravite:'legere',valeur:1},auto:true};
-    else e={texte:x.t,niveau:x.n};
-    if(e.bonus)syncEf(e);at.effets.push(e);touch(true)}
+  else if(a==='efadd'){if(t.value==='')return;const x=EFP[+t.value];if(!x)return;const at=PJ.atouts[t.dataset.i];at.effets=at.effets||[];
+    let e;if(x.k==='rr'){const c=CATALOGUE[0];e={bonus:{type:'rr',valeur:1,competence:c.nom,specialisation:x.spe?c.specs[0].nom:null}}}
+else if(x.k==='rra')e={bonus:{type:'rr_attribut',valeur:1,attribut:'force'}};
+else if(x.k==='vd')e={bonus:{type:'vd',valeur:1,cible:'mains nues'}};
+else if(x.k==='armure')e={bonus:{type:'armure',valeur:1,portee:'physique'}};
+else if(x.k==='case')e={bonus:{type:'case',gravite:'legere',valeur:1}};
+else if(x.id)e={pre:x.id,qte:1};
+else e={texte:'',niveau:0};
+syncEf(e);at.effets.push(e);touch(true)}
   else if(a==='rrc'){const b=PJ.atouts[t.dataset.i].effets[t.dataset.j].bonus;
     if(t.value==='__autre'){b.perso_comp=true;b.competence=''}else{delete b.perso_comp;b.competence=t.value}
-    b.specialisation=null;delete b.perso_spec;syncEf(PJ.atouts[t.dataset.i].effets[t.dataset.j]);touch(true)}
+    b.specialisation=null;delete b.perso_spec;b.valeur=Math.min(b.valeur||1,1);syncEf(PJ.atouts[t.dataset.i].effets[t.dataset.j]);touch(true)}
   else if(a==='rrs'){const e=PJ.atouts[t.dataset.i].effets[t.dataset.j],b=e.bonus;
     if(t.value==='__autre'){b.perso_spec=true;b.specialisation=''}else{delete b.perso_spec;b.specialisation=t.value||null}
-    syncEf(e);touch(true)}
+    b.valeur=Math.min(b.valeur||1,b.specialisation||b.perso_spec?3:1);syncEf(e);touch(true)}
   else if(t.id==='pic'){if(t.files[0])resizeImg(t.files[0],d=>{PJ.identite.portrait=d;touch(true)})}
   else upd(t);
 });

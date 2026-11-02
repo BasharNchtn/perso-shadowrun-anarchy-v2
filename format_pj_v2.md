@@ -1,7 +1,7 @@
 # Format JSON `anarchy-pj` v2
 
-Source de vérité d'un personnage, pour l'application autonome (onglets Création et Fiche).
-Produit pour l'instant par `ExportPJ.gs` à partir de la feuille FicheSRA2. Exemple : `pj_Marsy.json`.
+Source de vérité d'un personnage, pour l'application autonome `index.html` (onglets Création et Fiche).
+Exemples : `pj_Marsy.json`, `pj_RoseRed.json`, `pj_Tilah.json`.
 
 Principes :
 - Le JSON contient **ce qui est saisi**, jamais ce qui se calcule (réserves de dés, seuils de blessure, RR totaux, coûts, essence, nuyens restants).
@@ -106,14 +106,6 @@ Sur la fiche de Marsy, ce format redonne exactement les montants de la feuille (
 
 ---
 
-## Migration depuis la feuille (ce que fait `ExportPJ.gs`)
-
-- Chaque atout : le texte de la 1re ligne donne `type` et `nom` (préfixe `Type : Nom`, ou détection Drone, Véhicule, Cyberdeck, Éveil) ; son sous-niveau devient `niveau_base` ; les lignes suivantes deviennent des `effets` avec leur sous-niveau.
-- Les lignes `RRn …`, `VD +n …`, `Armure +n …` et `Case … supplémentaire` deviennent des `bonus` typés. Une ligne non reconnue reste un effet en texte libre, avec un avertissement affiché à l'export.
-- Les armes : la VD, les portées, la spécialisation entre parenthèses et la monture `(sur X)` deviennent des champs.
-- Le niveau de chaque atout est contrôlé contre la colonne M de la feuille. La colonne RR de la feuille n'est pas exportée (avertissement si elle est remplie).
-- Le karma de la feuille est converti : `karma × 500` est ajouté aux gains (pour Marsy : 5 × 500 + 7 500 = 10 000), ce qui conserve le même total de nuyens disponibles.
-- Toutes les compétences présentes dans la feuille sont `actif: true`. Les autres compétences du catalogue seront ajoutées (désactivées) par l'application.
 
 ---
 
