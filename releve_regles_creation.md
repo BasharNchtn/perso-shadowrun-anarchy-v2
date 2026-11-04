@@ -127,7 +127,7 @@ Tous les maximums « max » ci-dessous valent **par atout**. Le coût de ces eff
 | VD +1 | 1 par point | 2 |
 | Armure +1 (physique ou mentale) | 1 par point | 1 |
 | Armure +1 contre tous dommages (physique et mentale) | 2 par point | 1 |
-| Portée d'une arme (de Dés à OK, ou de – à Dés) | 2 par indice changé | |
+| Portée d'une arme : un changement de portée (de – à Dés, ou de Dés à OK) | 2 par changement | 2 par portée |
 | Case de blessure légère supplémentaire | 3 | 1 |
 | Case de blessure grave supplémentaire | 6 | 1 |
 | Sort maintenu supplémentaire | 2 par sort | 2 |
@@ -137,12 +137,13 @@ Tous les maximums « max » ci-dessous valent **par atout**. Le coût de ces eff
 | RV Cold-sim et Hot-sim | 3 | |
 | Firewall +1 | 1 par point | 5 |
 | Attaque +1 | 1 par point | 5 |
-| Firewall ou attaque +1 | 1 par point | 5 pour chaque |
 | Effet narratif | 1 | |
 | Équipement intégré | 1 (+ coût de l'équipement) | |
 | Effet personnalisé | coût saisi | |
 
 Restrictions : Firewall ne concerne que les cyberdecks, le cyberware et les équipements de type appareil. Attaque ne concerne que les cyberdecks.
+
+**Cyberdeck** : un cyberdeck a de base Firewall 1 et Attaque 0 (valeurs fixes). On les augmente avec les effets « Firewall +1 » et « Attaque +1 » (1 niveau par point, maximum 5 pour chacun).
 
 ### Effets réservés aux véhicules et drones
 
@@ -166,6 +167,7 @@ Le niveau initial correspond à un véhicule ou drone avec : Autopilote 6, Struc
 | Type | Autopilote | Structure | Maniabilité | Vitesse (volant) | Blindage | Monture d'arme |
 |---|---|---|---|---|---|---|
 | Microdrone | 6 | 0 | 10 | 0 (1) | 0 | aucune ; avantage en Furtivité (discrétion physique) |
+| Minidrone | 6 | 1 | 10 | 1 (2) | 0 | pistolet de petit calibre au maximum |
 | Petit drone | 6 | 1 | 9 | 2 (4) | 0 | mitraillette au maximum |
 | Drone moyen | 6 | 2 | 7 | 3 (6) | 0 | fusil d'assaut au maximum |
 | Grand drone | 6 | 4 | 4 | 4 (8) | 0 | une monture |
@@ -178,18 +180,70 @@ Le niveau initial correspond à un véhicule ou drone avec : Autopilote 6, Struc
 | Van | 6 | 8 | 1 | 3 | 0 | une monture |
 | Bus / semi-remorque | 6 | 10 | 0 | 2 | 0 | une monture |
 
-Dans l'appli : après avoir choisi l'atout « Véhicule » ou « Drone », on sélectionne le type. Les caractéristiques de base et le niveau de base s'affichent sans pouvoir être modifiés. Une seule ligne d'améliorations (autopilote, maniabilité, vitesse, blindage, avec les maximums du tableau ci-dessus) et la case « volant » (+1 niveau) mettent à jour le niveau courant. Un véhicule ancien qui ne correspond à aucun type garde ses valeurs sous l'intitulé « Valeurs héritées ».
+Dans l'appli : un atout de type « Drone » ne propose que les types de drones, un atout « Véhicule » que les types de véhicules. Après le choix du type, les caractéristiques de base et le niveau de base s'affichent sans pouvoir être modifiés. Les améliorations (autopilote, maniabilité, vitesse, blindage, avec les maximums ci-dessus) et le fait d'être volant sont des effets de l'atout, à ajouter seulement si on les prend ; ils mettent à jour le niveau courant.
+
+**Type personnalisé** : pour un véhicule ou drone qui n'entre dans aucun type, on choisit « Personnalisé » et on saisit toutes les valeurs de base, en respectant la règle du niveau initial : structure + maniabilité + vitesse = 12 (10 pour un microdrone), autopilote 6, blindage 0.
 
 La monture d'arme permet de monter une arme, mais l'arme s'achète à part. Pour des drones supplémentaires, il faut acheter autant d'armes que nécessaire pour les monter.
 
 ---
 
+### Types d'armes (valeurs de base)
+
+Le type d'arme **fixe** la VD et les portées (Contact / Courte / Moyenne / Longue ; « Dés. » = désavantage, « – » = impossible). Les armes de spécialiste (**) coûtent 5 000 ¥ au lieu de 2 500 ¥ (case « arme de spécialiste »).
+
+**Spécialisation** : elle se choisit dans la famille de l'arme. Une arme de mêlée utilise une spécialisation de mêlée (mains nues, lames, armes contondantes, ou une arme exotique prise par le personnage), une arme à feu une spécialisation d'arme à feu (pistolets, mitraillettes, fusils, armes lourdes, lance-grenades), une arme de jet ou de trait une spécialisation de jet ou de trait (armes de jet, armes de trait). Le tableau indique la spécialisation proposée par défaut. Pour une arme montée sur un véhicule ou un drone, la spécialisation est « armes montées » : on choisit alors le véhicule ou drone porteur.
+
+**Arme exotique** : une arme exotique n'est proposée comme spécialisation de l'arme que si le personnage l'a prise dans ses compétences (Combat rapproché). On peut en prendre plusieurs, en précisant le nom de chacune (fouet, tronçonneuse…), à 2 500 ¥ la spécialisation. L'effet « VD + sur arme exotique » s'applique à toutes les armes exotiques.
+
+**Toxine** : pour les armes à feu et les grenades, la VD peut être remplacée par une toxine, décrite par un texte (effet, durée, résistance…). Les grenades à gaz ont toujours une toxine, jamais de VD.
+
+**Modifier la base** : pour changer la VD ou les portées, il faut associer à l'arme un atout (de type Équipement, portant le nom de l'arme) avec les effets « VD +1 » (1 niveau par point, maximum 2) et « Portée » (2 niveaux par changement de portée). Les autres effets (narratif, VD +1 d'une autre nature…) se prennent dans cet atout, avec un effet personnalisé.
+
+| Type | VD | Contact | Courte | Moyenne | Longue | Spécialisation par défaut |
+|---|---|---|---|---|---|---|
+| Mains nues | FOR | OK | – | – | – | mains nues |
+| Armes courtes | FOR+1 | OK | – | – | – | lames |
+| Armes longues | FOR+2 | OK | – | – | – | lames |
+| Armes de contact avancées | 5 | OK | – | – | – | lames |
+| Armes de jet | FOR+1 | OK | OK | Dés. | – | armes de jet |
+| Arcs | FOR+1 | OK | OK | OK | – | armes de trait |
+| Arbalètes | 4 | OK | OK | OK | – | armes de trait |
+| Tasers | 5 | OK | OK | – | – | pistolets |
+| Pistolets de poche | 3 | OK | OK | Dés. | – | pistolets |
+| Pistolets légers | 4 | OK | OK | Dés. | – | pistolets |
+| Pistolets automatiques | 4 | OK | OK | Dés. | – | pistolets |
+| Pistolets lourds | 5 | OK | OK | Dés. | – | pistolets |
+| Mitraillettes | 5 | Dés. | OK | OK | – | mitraillettes |
+| Fusils d'assaut | 7 | Dés. | OK | OK | Dés. | fusils |
+| Shotguns | 8 | Dés. | OK | Dés. | – | fusils |
+| Fusils de précision** | 10 | – | Dés. | Dés. | OK | fusils |
+| Mitrailleuses** | 9 | – | OK | OK | OK | armes lourdes |
+| Grenades | 7 | OK | OK | Dés. | – | armes de jet |
+| Grenades à gaz* | toxine | OK | OK | Dés. | – | armes de jet |
+| Lance-grenades** | 7 | – | Dés. | OK | OK | lance-grenades |
+| Lance-roquettes** | 12 (anti-véhicules 16) | – | – | Dés. | OK | armes lourdes |
+
+### Sorts et formes complexes
+
+- Les sorts ne sont proposés que si le personnage a la compétence Sorcellerie, les formes complexes que s'il a Technomancie. Un sort ou une forme complexe coûte 5 000 ¥.
+- Un sort a un **type**, qui correspond aux spécialisations de Sorcellerie : combat, détection, illusion, manipulation, santé.
+- Un sort a un **seuil** (texte libre) et une description sur plusieurs lignes.
+- Case **aire d'effet** : le seuil dépend de l'aire. Il se complète par un seuil pour l'aire : 0 pour affecter une personne, puis +1 succès par tranche de 3 mètres de diamètre.
+- Case **selon taille** : le seuil dépend de la taille de la cible. Il se complète par un seuil pour la taille : 0 pour une cible de la taille d'un métahumain, 1 pour celle d'une voiture, 2 pour celle d'un bus, etc.
+- Sur la fiche, une case cochée ajoute un indice « a » (aire d'effet) ou « t » (taille) au seuil, et la règle correspondante est rappelée sous les sorts.
+- **Illusion** : les témoins d'un sort d'illusion peuvent tenter de le percer à jour s'ils ont des raisons de douter, avec un test de Perception + Logique (avec avantage si c'est évident) contre les succès nets du sort. Les sorts d'illusion, à l'inverse des autres, sont discrets même dans l'espace astral : pour les repérer, il faut réussir un test de Perception (astrale) + Logique contre les succès nets du sort. Ce rappel figure sur la fiche dès qu'un sort d'illusion est pris.
+
 ## 5. Règles de saisie dans l'appli
 
 - Une spécialisation possédée coûte 2 500 et vaut l'indice de la compétence + 2.
 - Les compétences « spécifiques » (Conjuration, Sorcellerie, Enchantement, Technomancie) se cochent librement. Leur accès dépend de l'Éveil ou de la technomancie du personnage : c'est à la table de le vérifier à la main.
+- La spécialisation « arme exotique » se prend plusieurs fois, en précisant le nom de chaque arme exotique (fouet, tronçonneuse…), à 2 500 ¥ chacune.
+- Les niveaux d'atout sont toujours des nombres entiers.
+- Un équipement peut avoir une description facultative (effet d'une toxine, usage d'un stim patch…), affichée sur la fiche sur la même ligne que son nom.
+- Sur la fiche, les compétences générales apparaissent même à 0 ; les compétences spécifiques (Conjuration, Sorcellerie, Enchantement, Technomancie) n'apparaissent que si elles sont cochées.
 - Le niveau d'un atout est la somme de son niveau de base et du niveau de ses effets. Il détermine le coût (5 000 par niveau). Il est recalculé automatiquement, sauf pour les effets personnalisés.
-- Une seule arme, un seul sort ou une seule forme complexe par ligne.
+- Une ligne par arme, par sort et par forme complexe.
 - Les RR d'un atout s'appliquent à la compétence ou spécialisation choisie dans l'effet.
 
 ---

@@ -103,7 +103,7 @@ label.f{display:block;font:500 9.5px var(--f);color:var(--g);text-transform:uppe
 .ok{color:#2e7d32}.ko{color:#b00020;font-weight:700}#panel ul{list-style:none;padding:0}
 .ctab td:nth-child(2){text-align:right;font-weight:700;white-space:nowrap}.ctab td:nth-child(3){font-size:9.5px;color:var(--g);text-align:left}
 .tot td{font-weight:700;background:var(--yl)}.hint{color:var(--g);font-size:10.5px;margin:2px 0 4px}
-.nv td,.nv th{font-size:11px}.nv td input{width:80px!important}
+.nv td,.nv th{font-size:11px}.nv{width:100%;table-layout:fixed}.nv td input{width:100%!important;min-width:0}.nv td:first-child,.nv th:first-child{width:21%}.nv th:last-child,.nv td:last-child{width:28%}
 .pr{font:400 10px Arial,sans-serif;text-transform:none;letter-spacing:0;color:#6b5a1a;margin-left:8px}
 #mini{display:none}
 @media screen and (max-width:760px){body{padding-bottom:42px}#mini{display:block;position:fixed;left:0;right:0;bottom:0;background:var(--yb);border-top:2px solid var(--yd);padding:8px 12px;font:700 12px Arial,sans-serif;z-index:6}#crea{grid-template-columns:1fr}#panel{position:static;max-height:none;order:2}.g2{grid-template-columns:1fr}.g2 .w{grid-column:auto}}
@@ -129,10 +129,14 @@ label.f{display:block;font:500 9.5px var(--f);color:var(--g);text-transform:uppe
 [hidden]{display:none!important}
 #credit{max-width:210mm;margin:14px auto 70px;padding:0 12px;color:#bbb;font:11px/1.45 Arial,sans-serif;text-align:center}#credit a{color:var(--y)}
 .eline{align-items:flex-start;gap:6px}.eb{flex:1;min-width:0;display:flex;flex-wrap:wrap;gap:4px;align-items:center}.eb select{width:auto;flex:1 1 64px;min-width:0;max-width:none}.eb select.sa{flex:none;width:50px!important}.eb input[type=text]{flex:1 1 90px;width:auto;min-width:70px}.ec{flex:none;margin-left:auto;display:flex;gap:4px;align-items:center;white-space:nowrap}.ec input[type=number]{width:54px!important}
-.sline{flex-wrap:wrap}.sline .nm{flex:1 1 120px}.sline select.ty{max-width:105px}.sline .sd{flex:0 0 56px;width:56px}.sline .ds{flex:2 1 120px;width:auto;min-width:80px}.sline .cv{margin-left:auto}
+.sline{flex-wrap:wrap}.sline .nm{flex:1 1 120px}.sline select.ty{max-width:105px}.sline .sd{flex:0 0 56px;width:56px}.sline .ds{flex:2 1 200px;width:auto;min-width:120px;resize:vertical}.sline .cv{margin-left:auto}
 .row.sp:has(>.m[data-v^="veh"]:empty){display:none}
 .vp{display:inline-flex;gap:3px;align-items:center;white-space:nowrap}.vp input[type=number]{width:52px!important}
 .vc2{display:grid;grid-template-columns:1fr auto;gap:6px}.vl{min-width:0}.vr{display:grid;grid-template-columns:repeat(3,auto);gap:2px;align-self:start;margin-top:1px}.vr i,.vr b{display:flex;align-items:center;justify-content:center;min-width:26px;padding:1px 4px;border-radius:3px;font-style:normal;white-space:nowrap}.vr b{font-size:11.5px}.vr .wl{background:#FFF3CC}.vr .wg{background:#FFE3B8}.vr .wi{background:#FFD3B5}
+.pv,.por{overflow:hidden}.pv img,.por img{width:100%;height:100%;object-fit:cover;display:block}.nv th .btn{display:block;margin:3px auto 0;padding:1px 4px;font-size:10.5px;line-height:1.2}.top2{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:10px;align-items:start}@media screen and (max-width:900px){.top2{grid-template-columns:1fr}}
+.row.sp>select[data-act=specsel]{min-width:118px}.row.sp[style*="flex-wrap"]>select[data-act=specsel]{max-width:128px;min-width:100px}.row.sp[style*="flex-wrap"]>select.sa{width:60px!important}
+.row.sp.ef>select.ty{max-width:158px}
+.wt em{display:inline-block;font-style:normal;font:700 8px var(--f);text-transform:uppercase;letter-spacing:.4px;border-radius:3px;padding:0 4px;margin-top:1px}.wt sup{font-size:8px;font-weight:700}
 </style></head><body>
 <div class="bar no-print" id="topbar"><b class="t">Anarchy PJ</b>
 <button class="tab on" data-tab="crea">Création</button><button class="tab" data-tab="fiche">Fiche</button>
@@ -156,12 +160,16 @@ const AC={FOR:'force',AGI:'agilite',VOL:'volonte',LOG:'logique',CHA:'charisme'};
 const STL={autopilote:'Autopilote',structure:'Structure',maniabilite:'Maniabilité',vitesse:'Vitesse',blindage:'Blindage',firewall:'Firewall',attaque:'Attaque'};
 const VT=['Véhicule','Drone','Cyberdeck'];
 const act=x=>x.actif!==false;
+const SPEC=new Set(['conjuration','sorcellerie','enchantement','technomancie']);
 const strip=s=>norm(String(s||'').replace(/\([^)]*\)/g,''));
 const near=(a,b)=>!!a&&!!b&&(a===b||(Math.min(a.length,b.length)>3&&(a.includes(b)||b.includes(a))));
 const isEq=t=>['equipement','armure'].includes(norm(t||''));
-const vStats=a=>{const v=a.vehicule;if(!v)return a.stats||null;const pl=v.plus||{},b=v.base||{};
-  return{autopilote:6+(pl.autopilote||0),structure:(b.structure||0)+(pl.structure||0),maniabilite:(b.maniabilite||0)+(pl.maniabilite||0),vitesse:(v.volant?((b.vitesse||0)*2||(v.micro?1:0)):(b.vitesse||0))+(pl.vitesse||0),blindage:(pl.blindage||0)}};
-const vLvl=a=>a.vehicule?(a.vehicule.volant?1:0)+Object.values(a.vehicule.plus||{}).reduce((t,x)=>t+(x||0),0):0;
+const vStats=a=>{const v=a.vehicule;if(a.type==='Cyberdeck'&&!a.stats){const q=id=>(a.effets||[]).filter(e=>e.pre===id).reduce((t,e)=>t+(e.qte||1),0);return{firewall:1+q('fw'),attaque:q('att')}}if(!v)return a.stats||null;const pl=vPlus(a),b=v.base||{};
+  return{autopilote:6+pl.autopilote,structure:b.structure||0,maniabilite:(b.maniabilite||0)+pl.maniabilite,vitesse:(pl.volant?((b.vitesse||0)*2||(v.micro?1:0)):(b.vitesse||0))+pl.vitesse,blindage:pl.blindage}};
+const vLvl=a=>0;
+const vPlus=a=>{const q=id=>(a.effets||[]).filter(e=>e.pre===id).reduce((t,e)=>t+(e.qte||1),0);return{autopilote:q('vap'),maniabilite:q('vman'),vitesse:q('vvit'),blindage:q('vbl'),volant:q('vvol')>0}};
+const emax=(x,a)=>x.max==='S'?((a.vehicule&&a.vehicule.base&&a.vehicule.base.structure)||0):x.max;
+const VSTATIDS=['vap','vman','vvit','vbl','vvol','fw','att'];
 const lvl=a=>(a.niveau_base||0)+(a.effets||[]).reduce((t,e)=>t+(e.niveau||0),0)+vLvl(a);
 const TC={trait:'#E8710A',"pouvoir d'adepte":'#7C3AED'},TP=['#0F766E','#BE123C','#A16207','#2563EB'];
 const tcol=t=>{if(!t)return null;const k=norm(t);return TC[k]||TP[[...k].reduce((a,c)=>a+c.charCodeAt(0),0)%TP.length]};
@@ -171,11 +179,12 @@ let PORT=null;
 function derive(p){
   const W=[],at=p.attributs||{},ar=p.armure||{},av=k=>at[k]||0;
   const evalVD=vd=>{if(vd==null||vd==='')return null;if(typeof vd==='number')return vd;let t=0,ok=false;String(vd).replace(/([+-]?)\s*(FOR|AGI|VOL|LOG|CHA|\d+)/gi,(m,sg,x)=>{const v=/\d/.test(x)?+x:av(AC[x.toUpperCase()]);t+=sg==='-'?-v:v;ok=true;return m});return ok?t:null};
-  const armes=(p.armes||[]).filter(act).map(w=>({w,nom:w.nom,cat:w.categorie||'arme',spec:w.specialisation?loose(w.specialisation):null,specTxt:w.specialisation||'',expr:w.vd,val:evalVD(w.vd),ports:w.portees||null,bonus:0,mount:w.monte_sur||null,seuil:w.seuil,desc:w.description,badge:null}));
+  const armes=(p.armes||[]).filter(act).map(w=>({w,nom:w.nom,cat:w.categorie||'arme',spec:wSpec(w)?loose(wSpec(w)):null,specTxt:wSpec(w),expr:w.toxine?'':w.vd,val:w.toxine?null:evalVD(w.vd),tox:!!w.toxine,ports:w.portees||null,bonus:0,mount:(loose(w.specialisation||'')===loose('armes montées')&&w.monte_sur)||null,seuil:w.seuil,desc:w.description,tsort:w.type_sort||'',aire:!!w.aire,taille:!!w.taille,badge:null}));
   const mn={nom:'Mains nues',cat:'arme',spec:'mains nues',specTxt:'mains nues',expr:'FOR',val:av('force'),ports:['OK','-','-','-'],bonus:0,builtin:true};
   const cands=[mn,...armes.filter(x=>x.cat==='arme'||x.cat==='arme_specialiste')];
   const atoutsAct=(p.atouts||[]).filter(act);
-  const rrC={},rrS={},rrSn={},rrA={},bon={phys:0,ment:0,armP:0,cases:{legere:0,grave:0,incap:0}},vds=[];let ess=6;
+  const rrC={},rrS={},rrSn={},rrA={},bon={phys:0,ment:0,armP:0,cases:{legere:0,grave:0,incap:0}},vds=[],pts=[];
+  const RANGS=['Contact','Courte','Moyenne','Longue'],upP=(x,rang,n,src)=>{const k=RANGS.indexOf(rang);if(k<0)return;x.ports=[...(x.ports||['','','',''])];for(let i=0;i<n;i++){const c=wPN([x.ports[k]])[0];if(c==='-')x.ports[k]='Dés';else if(c==='Dés')x.ports[k]='OK';else{W.push(`« ${src} » : la portée ${rang.toLowerCase()} de ${x.nom} est déjà à OK.`);break}}};let ess=6;
   const info=a=>{const t=(a.effets||[]).map(e=>e.texte).filter(Boolean);const e=t.filter(x=>/\bRR\s*\d/i.test(x));return{niv:lvl(a),effet:(e.length?e:t).join(' ; ').slice(0,100)}};
   const eqBadge={},ctBadge={};
   for(const a of atoutsAct){
@@ -191,26 +200,30 @@ function derive(p){
       else if(b.type==='rr_attribut')rrA[b.attribut]=(rrA[b.attribut]||0)+n;
       else if(b.type==='vd'){if(a._w)a._w.bonus+=n;else vds.push({n,cible:b.cible||'',src:e.texte})}
       else if(b.type==='armure'){const m=b.portee==='mental',t=b.portee==='tous';if(!m)bon[a._armOnly?'armP':'phys']+=n;if(m||t)bon.ment+=n}
+      else if(b.type==='portee'){if(a._w)upP(a._w,b.rang,n,e.texte);else pts.push({n,cible:b.cible||'',rang:b.rang,src:e.texte})}
       else if(b.type==='case')bon.cases[b.gravite]=(bon.cases[b.gravite]||0)+n;
     }
   }
   for(const d of vds){const tn=strip(d.cible),tl=loose(d.cible);let hit=false;
-    for(const x of cands)if((x.spec&&x.spec===tl)||near(strip(x.nom),tn)){hit=true;if(x.val==null)W.push(`« ${d.src} » : l’arme ${x.nom} n’a pas de VD de base.`);else x.bonus+=d.n}
+    for(const x of cands)if(spOk(x.spec,tl)||near(strip(x.nom),tn)){hit=true;if(x.val==null&&!x.tox)W.push(`« ${d.src} » : l’arme ${x.nom} n’a pas de VD de base.`);else x.bonus+=d.n}
     if(!hit)W.push(`« ${d.src} » : bonus de VD non rattaché à une arme.`)}
+  for(const d of pts){const tn=strip(d.cible),tl=loose(d.cible);let hit=false;
+    for(const x of cands)if(!x.builtin&&(spOk(x.spec,tl)||near(strip(x.nom),tn))||(x.builtin&&x.spec===tl)){hit=true;upP(x,d.rang,d.n,d.src)}
+    if(!hit)W.push(`« ${d.src} » : amélioration de portée non rattachée à une arme.`)}
   /* compétences : RR cumulés (compétence + spécialisation + attribut) */
   const used=new Set(),comps=[];
-  for(const c of (p.competences||[]).filter(act)){
+  for(const c of (p.competences||[]).filter(c=>act(c)||(catOf(c.nom)&&!SPEC.has(norm(c.nom))))){
     const cn=norm(c.nom),b=c.indice||0,rc=rrC[cn]||0,ct=catOf(c.nom);
     const row={nom:c.nom,indice:c.indice||null,attribut:c.attribut,rd:b+av(c.attribut),rr:Math.min(3,rc+(rrA[c.attribut]||0)),specs:[],rawC:rc};
-    for(const s of (c.specialites||[]).filter(x=>act(x)&&x.nom)){const k=cn+'|'+loose(s.nom);used.add(k);
-      row.specs.push({nom:s.nom,indice:b+2,attribut:s.attribut,rd:b+2+av(s.attribut),rr:Math.min(3,(rrS[k]||0)+rc+(rrA[s.attribut]||0)),raw:rrS[k]||0})}
+    for(const s of (c.specialites||[]).filter(x=>act(x)&&x.nom)){const k=cn+'|'+loose(spFull(s));used.add(k);if(norm(s.nom)==='arme exotique'&&!s.detail)W.push('Spécialisation « arme exotique » : préciser le type d’arme (fouet, tronçonneuse…).');
+      row.specs.push({nom:spFull(s),indice:b+2,attribut:s.attribut,rd:b+2+av(s.attribut),rr:Math.min(3,(rrS[k]||0)+rc+(rrA[s.attribut]||0)),raw:rrS[k]||0})}
     for(const k of Object.keys(rrS))if(k.startsWith(cn+'|')&&!used.has(k)){used.add(k);const s=rrSn[k],x=ct&&ct.specs.find(y=>loose(y.nom)===loose(s.nom)),a=x?x.attribut:c.attribut;
       row.specs.push({nom:s.nom,indice:c.indice||null,attribut:a,rd:b+av(a),rr:Math.min(3,rrS[k]+rc+(rrA[a]||0)),raw:rrS[k]})}
     comps.push(row)}
   const have=new Set(comps.map(c=>norm(c.nom)));
   Object.keys(rrC).forEach(k=>{if(!have.has(k))W.push(`RR sur « ${k} » ignoré : la compétence n’est pas sur la fiche.`)});
   Object.keys(rrS).forEach(k=>{if(!used.has(k))W.push(`RR sur « ${rrSn[k].nom} » (${rrSn[k].comp}) ignoré : la compétence n’est pas sur la fiche.`)});
-  const vehs=atoutsAct.filter(a=>VT.includes(a.type)).map(a=>({a,kind:a.type,nom:a.nom,type:a.vehicule&&(VMOD.find(y=>y.id===a.vehicule.modele)||{}).nom||'',niveau:lvl(a),st:vStats(a),prog:a.programmes||[],notes:(a.effets||[]).filter(e=>!e.stat).map(e=>e.texte).filter(Boolean),mounts:armes.filter(x=>x.mount&&norm(x.mount)===norm(a.nom))}));
+  const vehs=atoutsAct.filter(a=>VT.includes(a.type)).map(a=>({a,kind:a.type,nom:a.nom,type:a.vehicule&&(VMOD.find(y=>y.id===a.vehicule.modele)||{}).nom||'',niveau:lvl(a),st:vStats(a),prog:a.programmes||[],notes:(a.effets||[]).filter(e=>!e.stat&&!VSTATIDS.includes(e.pre)).map(e=>e.texte).filter(Boolean),mounts:armes.filter(x=>x.mount&&norm(x.mount)===norm(a.nom))}));
   armes.forEach(x=>{if(x.mount&&!vehs.some(v=>norm(v.nom)===norm(x.mount)))W.push(`Arme « ${x.nom} » : monture « ${x.mount} » introuvable.`)});
   const lim={comp:Math.max(0,...Object.values(rrC)),spec:Math.max(0,...Object.values(rrS))};
   return{W,ess,comps,bon,mn,armes,vehs,eqBadge,ctBadge,lim,rrA,
@@ -233,9 +246,10 @@ function render(p){
   /* armes */
   const vdSub=x=>{const s=[];if(typeof x.expr==='string'&&/[A-Z]/.test(x.expr))s.push(x.expr);if(x.bonus)s.push('+atout');return s.length?`<div class=m>${esc(s.join(' '))}</div>`:''};
   const pc=v=>{const t=(v||'').trim();return `<td class="pc${t==='OK'?' ok':t==='Dés'?' de':''}">${t==='-'?'–':esc(t)}</td>`};
-  const wrow=x=>`<tr><td><b>${esc(x.nom)}</b>${x.cat==='arme_specialiste'?'<span class=tag>spé.</span>':''}${x.mount?`<div class=m>${esc(x.specTxt||'armes montées')} (sur <b>${esc(((D.vehs.find(v=>norm(v.nom)===norm(x.mount))||{}).type||'').toLowerCase())} ${esc(x.mount)}</b>)</div>`:x.specTxt&&norm(x.specTxt)!==norm(x.nom)?`<div class=m>${esc(x.specTxt)}</div>`:''}${badge(x.badge)}</td><td class=vd>${x.val!=null?`<b>${x.val+x.bonus}</b>`:''}${vdSub(x)}</td>${[0,1,2,3].map(i=>pc((x.ports||[])[i])).join('')}</tr>`;
+  const wrow=x=>`<tr><td><b>${esc(x.nom)}</b>${x.cat==='arme_specialiste'?'<span class=tag>spé.</span>':''}${x.badge?` <span class=tag2>atout niv. ${x.badge.niv}</span>`:''}${x.mount?`<div class=m>${esc(x.specTxt||'armes montées')} (sur <b>${esc(((D.vehs.find(v=>norm(v.nom)===norm(x.mount))||{}).type||'').toLowerCase())} ${esc(x.mount)}</b>)</div>`:x.specTxt&&norm(x.specTxt)!==norm(x.nom)?`<div class=m>${esc(x.specTxt)}</div>`:''}${x.tox&&x.desc?`<div class=m style="white-space:pre-line">${esc(x.desc)}</div>`:''}</td><td class=vd>${x.tox?'<b>toxine</b>':x.val!=null?`<b>${x.val+x.bonus}</b>`:''}${vdSub(x)}</td>${[0,1,2,3].map(i=>pc((x.ports||[])[i])).join('')}</tr>`;
   const armes=`<table class=wt><colgroup><col><col style="width:17mm"><col style="width:12mm"><col style="width:12mm"><col style="width:14mm"><col style="width:12mm"></colgroup><thead><tr><th>Arme</th><th>VD</th><th>Contact<br><i>≤ 2 m</i></th><th>Courte<br><i>3-15 m</i></th><th>Moyenne<br><i>16-60 m</i></th><th>Longue<br><i>&gt; 60 m</i></th></tr></thead><tbody>${[D.mn,...D.main].map(wrow).join('')}</tbody></table>`;
-  const spl=a=>a.length?`<table class=wt><colgroup><col style="width:34%"><col style="width:13mm"><col></colgroup><thead><tr><th>Nom</th><th>Seuil</th><th>Description</th></tr></thead><tbody>${a.map(x=>`<tr><td><b>${esc(x.nom)}</b>${badge(x.badge)}</td><td class=vd><b>${esc(x.seuil??'')}</b></td><td style="text-align:left">${esc(x.desc||'')}</td></tr>`).join('')}</tbody></table>`:'';
+  const spl=(a,t)=>a.length?`<table class=wt><colgroup><col style="width:24%"><col style="width:32mm"><col></colgroup><thead><tr><th>Nom</th><th>Seuil</th><th>Description</th></tr></thead><tbody>${a.map(x=>{const c=x.tsort?tcol(x.tsort):null;return `<tr><td><b>${esc(x.nom)}</b>${badge(x.badge)}${t&&x.tsort?`<div><em style="color:${c};background:${c}1f">${esc(x.tsort)}</em></div>`:''}</td><td class=vd><b>${esc(x.seuil??'')}</b>${t&&x.aire?'<sup>a</sup>':''}${t&&x.taille?'<sup>t</sup>':''}</td><td style="text-align:left;white-space:pre-line">${esc(x.desc||'')}</td></tr>`}).join('')}</tbody></table>${t?sortNotes(a):''}`:'';
+  const sortNotes=a=>{const n=[];if(a.some(x=>x.aire))n.push('<sup>a</sup> Seuil pour l’aire d’effet : 0 pour affecter une personne, puis +1 succès par tranche de 3 mètres de diamètre.');if(a.some(x=>x.taille))n.push('<sup>t</sup> Seuil pour la taille : 0 pour une cible de la taille d’un métahumain, 1 pour celle d’une voiture, 2 pour celle d’un bus, etc.');if(a.some(x=>x.tsort==='illusion'))n.push('Illusion : les témoins d’un sort d’illusion peuvent tenter de le percer à jour s’ils ont des raisons de douter, avec un test de Perception + Logique (avec avantage si c’est évident) contre les succès nets du sort. Ces sorts sont discrets même dans l’espace astral : pour les repérer, il faut réussir un test de Perception (astrale) + Logique contre les succès nets du sort.');return n.length?`<div class=m style="margin-top:2px">${n.map(x=>`<div>${x}</div>`).join('')}</div>`:''};
   /* véhicules, drones, cyberdecks */
   const bxs=(n,e,c)=>`<i class="bx ${c}"></i>`.repeat(n)+`<i class="bx e ${c}"></i>`.repeat(e);
   const vwr=x=>`<div class=m><b>${esc(x.nom)}</b>${x.specTxt?` <i>(${esc(x.specTxt)})</i>`:''}${x.val!=null?` · VD ${x.val+x.bonus}`:''}${x.ports?' · '+esc(x.ports.map(t=>t==='-'?'–':t).join(' / ')):''}</div>`;
@@ -262,17 +276,18 @@ function render(p){
   const nuyBlock=`<div class=idg>${fld('Nuyens dispo',fmt(C.reste),'s3')}${fld('Nuyens total',fmt(p.gains||0),'s3')}</div><div class=lines style="min-height:26mm;margin-top:6px"></div>`;
   $('#out').innerHTML=`<div class=sheet><div class=pg1>
 <div class=hd><div><h1>${esc(I.pseudo)}</h1><div class=sub>${esc(I.nom)}</div></div><div class=logo>Shadowrun Anarchy 2.0</div></div>
-<div class=r2><div class=por${pic?` style="background-image:url('${esc(pic)}');background-position:${pos}"`:''}>${pic?'':'Portrait'}</div>
+<div class=r2><div class=por>${pic?`<img src="${esc(pic)}" style="object-position:${pos};transform:scale(${(+I.portrait_zoom||100)/100});transform-origin:${pos}">`:'Portrait'}</div>
 <div class=mid><div class="fr attrs">${Object.keys(AT).map(k=>`<div class=attr><small><span class=ac>${AN[k][0]}</span>${AN[k][1]}</small><b>${at[k]??''}</b><i>max ${mx[AT_I(k)]??'?'}</i></div>`).join('')}<div class="attr o"><small><span class=ac>Anarchy</span></small><b>${I.metatype==='Humain'?4:3}</b><i>&nbsp;</i></div><div class="attr o"><small><span class=ac>Essence</span></small><b>${D.ess}</b><i>&nbsp;</i></div></div>
 <div class=fr><div class=idg>${fld('Train de vie',I.train_de_vie,'s3')}${fld('Nuyens (dispo / total)',nuy,'s3')}${fld('Date de naissance',I.naissance,'s2')}${fld('Taille',I.taille,'s2')}${fld('Poids',I.poids,'s2')}${fld('Particularités',I.particularites,'s6')}</div></div></div>
 <div class=stretch>${sec('Mots-clés',kws)}</div></div>
 <div class=r3>${sec('Répliques',li(I.repliques||[]))}${sec('Comportements',li(I.comportements||[]))}</div>
 <div class=r4><div>${sec('Compétences',`<table class=ct><colgroup><col><col style="width:9mm"><col style="width:10mm"><col style="width:11mm"><col style="width:12mm"></colgroup><thead><tr><th>Compétence</th><th>Ind.</th><th>Att.</th><th>RD</th><th>RR</th></tr></thead>${comps}</table>`)}${sec('Connaissances',li((p.connaissances||[]).filter(c=>act(c)&&c.nom).map(c=>c.nom),'cols2'))}</div>
-<div>${sec('Atouts',atouts)}${sec('Armes',armes)}${sec('Sorts',spl(D.sorts))}${sec('Formes complexes',spl(D.formes))}</div></div>
+<div>${sec('Atouts',atouts)}${sec('Armes',armes)}</div></div>
+${sec('Sorts',spl(D.sorts,1))}${sec('Formes complexes',spl(D.formes))}
 <div class=r5>${sec('Blessures et armure',bless)}${sec('Réduction de risque — niveau de risque',RRT)}</div>
 </div><div class=p2><div class=hd2><span>${esc(I.pseudo)}</span><span>2/2</span></div>
 ${vsec('Véhicules','Véhicule')}${vsec('Drones','Drone')}${vsec('Cyberdecks','Cyberdeck')}
-${sec('Équipement',(()=>{const e=(p.equipement||[]).map((x,i)=>({x,i})).filter(o=>act(o.x)&&o.x.nom);return e.length?`<ul class=cols2>${e.map(o=>`<li>${esc(o.x.nom)}${o.x.offert?' <span class=m>(offert)</span>':''}${badge(D.eqBadge[o.i])}</li>`).join('')}</ul>`:''})(),'')}
+${sec('Équipement',(()=>{const e=(p.equipement||[]).map((x,i)=>({x,i})).filter(o=>act(o.x)&&o.x.nom);return e.length?`<ul>${e.map(o=>`<li><b>${esc(o.x.nom)}</b>${o.x.description?` — ${esc(o.x.description)}`:''}${o.x.offert?' <span class=m>(offert)</span>':''}${badge(D.eqBadge[o.i])}</li>`).join('')}</ul>`:''})(),'')}
 <div class=r7>${sec('Contacts',contacts)}${sec('Nuyens',nuyBlock)}</div>
 ${sec('Notes','<div class=lines style="min-height:46mm"></div>')}</div></div>`;
   document.title=(I.pseudo||'Fiche')+' – fiche Anarchy';
@@ -293,6 +308,7 @@ const ATYPES=[['Éveil',1,0],['Cyberware',1,1],['Bioware',2,.5],["Pouvoir d'adep
 const STK={Cyberdeck:['firewall','attaque'],'Véhicule':['autopilote','structure','maniabilite','vitesse','blindage'],Drone:['autopilote','structure','maniabilite','vitesse','blindage']};
 const VMOD=[
 {id:'micro',k:'Drone',nom:'Microdrone',s:0,m:10,v:0,micro:1,arme:'aucune',note:'avantage en Furtivité (discrétion physique)'},
+{id:'mini',k:'Drone',nom:'Minidrone',s:1,m:10,v:1,arme:'pistolet de petit calibre'},
 {id:'petit',k:'Drone',nom:'Petit drone',s:1,m:9,v:2,arme:'mitraillette'},
 {id:'moyen',k:'Drone',nom:'Drone moyen',s:2,m:7,v:3,arme:'fusil d’assaut'},
 {id:'grand',k:'Drone',nom:'Grand drone',s:4,m:4,v:4},
@@ -304,6 +320,49 @@ const VMOD=[
 {id:'suv',k:'Véhicule',nom:'SUV / Pick-up',s:7,m:1,v:4},
 {id:'van',k:'Véhicule',nom:'Van',s:8,m:1,v:3},
 {id:'bus',k:'Véhicule',nom:'Bus / semi-remorque',s:10,m:0,v:2}];
+const TSORT=['combat','détection','illusion','manipulation','santé'];
+const WT=[
+{id:'nues',nom:'Mains nues',vd:'FOR',p:['OK','-','-','-'],sp:['mains nues']},
+{id:'courtes',nom:'Armes courtes',vd:'FOR+1',p:['OK','-','-','-'],sp:['lames','armes contondantes','mains nues']},
+{id:'longues',nom:'Armes longues',vd:'FOR+2',p:['OK','-','-','-'],sp:['lames','armes contondantes']},
+{id:'contact+',nom:'Armes de contact avancées',vd:5,p:['OK','-','-','-'],sp:['lames']},
+{id:'jet',nom:'Armes de jet',vd:'FOR+1',p:['OK','OK','Dés','-'],sp:['armes de jet']},
+{id:'arc',nom:'Arcs',vd:'FOR+1',p:['OK','OK','OK','-'],sp:['armes de trait']},
+{id:'arbalete',nom:'Arbalètes',vd:4,p:['OK','OK','OK','-'],sp:['armes de trait']},
+{id:'taser',nom:'Tasers',vd:5,p:['OK','OK','-','-'],sp:['pistolets']},
+{id:'poche',nom:'Pistolets de poche',vd:3,p:['OK','OK','Dés','-'],sp:['pistolets']},
+{id:'leger',nom:'Pistolets légers',vd:4,p:['OK','OK','Dés','-'],sp:['pistolets']},
+{id:'auto',nom:'Pistolets automatiques',vd:4,p:['OK','OK','Dés','-'],sp:['pistolets']},
+{id:'lourd',nom:'Pistolets lourds',vd:5,p:['OK','OK','Dés','-'],sp:['pistolets']},
+{id:'mitraillette',nom:'Mitraillettes',vd:5,p:['Dés','OK','OK','-'],sp:['mitraillettes']},
+{id:'assaut',nom:'Fusils d’assaut',vd:7,p:['Dés','OK','OK','Dés'],sp:['fusils']},
+{id:'shotgun',nom:'Shotguns',vd:8,p:['Dés','OK','Dés','-'],sp:['fusils']},
+{id:'precision',nom:'Fusils de précision',vd:10,p:['-','Dés','Dés','OK'],spe:1,sp:['fusils']},
+{id:'mitrailleuse',nom:'Mitrailleuses',vd:9,p:['-','OK','OK','OK'],spe:1,sp:['armes lourdes']},
+{id:'grenade',nom:'Grenades',vd:7,p:['OK','OK','Dés','-'],sp:['armes de jet']},
+{id:'gaz',nom:'Grenades à gaz',vd:'',p:['OK','OK','Dés','-'],sp:['armes de jet']},
+{id:'lgrenade',nom:'Lance-grenades',vd:7,p:['-','Dés','OK','OK'],spe:1,sp:['lance-grenades']},
+{id:'roquette',nom:'Lance-roquettes',vd:12,p:['-','-','Dés','OK'],spe:1,note:'anti-véhicules : VD 16',sp:['armes lourdes']}];
+const FAMS={m:['mains nues','lames','armes contondantes'],j:['armes de jet','armes de trait'],f:['pistolets','mitraillettes','fusils','armes lourdes','lance-grenades']};
+const WFAM={nues:'m',courtes:'m',longues:'m','contact+':'m',jet:'j',arc:'j',arbalete:'j',grenade:'j',gaz:'j',taser:'f',poche:'f',leger:'f',auto:'f',lourd:'f',mitraillette:'f',assaut:'f',shotgun:'f',precision:'f',mitrailleuse:'f',lgrenade:'f',roquette:'f'};
+const wExo=(p=PJ)=>{const c=(p.competences||[]).find(c=>/rapproch/.test(norm(c.nom)));return c?(c.specialites||[]).filter(t=>t.actif!==false&&norm(t.nom||'')==='arme exotique'&&t.detail).map(t=>`${t.nom} (${t.detail})`):[]};
+const wTox=x=>WFAM[x.id]==='f'||x.id==='grenade'||x.id==='gaz';
+const wAllowed=(x,p)=>[...(FAMS[WFAM[x.id]]||x.sp),...(WFAM[x.id]==='m'?wExo(p):[]),'armes montées'];
+const wPN=a=>(a||[]).map(t=>t==='–'?'-':(t||''));
+const wVN=v=>String(v==null?'':v).toUpperCase().replace(/\s/g,'');
+function wtSync(w,keepCat,p){const x=WT.find(y=>y.id===w.type_arme);if(!x)return;
+w.vd=x.vd;w.portees=[...x.p];if(x.id==='gaz')w.toxine=true;else if(!wTox(x))delete w.toxine;if(w.monte_sur)w.specialisation='armes montées';
+if(!wAllowed(x,p).includes(w.specialisation))w.specialisation=x.sp[0];if(w.specialisation!=='armes montées')delete w.monte_sur;
+if(!keepCat&&((w.categorie||'arme')==='arme'||w.categorie==='arme_specialiste'))w.categorie=x.spe?'arme_specialiste':'arme'}
+function wtNorm(w,p){const c=w.categorie||'arme';if(c!=='arme'&&c!=='arme_specialiste')return;
+if(w.exotique){if(norm(w.specialisation||'')==='arme exotique')w.specialisation=`arme exotique (${w.exotique})`;delete w.exotique}
+if(w.type_arme===undefined){const sp=loose(w.specialisation||''),mt=w.monte_sur&&sp===loose('armes montées');
+const x=WT.find(y=>w.portees&&wVN(y.vd)===wVN(w.vd)&&wPN(y.p).join()===wPN(w.portees).join()&&(mt||wAllowed(y,p).map(loose).includes(sp)));if(x)w.type_arme=x.id}
+else if(!WT.find(y=>y.id===w.type_arme))delete w.type_arme;
+if(w.type_arme)wtSync(w,true,p)}
+const spFull=s=>s.nom&&norm(s.nom)==='arme exotique'&&s.detail?`${s.nom} (${s.detail})`:(s.nom||'');
+const wSpec=w=>w.specialisation||'';
+const spOk=(spec,t)=>!!spec&&(spec===t||spec.startsWith(t+' ('));
 const GRAV=[['legere','légère',3],['grave','grave',6],['incap','incapacitante',6]];
 const EFP=[{l:'RR sur une spécialisation (2 par RR, max 3)',k:'rr',spe:1},{l:'RR sur une compétence (5 par RR, max 1)',k:'rr'},{l:'RR sur un attribut (10 par RR, max 1)',k:'rra'},{l:'VD + (1 par +1, max 2)',k:'vd'},{l:'Armure + (1 par +1, max 1 ; tous dommages 2)',k:'armure'},{l:'Case de blessure supplémentaire (légère 3, grave 6, max 1 chacune)',k:'case'},
 
@@ -311,14 +370,15 @@ const EFP=[{l:'RR sur une spécialisation (2 par RR, max 3)',k:'rr',spe:1},{l:'R
 
 {id:'ia1',l:'Initiative astrale ou matricielle niv. 1 (1)',t:'Initiative astrale/matricielle +1',n:1},{id:'ia2',l:'Initiative astrale ou matricielle niv. 2 (3)',t:'Initiative astrale/matricielle +2',n:3},{id:'ia3',l:'Initiative astrale ou matricielle niv. 3 (4)',t:'Initiative astrale/matricielle +3',n:4},
 
-{id:'port',l:'Portée d’une arme (2 par indice changé)',t:'Portée d’une arme améliorée',n:2,max:8},{id:'maint',l:'Sort maintenu supplémentaire (2 par sort, max 2)',t:'Sort maintenu supplémentaire',n:2,max:2},{id:'esp',l:'Esprit invoqué supplémentaire (3, max 1)',t:'Esprit supplémentaire',n:3,max:1},{id:'foc',l:'Focus d’arme (1)',t:'Focus d’arme',n:1},
+{k:'portee',l:'Portée d’une arme (2 par changement : – → Dés ou Dés → OK)'},{id:'maint',l:'Sort maintenu supplémentaire (2 par sort, max 2)',t:'Sort maintenu supplémentaire',n:2,max:2},{id:'esp',l:'Esprit invoqué supplémentaire (3, max 1)',t:'Esprit supplémentaire',n:3,max:1},{id:'foc',l:'Focus d’arme (1)',t:'Focus d’arme',n:1},
 
 {id:'cold',l:'RV Cold-sim (1)',t:'RV Cold-sim',n:1},{id:'hot',l:'RV Cold-sim et Hot-sim (3)',t:'RV Cold-sim et Hot-sim',old:['RV Hot-sim'],n:3},
 
-{id:'fw',l:'Firewall +1 (1 par point, max 5)',u:'Firewall +',t:'Firewall',n:1,max:5,only:['Cyberdeck','Cyberware','Équipement']},{id:'att',l:'Attaque +1 (1 par point, max 5)',u:'Attaque +',t:'Attaque',n:1,max:5,only:['Cyberdeck']},{id:'fwat',l:'Firewall ou attaque +1 (1 par point, max 5 chacun)',u:'Firewall ou attaque +',t:'Firewall ou attaque',n:1,max:10,only:['Cyberdeck']},
+{id:'fw',l:'Firewall +1 (1 par point, max 5)',u:'Firewall +',t:'Firewall',n:1,max:5,only:['Cyberdeck','Cyberware','Équipement']},{id:'att',l:'Attaque +1 (1 par point, max 5)',u:'Attaque +',t:'Attaque',n:1,max:5,only:['Cyberdeck']},
 
 {id:'int',l:'Équipement intégré (1 + coût de l’équipement)',t:'Équipement intégré',n:1},{id:'nar',l:'Effet narratif (1)',t:'Effet narratif',n:1},
 
+{id:'vap',l:'Autopilote +1 (1 par point, max +6)',u:'Autopilote +',t:'Autopilote',n:1,max:6,only:['Véhicule','Drone']},{id:'vman',l:'Maniabilité +1 (1 par point, max +3)',u:'Maniabilité +',t:'Maniabilité',n:1,max:3,only:['Véhicule','Drone']},{id:'vvit',l:'Vitesse +1 (1 par point, max +3)',u:'Vitesse +',t:'Vitesse',n:1,max:3,only:['Véhicule','Drone']},{id:'vbl',l:'Blindage +1 (1 par point, max = structure)',u:'Blindage +',t:'Blindage',n:1,max:'S',only:['Véhicule','Drone']},{id:'vvol',l:'Volant (1, vitesse ×2)',t:'Volant',n:1,max:1,only:['Véhicule','Drone']},
 {id:'drn',l:'Drone supplémentaire identique (2, max 3)',t:'Drone supplémentaire identique',n:2,max:3,only:['Drone']},{id:'mnt',l:'Monture d’arme supplémentaire (1)',t:'Monture d’arme supplémentaire',n:1,max:6,only:['Véhicule','Drone']},{id:'mam',l:'Amélioration de monture d’arme (1 chacune)',t:'Amélioration de monture d’arme',n:1,max:6,only:['Véhicule','Drone']},
 
 {l:'Texte et coût libres (coût saisi à la main)'}];
@@ -326,6 +386,7 @@ function bonusText(b){
   if(b.type==='rr')return `RR${b.valeur||1} sur ${b.competence||'?'}${b.specialisation?` (${b.specialisation})`:''}`;
   if(b.type==='rr_attribut')return `RR${b.valeur||1} sur ${KL[b.attribut]||'?'}`;
   if(b.type==='vd')return `VD +${b.valeur||1} sur ${b.cible||'?'}`;
+  if(b.type==='portee')return `Portée ${(b.rang||'?').toLowerCase()} améliorée (${b.cible||'?'})`;
   if(b.type==='armure')return b.portee==='mental'?`Armure mentale +${b.valeur||1}`:b.portee==='tous'?`Armure +${b.valeur||1} contre tous dommages`:`Armure +${b.valeur||1}`;
   if(b.type==='case'){const g=GRAV.find(x=>x[0]===b.gravite)||GRAV[0];return `Case de blessure ${g[1]} supplémentaire`+((b.valeur||1)>1?` +${b.valeur}`:'')}
   return '';
@@ -334,6 +395,7 @@ function autoCost(b){const v=b.valeur||1;
   if(b.type==='rr')return (b.specialisation||b.perso_spec?2:5)*v;
   if(b.type==='rr_attribut')return 10*v;
   if(b.type==='case')return (GRAV.find(x=>x[0]===b.gravite)||GRAV[0])[2]*v;
+  if(b.type==='portee')return 2*v;
   if(b.type==='armure')return (b.portee==='tous'?2:1)*v;
   return v}
 function syncEf(e){
@@ -349,10 +411,16 @@ for(let m=0;m<=tg-S.structure;m++){const v=tg-S.structure-m,pm=S.maniabilite-m,p
 if(pm<0||pv<0||pm>3||pv>3)continue;const c=pm+pv;if(!best||c<best.c)best={c,m,v,pm,pv}}
 if(best){a.vehicule={micro:tg===10,volant:vol,base:{structure:S.structure,maniabilite:best.m,vitesse:best.v},plus:{autopilote:ap,structure:0,maniabilite:best.pm,vitesse:best.pv,blindage:bl}};a.effets=eff.filter(e=>!e.stat);delete a.stats;return}}
 }
+function migDeck(a){
+if(a.type!=='Cyberdeck'||!a.stats)return;const f=(a.stats.firewall==null?1:a.stats.firewall)-1,t=a.stats.attaque||0;
+if(f<0||f>5||t<0||t>5)return;
+const ef=(a.effets||[]).filter(e=>!e.stat);if(f)ef.push({pre:'fw',qte:f});if(t)ef.push({pre:'att',qte:t});
+a.effets=ef;delete a.stats;ef.forEach(e=>{if(e.pre)syncEf(e)})}
 function syncVeh(a){const v=a.vehicule;if(!v)return;const b=v.base||{};
-if(v.modele===undefined){const c=VMOD.filter(y=>y.s===b.structure&&y.m===b.maniabilite&&y.v===b.vitesse);const x=c.find(y=>y.k===a.type)||c[0];v.modele=x?x.id:'herite'}
-const x=VMOD.find(y=>y.id===v.modele);if(x){v.base={structure:x.s,maniabilite:x.m,vitesse:x.v};v.micro=!!x.micro}
-if(v.plus&&v.plus.blindage>(v.base.structure||0)&&x)v.plus.blindage=v.base.structure||0}
+if(v.plus||v.volant!==undefined){a.effets=a.effets||[];const M={autopilote:'vap',maniabilite:'vman',vitesse:'vvit',blindage:'vbl'};for(const k in M)if(v.plus&&v.plus[k]>0){const e={pre:M[k],qte:v.plus[k]};syncEf(e);a.effets.push(e)}if(v.volant){const e={pre:'vvol',qte:1};syncEf(e);a.effets.push(e)}delete v.plus;delete v.volant}
+if(v.modele===undefined){const c=VMOD.filter(y=>y.s===b.structure&&y.m===b.maniabilite&&y.v===b.vitesse);const x=c.find(y=>y.k===a.type);v.modele=x?x.id:'perso'}
+if(v.modele==='herite')v.modele='perso';
+let x=VMOD.find(y=>y.id===v.modele);if(x&&x.k!==a.type){v.modele='';v.base={structure:0,maniabilite:0,vitesse:0};v.micro=false;x=null}if(x){v.base={structure:x.s,maniabilite:x.m,vitesse:x.v};v.micro=!!x.micro}}
 function fixEf(e){
 delete e.auto;
 if(e.bonus){if(e.bonus.specialisation&&norm(e.bonus.specialisation)==='formes compexes')e.bonus.specialisation='formes complexes';e.niveau=autoCost(e.bonus);return}
@@ -370,14 +438,12 @@ if(b.type==='rr'){const sp=b.specialisation||b.perso_spec;bump('rr|'+norm(b.comp
 else if(b.type==='rr_attribut')bump('ra|'+b.attribut,v,1,'RR sur '+(KL[b.attribut]||'?'))
 else if(b.type==='vd')bump('vd|'+norm(b.cible||''),v,2,'VD sur '+(b.cible||'?'))
 else if(b.type==='armure')bump('ar|'+(b.portee||'physique'),v,1,'Armure '+(b.portee==='mental'?'mentale':b.portee==='tous'?'tous dommages':'physique'))
+else if(b.type==='portee')bump('pt|'+norm(b.cible||'')+'|'+b.rang,v,2,'Portée '+String(b.rang||'?').toLowerCase()+' de '+(b.cible||'?'))
 else if(b.type==='case')bump('cs|'+b.gravite,v,1,'Case de blessure '+((GRAV.find(x=>x[0]===b.gravite)||GRAV[0])[1]))
-}else if(e.pre){const x=EFP.find(y=>y.id===e.pre);if(x&&x.max)bump('p|'+e.pre,e.qte||1,x.max,x.t||x.u)}}
+}else if(e.pre){const x=EFP.find(y=>y.id===e.pre);if(x&&x.max!=null)bump('p|'+e.pre,e.qte||1,emax(x,a),x.t||x.u)}}
 for(const k in S){const o=S[k];if(o.s>o.cap)W.push(`Atout « ${nm} » : ${o.lab} +${o.s} dépasse le maximum (${o.cap}).`)}
-if(a.vehicule){const v=a.vehicule,pl=v.plus||{},st=(v.base&&v.base.structure)||0;
-if((pl.vitesse||0)>3)W.push(`« ${nm} » : vitesse +${pl.vitesse} (maximum +3).`);
-if((pl.maniabilite||0)>3)W.push(`« ${nm} » : maniabilité +${pl.maniabilite} (maximum +3).`);
-if((pl.autopilote||0)>6)W.push(`« ${nm} » : autopilote +${pl.autopilote} (maximum +6, soit 12).`);
-if((pl.blindage||0)>st)W.push(`« ${nm} » : blindage +${pl.blindage} supérieur à la structure (${st}).`)}}
+if(a.vehicule&&a.vehicule.modele==='perso'){const b=a.vehicule.base||{},sm=(b.structure||0)+(b.maniabilite||0)+(b.vitesse||0),tg=a.vehicule.micro?10:12;if(sm!==tg)W.push(`« ${nm} » : structure + maniabilité + vitesse = ${sm} (attendu ${tg}).`)}
+}
 return W}
 const fmt=n=>Number(n||0).toLocaleString('fr-FR')+' ¥';
 const catOf=n=>CATALOGUE.find(c=>norm(c.nom)===norm(n));
@@ -399,7 +465,7 @@ function normalize(p){
   out.forEach(c=>{c.specialites=c.specialites||[];c.indice=c.indice||0;if(c.actif===undefined)c.actif=true;c.specialites.forEach(s=>{if(s.actif===undefined)s.actif=true})});
   p.competences=out;p.competences.forEach(c=>c.specialites.forEach(s=>{if(norm(s.nom||'')==='formes compexes')s.nom='formes complexes'}));
   p.contacts=p.contacts||[];p.connaissances=p.connaissances||[];p.atouts=p.atouts||[];
-  p.atouts.forEach(migVeh);p.atouts.forEach(a=>{const pr=ATYPES.find(x=>x[0]===a.type);if(pr&&!a.type_perso&&!['Éveil','Trait'].includes(a.type)){a.niveau_base=pr[1];a.perte_essence=pr[2]}});p.atouts.forEach(a=>{if(a.vehicule){a.vehicule.base=Object.assign({structure:4,maniabilite:4,vitesse:4},a.vehicule.base);a.vehicule.plus=Object.assign({autopilote:0,structure:0,maniabilite:0,vitesse:0,blindage:0},a.vehicule.plus);a.vehicule.plus.structure=0}});p.atouts.forEach(syncVeh);p.armes=p.armes||[];p.atouts.forEach(a=>(a.effets||[]).forEach(fixEf));
+  p.atouts.forEach(migVeh);p.atouts.forEach(migDeck);p.atouts.forEach(a=>{const pr=ATYPES.find(x=>x[0]===a.type);if(pr&&!a.type_perso&&!['Éveil','Trait'].includes(a.type)){a.niveau_base=pr[1];a.perte_essence=pr[2]}});p.atouts.forEach(a=>{if(a.vehicule){a.vehicule.base=Object.assign({structure:4,maniabilite:4,vitesse:4},a.vehicule.base);}});p.atouts.forEach(syncVeh);p.armes=p.armes||[];p.armes.forEach(w=>wtNorm(w,p));p.atouts.forEach(a=>(a.effets||[]).forEach(fixEf));
   p.equipement=p.equipement||[{nom:'Faux SIN',actif:true,offert:true},{nom:'Commlink',actif:true,offert:true}];
   p.armure=Object.assign({nom:'',valeur:p.armure?0:3,actif:true},p.armure);
   return p;
@@ -447,64 +513,78 @@ ${F('Train de vie',`<input data-p="identite.train_de_vie" list=vie value="${esc(
 ${F('Mots-clés (un par ligne, au choix)',`<textarea data-l="identite.mots_cles">${esc((I.mots_cles||[]).join('\n'))}</textarea>`,'w')}
 ${F('Date de naissance',In('identite.naissance'))}${F('Taille',In('identite.taille'))}
 ${F('Poids',In('identite.poids'))}${F('Particularités',In('identite.particularites'))}
-${F('Répliques (une par ligne)',`<textarea data-l="identite.repliques">${esc(I.repliques.join('\n'))}</textarea>`)}
-${F('Comportements (un par ligne)',`<textarea data-l="identite.comportements">${esc(I.comportements.join('\n'))}</textarea>`)}
-${F('Portrait',`<input id=pic type=file accept="image/*" style="width:auto"> ${I.portrait?'<button class=btn data-act=nopic>Retirer</button>':''}<div class=hint>Format attendu : portrait 3:4 (par exemple 600 × 800 px). Une autre proportion est recadrée : réglez le cadrage avec les curseurs, l’aperçu montre le rendu exact.</div>${I.portrait?`<div class=pvrow><div class=pv style="background-image:url('${esc(I.portrait)}');background-position:${I.portrait_x??50}% ${I.portrait_y??50}%"></div><div><label class=mini>Horizontal <input type=range min=0 max=100 data-p="identite.portrait_x" value="${I.portrait_x??50}"></label><label class=mini>Vertical <input type=range min=0 max=100 data-p="identite.portrait_y" value="${I.portrait_y??50}"></label></div></div>`:''}`,'w')}
+${F('Répliques (une par ligne)',`<textarea data-l="identite.repliques">${esc(I.repliques.join('\n'))}</textarea>`,'w')}
+${F('Comportements (un par ligne)',`<textarea data-l="identite.comportements">${esc(I.comportements.join('\n'))}</textarea>`,'w')}
+${F('Portrait',`<input id=pic type=file accept="image/*" style="width:auto"> ${I.portrait?'<button class=btn data-act=nopic>Retirer</button>':''}<div class=hint>Format attendu : portrait 3:4 (par exemple 600 × 800 px). Une autre proportion est recadrée : réglez le cadrage avec les curseurs (un curseur est grisé quand l’image ne peut pas bouger dans ce sens ; le zoom libère les deux) : l’aperçu montre le rendu exact.</div>${I.portrait?`<div class=pvrow><div class=pv><img src="${esc(I.portrait)}"></div><div><label class=mini>Horizontal <input type=range min=0 max=100 data-p="identite.portrait_x" value="${I.portrait_x??50}"></label><label class=mini>Vertical <input type=range min=0 max=100 data-p="identite.portrait_y" value="${I.portrait_y??50}"></label><label class=mini>Zoom <input type=range min=100 max=300 step=5 data-p="identite.portrait_zoom" value="${I.portrait_zoom||100}"></label></div></div>`:''}`,'w')}
 </div></section>`;
-  const nv=PJ.niveau_de_jeu,niv=`<section><h2>Niveau de jeu et nuyens</h2><div class=hint>Les colonnes Rue, Runner et Élite rappellent les règles. La colonne « Choix » est ce que le MJ a décidé : elle seule est utilisée.</div>
-<table class=nv><tr><th></th><th>Rue</th><th>Runner</th><th>Élite</th><th>Choix (MJ)</th></tr>${NIVK.map((k,i)=>`<tr><td>${NIVL[i]}</td>${['Rue','Runner','Élite'].map(n=>`<td>${i?NIV[n][i]:fmt(NIV[n][i])}</td>`).join('')}<td>${Nu('niveau_de_jeu.'+k,0,i?20:2000000,i?1:5000).replace('<input',i&&nv.limites_actives===false?'<input disabled':'<input')}</td></tr>`).join('')}</table>
+  const nv=PJ.niveau_de_jeu,niv=`<section><h2>Niveau de jeu et nuyens</h2><div class=hint>Les colonnes Rue, Runner et Élite rappellent les règles ; le bouton « copier » d’une colonne la copie dans « Choix », la seule colonne utilisée.</div>
+<table class=nv><tr><th></th>${['Rue','Runner','Élite'].map(n=>`<th>${n}<button class=btn data-act=preset data-n="${n}" title="Copier cette colonne dans « Choix »"${nv.limites_actives===false?' disabled':''}>copier</button></th>`).join('')}<th>Choix (MJ)</th></tr>${NIVK.map((k,i)=>`<tr><td>${NIVL[i]}</td>${['Rue','Runner','Élite'].map(n=>`<td>${i?NIV[n][i]:fmt(NIV[n][i])}</td>`).join('')}<td>${Nu('niveau_de_jeu.'+k,0,i?20:2000000,i?1:5000).replace('<input',i&&nv.limites_actives===false?'<input disabled':'<input')}</td></tr>`).join('')}</table>
 <div class=row><label class=mini><input data-act=limtog data-p="niveau_de_jeu.limites_actives" type=checkbox${nv.limites_actives!==false?' checked':''}> Appliquer les limites du niveau de jeu</label></div><div class=hint>À décocher quand le personnage évolue au-delà de la création : le tableau des limites n’affiche alors que les valeurs actuelles, sans contrôle.</div>
-<div class=row><span>Préremplir « Choix » depuis :</span>${['Rue','Runner','Élite'].map(n=>`<button class=btn data-act=preset data-v="${n}">${n}</button>`).join('')}</div>
 <div class=row><span class=n>Gains (somme globale)</span>${Nu('gains',0,9999999,500)}</div>
 <div class=row><span class=n>Nuyens disponibles</span><span class=cv data-v=dispo></span></div></section>`;
   const att=`<section><h2>Attributs <small class=pr>10 000 ¥ par point · 20 000 ¥ pour le dernier point au maximum</small></h2><table><tr><th>Attribut</th><th>Valeur</th><th>Max</th><th>Coût</th></tr>${KEYS.map((k,i)=>`<tr><td><span class=ac>${AN[k][0]}</span>${AN[k][1]}</td><td>${Nu('attributs.'+k,0,15)}</td><td>${custom?Nu('attributs_max.'+k,1,15):mx[i]}</td><td class=cv data-v="att.${k}"></td></tr>`).join('')}</table></section>`;
   const comps=p.competences.map((c,i)=>{const ct=catOf(c.nom),perso=!ct;
     const specs=c.specialites.map((s,j)=>{const pre=`competences.${i}.specialites.${j}`,sp=ct?ct.specs:[];
       const sel=ct?`<select data-act=specsel data-i=${i} data-j=${j}>${s.perso||(!s.nom&&false)?'':(s.nom?'':'<option value="">— choisir —</option>')}${opt([...sp.map(x=>[x.nom,x.nom]),['__autre','Autre…']],s.perso?'__autre':s.nom)}</select>`:'';
-      const txt=s.perso||!ct?`<input data-p="${pre}.nom" type=text placeholder="Nom de la spécialisation" value="${esc(s.nom)}">`:'';
-      return `<div class="row sp" data-row="${pre}" data-parent="competences.${i}">${Ck(pre+'.actif')}${sel}${txt}${SA(pre+'.attribut',s.attribut)}<span class=rdv data-v="spec.${i}.${j}.rd"></span><span class=cv data-v="spec.${i}.${j}.cost"></span><button class=btn data-act=delspec data-i=${i} data-j=${j}>✕</button></div>`}).join('');
+      const txt=s.perso||!ct?`<input data-p="${pre}.nom" type=text placeholder="Nom de la spécialisation" value="${esc(s.nom)}">`:'',exo=norm(s.nom||'')==='arme exotique',
+        det=exo?`<div style="flex:1 1 100%;order:9;display:flex;gap:6px;align-items:center;margin-left:24px"><input data-p="${pre}.detail" type=text placeholder="type d’arme exotique (fouet, tronçonneuse…)" value="${esc(s.detail||'')}" style="flex:1"><button class=btn data-act=delspec data-i=${i} data-j=${j}>✕</button></div>`:'';
+      return `<div class="row sp" data-row="${pre}" data-parent="competences.${i}"${exo?' style="flex-wrap:wrap"':''}>${Ck(pre+'.actif')}${sel}${txt}${SA(pre+'.attribut',s.attribut)}<span class=rdv data-v="spec.${i}.${j}.rd"></span><span class=cv data-v="spec.${i}.${j}.cost"></span>${exo?'':`<button class=btn data-act=delspec data-i=${i} data-j=${j}>✕</button>`}${det}</div>`}).join('');
     return `<div class=cb data-row="competences.${i}"><div class=row>${Ck(`competences.${i}.actif`)}${perso?`<input class=nm data-p="competences.${i}.nom" type=text placeholder="Nom de la compétence" value="${esc(c.nom)}">`:`<span class=nm>${esc(c.nom)}</span>`}${SA(`competences.${i}.attribut`,c.attribut)}${Nu(`competences.${i}.indice`,0,8)}<span class=rdv data-v="comp.${i}.rd"></span><span class=cv data-v="comp.${i}.cost"></span><button class=btn data-act=addspec data-i=${i} title="Ajouter une spécialisation">+ spé</button>${perso?`<button class=btn data-act=delcomp data-i=${i}>✕</button>`:''}</div>${specs}</div>`}).join('');
   const competences=`<section><h2>Compétences <small class=pr>2 500 ¥ par point jusqu’à 5, puis 5 000 ¥ · spécialisation 2 500 ¥</small></h2><div class=hint>Cochez les compétences que le personnage possède. Une spécialisation vaut l’indice de la compétence +2.</div><div class=cgrid>${comps}</div><button class=btn data-act=addcomp>+ compétence personnalisée</button></section>`;
-  const conn=`<section><h2>Connaissances <small class=pr>2 500 ¥ chacune</small></h2>${p.connaissances.map((c,i)=>`<div class=row data-row="connaissances.${i}">${Ck(`connaissances.${i}.actif`)}<input class=n data-p="connaissances.${i}.nom" type=text value="${esc(c.nom)}"><button class=btn data-act=delconn data-i=${i}>✕</button></div>`).join('')}<button class=btn data-act=addconn style="margin-top:4px">+ connaissance</button></section>`;
+  const conn=`<section><h2>Connaissances <small class=pr>2 500 ¥ chacune</small></h2><div class=cgrid>${p.connaissances.map((c,i)=>`<div class=row data-row="connaissances.${i}">${Ck(`connaissances.${i}.actif`)}<input class=n data-p="connaissances.${i}.nom" type=text value="${esc(c.nom)}"><button class=btn data-act=delconn data-i=${i}>✕</button></div>`).join('')}</div><button class=btn data-act=addconn style="margin-top:4px">+ connaissance</button></section>`;
+  const wl=a=>!VT.includes(a.type)&&isEq(a.type)&&PJ.armes.some(w=>['arme','arme_specialiste'].includes(w.categorie||'arme')&&near(strip(w.nom),strip(a.nom)));
+  const NV=(pre,cap,val)=>cap<=1&&(val||1)<=1?'':SN(pre+'.bonus.valeur',rng(cap,val),val||1);
   const SN=(p,vals,sel)=>`<select data-p="${p}" data-num=1 class=sa>${vals.map(v=>`<option value="${v}"${v===sel?' selected':''}>${v}</option>`).join('')}</select>`;
   const cibles=[...new Set(['mains nues',...p.armes.map(w=>w.nom),...CATALOGUE.flatMap(c=>c.specs.map(x=>x.nom))])];
   const efRow=(i,j,e)=>{const pre=`atouts.${i}.effets.${j}`,b=e.bonus;let body;
     if(b&&b.type==='rr'){const ct=catOf(b.competence);
-      body=`RR ${SN(pre+'.bonus.valeur',rng(b.specialisation||b.perso_spec?3:1,b.valeur),b.valeur)} sur <select data-act=rrc data-i=${i} data-j=${j}>${opt([...CATALOGUE.map(c=>[c.nom,c.nom]),['__autre','Autre…']],b.perso_comp?'__autre':b.competence)}</select>${b.perso_comp||!ct?`<input data-p="${pre}.bonus.competence" type=text placeholder="Compétence" value="${esc(b.competence||'')}">`:''}
+      body=`RR ${NV(pre,b.specialisation||b.perso_spec?3:1,b.valeur)} sur <select data-act=rrc data-i=${i} data-j=${j}>${opt([...CATALOGUE.map(c=>[c.nom,c.nom]),['__autre','Autre…']],b.perso_comp?'__autre':b.competence)}</select>${b.perso_comp||!ct?`<input data-p="${pre}.bonus.competence" type=text placeholder="Compétence" value="${esc(b.competence||'')}">`:''}
 <select data-act=rrs data-i=${i} data-j=${j}>${opt([['','— la compétence entière —'],...(ct?ct.specs.map(x=>[x.nom,x.nom]):[]),['__autre','Autre…']],b.perso_spec?'__autre':(b.specialisation||''))}</select>${b.perso_spec?`<input data-p="${pre}.bonus.specialisation" type=text placeholder="Spécialisation" value="${esc(b.specialisation||'')}">`:''}`}
-    else if(b&&b.type==='rr_attribut')body=`RR ${SN(pre+'.bonus.valeur',rng(1,b.valeur),b.valeur)} sur l’attribut ${Sl(pre+'.bonus.attribut',KEYS.map(k=>[k,KL[k]]),b.attribut)}`;
-    else if(b&&b.type==='vd')body=`VD + ${SN(pre+'.bonus.valeur',rng(2,b.valeur),b.valeur)} sur <input data-p="${pre}.bonus.cible" list=cibles type=text value="${esc(b.cible||'')}">`;
-    else if(b&&b.type==='armure')body=`Armure + ${SN(pre+'.bonus.valeur',rng(1,b.valeur),b.valeur)} ${Sl(pre+'.bonus.portee',[['physique','physique'],['mental','mentale'],['tous','tous dommages']],b.portee)}`;
-    else if(b&&b.type==='case')body=`Case de blessure ${Sl(pre+'.bonus.gravite',GRAV.map(x=>[x[0],x[1]]),b.gravite)} + ${SN(pre+'.bonus.valeur',rng(1,b.valeur),b.valeur||1)}`;
-    else if(e.pre){const x=EFP.find(y=>y.id===e.pre)||{};body=`<b>${esc(x.u||x.t||e.texte)}</b>${x.max>1?(x.u?'':' ×')+' '+SN(pre+'.qte',rng(x.max,e.qte),e.qte||1):''}`}
+    else if(b&&b.type==='rr_attribut')body=`RR ${NV(pre,1,b.valeur)} sur l’attribut ${Sl(pre+'.bonus.attribut',KEYS.map(k=>[k,KL[k]]),b.attribut)}`;
+    else if(b&&b.type==='vd')body=`VD + ${SN(pre+'.bonus.valeur',rng(2,b.valeur),b.valeur)}${wl(PJ.atouts[i])?' <span class=mini>sur l’arme de cet atout</span>':` sur <input data-p="${pre}.bonus.cible" list=cibles type=text value="${esc(b.cible||'')}">`}`;
+    else if(b&&b.type==='armure')body=`Armure + ${NV(pre,1,b.valeur)||'1'} ${Sl(pre+'.bonus.portee',[['physique','physique'],['mental','mentale'],['tous','tous dommages']],b.portee)}`;
+    else if(b&&b.type==='case')body=`Case de blessure ${Sl(pre+'.bonus.gravite',GRAV.map(x=>[x[0],x[1]]),b.gravite)} + ${NV(pre,1,b.valeur)||'1'}`;
+    else if(b&&b.type==='portee')body=`Portée ${Sl(pre+'.bonus.rang',['Contact','Courte','Moyenne','Longue'].map(r=>[r,r]),b.rang)} ${wl(PJ.atouts[i])?' <span class=mini>sur l’arme de cet atout</span>':` sur <input data-p="${pre}.bonus.cible" list=cibles type=text placeholder="arme" value="${esc(b.cible||'')}">`}`;
+ else if(e.pre){const x=EFP.find(y=>y.id===e.pre)||{};body=`<b>${esc(x.u||x.t||e.texte)}</b>${emax(x,PJ.atouts[i])>1?(x.u?'':' ×')+' '+SN(pre+'.qte',rng(emax(x,PJ.atouts[i]),e.qte),e.qte||1):''}`}
 else body=`<input class=n data-p="${pre}.texte" type=text placeholder="Effet (texte libre)" value="${esc(e.texte)}">`;
-    return `<div class="row eline"><div class=eb>${body}</div><div class=ec><span class=mini>niv.</span>${b||e.pre?`<b data-v="ef.${i}.${j}"></b>`:Nu(pre+'.niveau',-20,40,.5)}<button class=btn data-act=delef data-i=${i} data-j=${j}>✕</button></div></div>`};
-  const vEd=(a,i)=>{const v=a.vehicule,q=`atouts.${i}.vehicule`,b=v.base||{},x=VMOD.find(y=>y.id===v.modele),S=b.structure||0,pl=v.plus||{};
-    const op=k=>VMOD.filter(y=>y.k===k).map(y=>`<option value="${y.id}"${y.id===v.modele?' selected':''}>${esc(y.nom)}</option>`).join('');
-    const sel=`<select class=ty data-act=vmod data-i=${i}>${v.modele?'':'<option value="" selected>— type… —</option>'}${v.modele==='herite'?'<option value=herite selected>Valeurs héritées</option>':''}<optgroup label="Drones">${op('Drone')}</optgroup><optgroup label="Véhicules">${op('Véhicule')}</optgroup></select>`;
-    const vol=(b.vitesse||0)*2||(v.micro?1:0),st=v.modele?`<div class=st><span>Autopilote <i>6</i></span><span>Structure <i>${S}</i></span><span>Maniabilité <i>${b.maniabilite||0}</i></span><span>Vitesse <i>${b.vitesse||0}</i> (volant ${vol})</span><span>Blindage <i>0</i></span></div>`:'<span class=mini>Choisis un type pour fixer les caractéristiques de base.</span>';
+    return `<div class="row eline"><div class=eb>${body}</div><div class=ec><span class=mini>niv.</span>${b||e.pre?`<b data-v="ef.${i}.${j}"></b>`:Nu(pre+'.niveau',-20,40,1)}<button class=btn data-act=delef data-i=${i} data-j=${j}>✕</button></div></div>`};
+  const vEd=(a,i)=>{const v=a.vehicule,b=v.base||{},x=VMOD.find(y=>y.id===v.modele);
+    const sel=`<select class=ty data-act=vmod data-i=${i}>${v.modele?'':'<option value="" selected>— type… —</option>'}${VMOD.filter(y=>y.k===a.type).map(y=>`<option value="${y.id}"${y.id===v.modele?' selected':''}>${esc(y.nom)}</option>`).join('')}<option value=perso${v.modele==='perso'?' selected':''}>Personnalisé</option></select>`;
+    const q=`atouts.${i}.vehicule`,vol=(b.vitesse||0)*2||(v.micro?1:0);
+    let st;
+    if(v.modele==='perso')st=`<span class=vp><span class=mini>Structure</span>${Nu(q+'.base.structure',0,12)}</span><span class=vp><span class=mini>Maniabilité</span>${Nu(q+'.base.maniabilite',0,12)}</span><span class=vp><span class=mini>Vitesse</span>${Nu(q+'.base.vitesse',0,12)}</span><label class="mini vp"><input data-p="${q}.micro" type=checkbox${v.micro?' checked':''}> microdrone (total 10)</label>`;
+    else st=v.modele?`<div class=st><span>Autopilote <i>6</i></span><span>Structure <i>${b.structure||0}</i></span><span>Maniabilité <i>${b.maniabilite||0}</i></span><span>Vitesse <i>${b.vitesse||0}</i> (volant ${vol})</span><span>Blindage <i>0</i></span></div>`:'<span class=mini>Choisis un type pour fixer les caractéristiques de base.</span>';
     const inf=x?`<div class=m>${x.arme==='aucune'?'Aucune monture d’arme':'Une monture d’arme incluse'+(x.arme?` (${x.arme} au maximum)`:'')}${x.note?' · '+x.note:''}</div>`:'';
-    const S0=(p,mx,val)=>SN(p,Array.from({length:Math.max(mx,val||0)+1},(_,n)=>n),val||0);
-    return `<div class="row sp ef">${sel}<span class=mini>niveau de base <b>${a.niveau_base||0}</b></span></div>
-<div class="row sp">${st}${inf}</div>
-<div class="row sp ef"><span class=mini>Améliorations (+1 niveau chacune) :</span><span class=vp><span class=mini>Autopilote +</span>${S0(q+'.plus.autopilote',6,pl.autopilote)}</span><span class=vp><span class=mini>Maniabilité +</span>${S0(q+'.plus.maniabilite',3,pl.maniabilite)}</span><span class=vp><span class=mini>Vitesse +</span>${S0(q+'.plus.vitesse',3,pl.vitesse)}</span><span class=vp><span class=mini>Blindage +</span>${S0(q+'.plus.blindage',S,pl.blindage)}</span><label class="mini vp"><input data-p="${q}.volant" type=checkbox${v.volant?' checked':''}> volant (+1 niveau, vitesse ×2)</label></div>`};
+    return `<div class="row sp ef">${sel}${st}</div>${inf?`<div class="row sp">${inf}</div>`:''}`};
+
   const atRow=(a,i)=>{const pr=ATYPES.find(x=>x[0]===a.type),cu=a.type_perso||(a.type&&!pr),sk=STK[a.type],fxB=pr&&!cu&&!['Éveil','Trait'].includes(a.type)&&a.niveau_base===pr[1],fxE=pr&&!cu&&(a.perte_essence||0)===pr[2];
-    return `<div class=cb data-row="atouts.${i}"><div class=row>${Ck(`atouts.${i}.actif`)}<select class=ty data-act=atype data-i=${i}>${opt([['','— type —'],...ATYPES.map(x=>[x[0],x[0]]),['__autre','Personnalisé…']],cu?'__autre':(a.type||''))}</select>${cu?`<input class=ty data-p="atouts.${i}.type" type=text placeholder="Type" value="${esc(a.type||'')}">`:''}<input class=nm data-p="atouts.${i}.nom" type=text placeholder="Nom de l’atout" value="${esc(a.nom)}">${fxB?`<span class=mini>base</span><b>${a.niveau_base}</b>`:`<span class=mini>base</span>${Nu(`atouts.${i}.niveau_base`,-10,30,.5)}`}${fxE?(pr[2]?`<span class=mini>ess.</span><b>−${pr[2]}</b>`:''):`<span class=mini>ess.</span>${Nu(`atouts.${i}.perte_essence`,0,6,.25)}`}<span class=rdv data-v="atout.${i}.niv"></span><span class=cv data-v="atout.${i}.cost"></span><button class=btn data-act=delatout data-i=${i}>✕</button></div>
-${a.vehicule?vEd(a,i):''}${a.type==='Cyberdeck'?`<div class="row sp ef"><span class=mini>Programmes (un par ligne)</span><textarea class=n data-l="atouts.${i}.programmes" style="height:44px">${esc((a.programmes||[]).join('\n'))}</textarea></div>`:''}${sk&&a.stats&&!a.vehicule?`<div class="row sp">${sk.map(k=>`<span class=mini>${STL[k]}</span>${Nu(`atouts.${i}.stats.${k}`,0,30)}`).join('')}</div>`:''}
+    return `<div class=cb data-row="atouts.${i}"><div class=row>${Ck(`atouts.${i}.actif`)}<select class=ty data-act=atype data-i=${i}>${opt([['','— type —'],...ATYPES.map(x=>[x[0],x[0]]),['__autre','Personnalisé…']],cu?'__autre':(a.type||''))}</select>${cu?`<input class=ty data-p="atouts.${i}.type" type=text placeholder="Type" value="${esc(a.type||'')}">`:''}<input class=nm data-p="atouts.${i}.nom" type=text placeholder="Nom de l’atout" value="${esc(a.nom)}">${fxB?`<span class=mini>base</span><b>${a.niveau_base}</b>`:`<span class=mini>base</span>${Nu(`atouts.${i}.niveau_base`,-10,30,1)}`}${fxE?(pr[2]?`<span class=mini>ess.</span><b>−${pr[2]}</b>`:''):`<span class=mini>ess.</span>${Nu(`atouts.${i}.perte_essence`,0,6,.25)}`}<span class=rdv data-v="atout.${i}.niv"></span><span class=cv data-v="atout.${i}.cost"></span><button class=btn data-act=delatout data-i=${i}>✕</button></div>
+${a.vehicule?vEd(a,i):''}${a.type==='Cyberdeck'?`<div class="row sp ef"><span class=mini>Programmes (un par ligne)</span><textarea class=n data-l="atouts.${i}.programmes" style="height:44px">${esc((a.programmes||[]).join('\n'))}</textarea></div>`:''}${a.type==='Cyberdeck'&&!a.stats?`<div class="row sp"><div class=st><span>Firewall <i>${vStats(a).firewall}</i></span><span>Attaque <i>${vStats(a).attaque}</i></span></div><span class=mini>base : Firewall 1, Attaque 0 · améliorations par les effets « Firewall + » et « Attaque + »</span></div>`:''}${sk&&a.stats&&!a.vehicule?`<div class="row sp">${sk.map(k=>`<span class=mini>${STL[k]}</span>${Nu(`atouts.${i}.stats.${k}`,0,30)}`).join('')}</div>`:''}
 ${(a.effets||[]).map((e,j)=>efRow(i,j,e)).join('')}
 <select data-act=efadd data-i=${i} class=ty style="margin:3px 0 2px 20px;max-width:340px"><option value="">+ ajouter un effet ou un bonus…</option>${EFP.map((x,n)=>(!x.only||x.only.includes(a.type))?`<option value="${n}">${esc(x.l)}</option>`:'').join('')}</select></div>`};
-  const ctc=`<section><h2>Contacts</h2><div class=hint>Un contact peut aussi être un atout de type Contact portant le même nom : il apporte alors ses RR et autres effets.</div><datalist id=ctypes>${['Fixer','Contrebandier','Informateur','Mentor','Médecin','Technicien','Corporatiste','Policier','Journaliste','Magicien','Autre'].map(x=>`<option>${x}`).join('')}</datalist>${p.contacts.map((c,i)=>`<div class=row data-row="contacts.${i}">${Ck(`contacts.${i}.actif`)}<input class=nm data-p="contacts.${i}.nom" type=text placeholder="Nom" value="${esc(c.nom)}"><input data-p="contacts.${i}.type" list=ctypes type=text placeholder="Type" value="${esc(c.type||'')}" style="width:120px;flex:none"><input class=n data-p="contacts.${i}.description" type=text placeholder="Description" value="${esc(c.description||'')}"><button class=btn data-act=delcontact data-i=${i}>✕</button></div>`).join('')}<button class=btn data-act=addcontact style="margin-top:4px">+ contact</button></section>`;
+  const ctc=`<section><h2>Contacts</h2><div class=hint>Un contact peut aussi être un atout de type Contact portant le même nom : il apporte alors ses RR et autres effets.</div><datalist id=ctypes>${['Fixer','Contrebandier','Informateur','Mentor','Médecin','Technicien','Corporatiste','Policier','Journaliste','Magicien','Autre'].map(x=>`<option>${x}`).join('')}</datalist>${p.contacts.map((c,i)=>`<div class=row data-row="contacts.${i}" style="flex-wrap:wrap">${Ck(`contacts.${i}.actif`)}<input class=nm data-p="contacts.${i}.nom" type=text placeholder="Nom" value="${esc(c.nom)}" style="flex:1 1 110px"><input data-p="contacts.${i}.type" list=ctypes type=text placeholder="Type" value="${esc(c.type||'')}" style="width:120px;flex:none"><input data-p="contacts.${i}.description" type=text placeholder="Description" value="${esc(c.description||'')}" style="flex:3 1 220px;min-width:150px"><button class=btn data-act=delcontact data-i=${i}>✕</button></div>`).join('')}<button class=btn data-act=addcontact style="margin-top:4px">+ contact</button></section>`;
   const atouts=`<section><h2>Atouts, véhicules, drones, cyberdecks <small class=pr>5 000 ¥ par niveau</small></h2><div class=hint>Le type fixe le niveau de base et la perte d’Essence (modifiables seulement pour Éveil, Trait, type personnalisé ou valeur hors règle). Chaque effet a son niveau, même négatif ; le texte et le coût restent libres, et les spécialisations visées par un RR peuvent être saisies librement (« Autre… »).</div><datalist id=cibles>${cibles.map(c=>`<option>${esc(c)}`).join('')}</datalist>${p.atouts.map(atRow).join('')}<button class=btn data-act=addatout>+ atout</button></section>`;
   const hosts=p.atouts.filter(a=>/Véhicule|Drone|Cyberdeck/.test(a.type||'')).map(a=>a.nom).filter(Boolean),spes=[...new Set(CATALOGUE.flatMap(c=>c.specs.map(x=>x.nom)))];
-  const wRow=(w,i)=>{const cat=w.categorie||'arme',arm=cat==='arme'||cat==='arme_specialiste',po=w.portees||['','','',''];
-    return `<div class=cb data-row="armes.${i}"><div class="row${arm?'':' sline'}">${Ck(`armes.${i}.actif`)}<input class=nm data-p="armes.${i}.nom" type=text placeholder="Nom" value="${esc(w.nom)}"><select class=ty data-act=wcat data-i=${i}>${opt(Object.entries(CATEG),cat)}</select>${arm?'':`<input class=sd data-p="armes.${i}.seuil" type=text placeholder="Seuil" value="${esc(w.seuil??'')}"><input class=ds data-p="armes.${i}.description" type=text placeholder="Description" value="${esc(w.description||'')}">`}<span class=cv data-v="arme.${i}"></span><button class=btn data-act=delarme data-i=${i}>✕</button></div>
-${arm?`<div class="row sp ef"><span class=mini>VD</span><input data-p="armes.${i}.vd" type=text placeholder="7 ou FOR+2" value="${esc(w.vd??'')}" style="width:84px;flex:none"><span class=mini>spécialisation</span><input data-p="armes.${i}.specialisation" list=spes type=text placeholder="mains nues, lames…" value="${esc(w.specialisation||'')}" style="width:140px;flex:none"><span class=mini>monté sur</span><select class=ty data-p="armes.${i}.monte_sur">${opt([['','—'],...hosts.map(h=>[h,h])],w.monte_sur||'')}</select></div>
-<div class="row sp ef"><span class=mini>Portées</span>${['Contact','Courte','Moyenne','Longue'].map((l,k)=>`<span class=mini>${l}</span><select class=sa data-act=port data-i=${i} data-k=${k}>${opt([['','·'],['OK','OK'],['Dés','Dés'],['-','–']],po[k]||'')}</select>`).join('')}</div>`
-:''}</div>`};
-  const armes=`<section><h2>Armes, sorts, formes complexes <small class=pr>2 500 ¥ · spécialiste, sort, forme complexe 5 000 ¥</small></h2><div class=hint>« Mains nues » est ajoutée automatiquement (VD = Force). VD : un nombre ou une expression avec attributs (FOR+2). Portées : Contact, Courte, Moyenne, Longue.</div><datalist id=spes>${spes.map(x=>`<option>${esc(x)}`).join('')}</datalist>${p.armes.map(wRow).join('')}<button class=btn data-act=addarme>+ arme, sort ou forme complexe</button></section>`;
-  const eRow=(e,i)=>`<div class=row data-row="equipement.${i}">${Ck(`equipement.${i}.actif`)}<input class=nm data-p="equipement.${i}.nom" type=text placeholder="Équipement" value="${esc(e.nom)}"><label class=mini><input data-p="equipement.${i}.offert" type=checkbox${e.offert?' checked':''}> offert</label><span class=cv data-v="equip.${i}"></span><button class=btn data-act=delequip data-i=${i}>✕</button></div>`;
+  const WL=['Cont.','Court.','Moy.','Long.'];
+  const wRng=(w,i,x)=>{const po=w.portees||x&&x.p||['','','',''];return x?`<span class=mini>Portées</span>${WL.map((l,k)=>`<span class=mini>${l}</span><b>${po[k]==='-'?'–':po[k]||'·'}</b>`).join('')}`:`<span class=mini>Portées</span>${WL.map((l,k)=>`<span class=mini>${l}</span><select class=sa data-act=port data-i=${i} data-k=${k}>${opt([['','·'],['OK','OK'],['Dés','Dés'],['-','–']],(w.portees||[])[k]||'')}</select>`).join('')}`};
+  const wArm=(w,i)=>{const cat=w.categorie||'arme',x=WT.find(y=>y.id===w.type_arme),mt=loose(w.specialisation||'')===loose('armes montées'),exo=norm(w.specialisation||'')==='arme exotique';
+    const head=`<div class=row data-row="armes.${i}" style="flex-wrap:wrap">${Ck(`armes.${i}.actif`)}<input class=nm data-p="armes.${i}.nom" type=text placeholder="Nom" value="${esc(w.nom)}" style="flex:1 1 140px"><label class=mini><input type=checkbox data-act=wspe data-i=${i}${cat==='arme_specialiste'?' checked':''}> arme de spécialiste</label><span class=cv data-v="arme.${i}"></span><button class=btn data-act=delarme data-i=${i}>✕</button></div>`;
+    const tsel=`<select class=ty data-act=wtype data-i=${i}>${opt([['','— type d’arme —'],...WT.map(y=>[y.id,y.nom+(y.spe?' (spé.)':'')])],w.type_arme||'')}</select>`,
+    msel=mt?`<span class=mini>montée sur</span><select class=ty data-act=wmount data-i=${i}>${opt([['','—'],...hosts.map(h=>[h,h])],w.monte_sur||'')}</select>`:'',
+    exi='';
+    if(!x)return head+`<div class="row sp ef">${tsel}<span class=mini>VD</span><input data-p="armes.${i}.vd" type=text placeholder="7 ou FOR+2" value="${esc(w.vd??'')}" style="width:84px;flex:none"><span class=mini>spé.</span><input data-p="armes.${i}.specialisation" list=spes type=text placeholder="mains nues, lames…" value="${esc(w.specialisation||'')}" style="width:130px;flex:none">${exi}${msel}${wRng(w,i,null)}</div>`;
+    const tx=wTox(x),vdv=w.toxine?'<b>toxine</b>':`<b>${esc(w.vd)}</b>`,txc=tx?`<label class=mini><input type=checkbox data-act=wtox data-i=${i}${w.toxine?' checked':''}${x.id==='gaz'?' disabled':''}> toxine</label>`:'',txd=w.toxine?`<textarea data-p="armes.${i}.description" rows=2 placeholder="Toxine : effet, durée, résistance…" style="flex:1 1 100%">${esc(w.description||'')}</textarea>`:'',
+    sp=`<select class=ty data-act=wspec data-i=${i}>${opt(wAllowed(x).map(y=>[y,y]),w.specialisation||'')}</select>`;
+    return head+`<div class="row sp ef">${tsel}<span class=mini>VD</span>${vdv}${txc}<span class=mini>spé.</span>${sp}${msel}${wRng(w,i,x)}${txd}</div>`};
+  const wSort=(w,i,form)=>`<div class="row sline" data-row="armes.${i}" style="align-items:flex-start">${Ck(`armes.${i}.actif`)}<input class=nm data-p="armes.${i}.nom" type=text placeholder="Nom" value="${esc(w.nom)}">${form?'':`<select class=ty data-p="armes.${i}.type_sort">${opt([['','type…'],...TSORT.map(y=>[y,y])],w.type_sort||'')}</select>`}<input class=sd data-p="armes.${i}.seuil" type=text placeholder="Seuil" value="${esc(w.seuil??'')}">${form?'':`<label class="mini vp"><input type=checkbox data-p="armes.${i}.aire"${w.aire?' checked':''}> aire d’effet</label><label class="mini vp"><input type=checkbox data-p="armes.${i}.taille"${w.taille?' checked':''}> selon taille</label>`}<textarea class=ds data-p="armes.${i}.description" rows=2 placeholder="Description">${esc(w.description||'')}</textarea><span class=cv data-v="arme.${i}"></span><button class=btn data-act=delarme data-i=${i}>✕</button></div>`;
+  const ix=f=>p.armes.map((w,i)=>[w,i]).filter(([w])=>f(w.categorie||'arme')),hasC=n=>p.competences.some(c=>norm(c.nom)===n&&c.actif!==false),
+    A=ix(c=>c==='arme'||c==='arme_specialiste'),S=ix(c=>c==='sort'),FC=ix(c=>c==='forme_complexe');
+  const armes=`<section><h2>Armes <small class=pr>2 500 ¥ · arme de spécialiste 5 000 ¥</small></h2><div class=hint>« Mains nues » est ajoutée automatiquement (VD = Force). Le type d’arme fixe la VD, les portées et la spécialisation. Pour les modifier : un atout Équipement portant le nom de l’arme, avec les effets « VD + » (1 niveau par point) et « Portée » (2 niveaux par changement). La spécialisation « armes montées » permet de choisir le véhicule ou drone porteur. Les autres effets (narratif, VD +1…) se prennent dans l’atout lié, avec un effet personnalisé.</div><datalist id=spes>${spes.map(x=>`<option>${esc(x)}`).join('')}</datalist>${A.map(([w,i])=>wArm(w,i)).join('')}<button class=btn data-act=addarme data-c=arme>+ arme</button></section>`
+   +(hasC('sorcellerie')||S.length?`<section><h2>Sorts <small class=pr>5 000 ¥ chacun</small></h2>${S.map(([w,i])=>wSort(w,i,false)).join('')}<button class=btn data-act=addarme data-c=sort>+ sort</button></section>`:'')
+   +(hasC('technomancie')||FC.length?`<section><h2>Formes complexes <small class=pr>5 000 ¥ chacune</small></h2>${FC.map(([w,i])=>wSort(w,i,true)).join('')}<button class=btn data-act=addarme data-c=forme_complexe>+ forme complexe</button></section>`:'');
+  const eRow=(e,i)=>`<div class=row data-row="equipement.${i}" style="flex-wrap:wrap">${Ck(`equipement.${i}.actif`)}<input class=nm data-p="equipement.${i}.nom" type=text placeholder="Équipement" value="${esc(e.nom)}" style="flex:1 1 130px"><input data-p="equipement.${i}.description" type=text placeholder="Description (facultatif)" value="${esc(e.description||'')}" style="flex:2 1 160px;min-width:110px"><label class=mini><input data-p="equipement.${i}.offert" type=checkbox${e.offert?' checked':''}> offert</label><span class=cv data-v="equip.${i}"></span><button class=btn data-act=delequip data-i=${i}>✕</button></div>`;
   const eq=`<section><h2>Armure et équipement <small class=pr>armure 2 500 ¥ par point · équipement 2 500 ¥ par ligne (hors offert)</small></h2><div class=row data-row="armure">${Ck('armure.actif')}<input class=nm data-p="armure.nom" type=text placeholder="Armure portée" value="${esc(p.armure.nom)}"><span class=mini>points</span>${Nu('armure.valeur',0,20)}<span class=cv data-v=armure></span></div>${p.equipement.map(eRow).join('')}<button class=btn data-act=addequip style="margin-top:4px">+ équipement</button></section>`;
-  $('#form').innerHTML=ident+niv+att+competences+conn+ctc+atouts+armes+eq;
+  $('#form').innerHTML=`<div class=top2>${ident}<div>${niv}${att}</div></div>`+competences+conn+ctc+atouts+armes+eq;
 }
 
 function vv(k,C){try{return vv_(k,C)}catch(e){return ''}}
@@ -543,7 +623,7 @@ function refresh(){
   $$('[data-v]').forEach(el=>el.textContent=vv(el.dataset.v,C));
   $$('[data-t]').forEach(el=>{el.textContent='→ '+(get(PJ,el.dataset.t)||'')});
   $$('[data-row]').forEach(el=>{const x=get(PJ,el.dataset.row),par=el.dataset.parent?get(PJ,el.dataset.parent):null;if(!x)return;el.classList.toggle('off',on(x)===false||(par&&on(par)===false))});
-  $$('.pv').forEach(el=>el.style.backgroundPosition=`${PJ.identite.portrait_x??50}% ${PJ.identite.portrait_y??50}%`);
+  pvUpdate();
   panel(C,D);
 }
 function touch(rb){DIRTY=true;$('#dirty').textContent='● non enregistré';if(rb)buildForm();refresh();clearTimeout(SAVE_T);SAVE_T=setTimeout(()=>{try{localStorage.setItem('anarchy-pj',JSON.stringify(PJ))}catch(e){}},500)}
@@ -559,7 +639,14 @@ function upd(t){
   else return;
   touch();
 }
-function resizeImg(file,cb){const im=new Image();im.onload=()=>{const k=Math.min(1,480/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=im.width*k;c.height=im.height*k;c.getContext('2d').drawImage(im,0,0,c.width,c.height);cb(c.toDataURL('image/jpeg',.88))};im.src=URL.createObjectURL(file)}
+let PV_LOAD=0;
+function pvSlack(I){const z=(+I.portrait_zoom||100)/100,r=I.portrait_ratio,f=.75;return{x:z>1.001||!r||r>f+.01,y:z>1.001||!r||r<f-.01}}
+function pvUpdate(){const I=PJ.identite;if(!I.portrait)return;
+if(!I.portrait_ratio&&!PV_LOAD){PV_LOAD=1;const im=new Image();im.onload=()=>{I.portrait_ratio=im.width/im.height;PV_LOAD=0;pvUpdate()};im.src=I.portrait}
+const x=I.portrait_x??50,y=I.portrait_y??50,z=(+I.portrait_zoom||100)/100,sl=pvSlack(I);
+$$('.pv img').forEach(el=>{el.style.objectPosition=`${x}% ${y}%`;el.style.transformOrigin=`${x}% ${y}%`;el.style.transform=`scale(${z})`});
+const hx=$('[data-p="identite.portrait_x"]'),hy=$('[data-p="identite.portrait_y"]');if(hx)hx.disabled=!sl.x;if(hy)hy.disabled=!sl.y}
+function resizeImg(file,cb){const im=new Image();im.onload=()=>{const k=Math.min(1,480/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=im.width*k;c.height=im.height*k;c.getContext('2d').drawImage(im,0,0,c.width,c.height);cb(c.toDataURL('image/jpeg',.88),c.width/c.height)};im.src=URL.createObjectURL(file)}
 const form=$('#form');
 form.addEventListener('input',e=>upd(e.target));
 form.addEventListener('change',e=>{
@@ -571,9 +658,15 @@ form.addEventListener('change',e=>{
   else if(a==='atype'){const x=PJ.atouts[t.dataset.i],v=t.value,pr=ATYPES.find(y=>y[0]===v);
     if(v==='__autre'){x.type_perso=true;x.type=''}
     else{delete x.type_perso;x.type=v;if(pr){x.niveau_base=v==='Trait'?(PJ.atouts.some((o,k)=>k!=t.dataset.i&&o.type==='Trait'&&on(o))?3:0):pr[1];x.perte_essence=pr[2]||0}
-      if(v==='Cyberdeck'&&!x.stats)x.stats={firewall:0,attaque:0};if((v==='Véhicule'||v==='Drone')&&!x.stats&&!x.vehicule)x.vehicule={modele:'',micro:false,volant:false,base:{structure:0,maniabilite:0,vitesse:0},plus:{autopilote:0,structure:0,maniabilite:0,vitesse:0,blindage:0}}}
+      if((v==='Véhicule'||v==='Drone')&&!x.stats&&!x.vehicule)x.vehicule={modele:'',micro:false,base:{structure:0,maniabilite:0,vitesse:0}};if(x.vehicule){const m=VMOD.find(y=>y.id===x.vehicule.modele);if(m&&m.k!==v){x.vehicule.modele='';x.vehicule.base={structure:0,maniabilite:0,vitesse:0}}}}
     touch(true)}
-  else if(a==='vmod'){const at=PJ.atouts[t.dataset.i],v=at.vehicule,x=VMOD.find(y=>y.id===t.value);if(!x)return;v.modele=x.id;syncVeh(at);touch(true)}
+  else if(a==='vmod'){const at=PJ.atouts[t.dataset.i],v=at.vehicule,x=VMOD.find(y=>y.id===t.value);if(t.value==='perso'){v.modele='perso'}else{if(!x)return;v.modele=x.id}syncVeh(at);touch(true)}
+  else if(a==='wtype'){const w=PJ.armes[t.dataset.i],x=WT.find(y=>y.id===t.value);if(x){w.type_arme=x.id;wtSync(w)}else delete w.type_arme;touch(true)}
+  else if(a==='wtox'){const w=PJ.armes[t.dataset.i];if(t.checked)w.toxine=true;else delete w.toxine;touch(true)}
+  else if(a==='wspec'){const w=PJ.armes[t.dataset.i];w.specialisation=t.value;if(t.value!=='arme exotique')delete w.exotique;if(t.value!=='armes montées')delete w.monte_sur;touch(true)}
+  else if(a==='wspe'){PJ.armes[t.dataset.i].categorie=t.checked?'arme_specialiste':'arme';touch(true)}
+  else if(/^competences\.\d+\.actif$/.test(t.dataset.p||'')&&['sorcellerie','technomancie'].includes(norm(PJ.competences[+t.dataset.p.split('.')[1]].nom))){upd(t);touch(true)}
+  else if(a==='wmount'){const w=PJ.armes[t.dataset.i];if(t.value)w.monte_sur=t.value;else delete w.monte_sur;touch(true)}
   else if(a==='wcat'){PJ.armes[t.dataset.i].categorie=t.value;touch(true)}
   else if(a==='port'){const w=PJ.armes[t.dataset.i];w.portees=w.portees||['','','',''];w.portees[+t.dataset.k]=t.value;if(w.portees.every(x=>!x))delete w.portees;touch()}
   else if(a==='efadd'){if(t.value==='')return;const x=EFP[+t.value];if(!x)return;const at=PJ.atouts[t.dataset.i];at.effets=at.effets||[];
@@ -581,7 +674,8 @@ form.addEventListener('change',e=>{
 else if(x.k==='rra')e={bonus:{type:'rr_attribut',valeur:1,attribut:'force'}};
 else if(x.k==='vd')e={bonus:{type:'vd',valeur:1,cible:'mains nues'}};
 else if(x.k==='armure')e={bonus:{type:'armure',valeur:1,portee:'physique'}};
-else if(x.k==='case')e={bonus:{type:'case',gravite:'legere',valeur:1}};
+else if(x.k==='portee')e={bonus:{type:'portee',valeur:1,cible:'',rang:'Courte'}};
+ else if(x.k==='case')e={bonus:{type:'case',gravite:'legere',valeur:1}};
 else if(x.id)e={pre:x.id,qte:1};
 else e={texte:'',niveau:0};
 syncEf(e);at.effets.push(e);touch(true)}
@@ -591,7 +685,7 @@ syncEf(e);at.effets.push(e);touch(true)}
   else if(a==='rrs'){const e=PJ.atouts[t.dataset.i].effets[t.dataset.j],b=e.bonus;
     if(t.value==='__autre'){b.perso_spec=true;b.specialisation=''}else{delete b.perso_spec;b.specialisation=t.value||null}
     b.valeur=Math.min(b.valeur||1,b.specialisation||b.perso_spec?3:1);syncEf(e);touch(true)}
-  else if(t.id==='pic'){if(t.files[0])resizeImg(t.files[0],d=>{PJ.identite.portrait=d;touch(true)})}
+  else if(t.id==='pic'){if(t.files[0])resizeImg(t.files[0],(d,r)=>{const I=PJ.identite;I.portrait=d;I.portrait_ratio=r;delete I.portrait_x;delete I.portrait_y;delete I.portrait_zoom;touch(true)})}
   else upd(t);
 });
 form.addEventListener('click',e=>{
@@ -600,7 +694,7 @@ form.addEventListener('click',e=>{
   else if(a==='delspec')PJ.competences[i].specialites.splice(j,1);
   else if(a==='addcomp')PJ.competences.push({nom:'',actif:true,perso:true,attribut:'logique',indice:0,specialites:[]});
   else if(a==='delcomp')PJ.competences.splice(i,1);
-  else if(a==='addarme')PJ.armes.push({nom:'',actif:true,categorie:'arme'});
+  else if(a==='addarme')PJ.armes.push({nom:'',actif:true,categorie:b.dataset.c||'arme'});
   else if(a==='delarme')PJ.armes.splice(i,1);
   else if(a==='addcontact')PJ.contacts.push({nom:'',type:'',description:'',actif:true});
   else if(a==='delcontact')PJ.contacts.splice(i,1);
@@ -612,7 +706,7 @@ form.addEventListener('click',e=>{
   else if(a==='addconn')PJ.connaissances.push({nom:'',actif:true});
   else if(a==='delconn')PJ.connaissances.splice(i,1);
   else if(a==='nopic')delete PJ.identite.portrait;
-  else if(a==='preset'){const v=NIV[b.dataset.v];NIVK.forEach((k,n)=>PJ.niveau_de_jeu[k]=v[n])}
+  else if(a==='preset'){const v=NIV[b.dataset.n];NIVK.forEach((k,n)=>PJ.niveau_de_jeu[k]=v[n])}
   else return;
   touch(true);
 });
