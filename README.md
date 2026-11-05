@@ -108,11 +108,30 @@ Les fichiers JSON peuvent contenir toutes les informations relatives aux personn
 
 ## Périmètre du projet
 
-Cet outil est conçu pour **Shadowrun Anarchy v2**. Il vise à faciliter la création et l'utilisation des personnages, sans remplacer le livre de règles.
+Cet outil est conçu pour **Shadowrun Anarchy v2**. Il s'appuie sur les règles de **Shadowrun Anarchy v2** et vise à faciliter la création et l'utilisation des personnages, sans remplacer le livre de règles.
 
 Les calculs et les contrôles automatisés sont destinés à assister le joueur. Il reste de la responsabilité du joueur et du meneur de vérifier la conformité du personnage aux règles et aux éventuelles règles particulières de la table.
 
 Le projet est en cours de développement. Ses fonctionnalités et son interface sont susceptibles d'évoluer.
+
+## Sources, inspirations et remerciements
+
+Ce projet s'appuie sur plusieurs ressources et travaux qui ont contribué à sa conception :
+
+- **Liste des atouts et équipements de Daegann** — [consulter le document PDF](https://daegann.fr/wp-content/uploads/aides/Liste_des_atouts_et_equipements.pdf). Cette compilation a été une ressource particulièrement utile pour le regroupement et la consultation des atouts et équipements. C'est une mine d'informations qui mérite d'être connue des joueurs de Shadowrun Anarchy.
+- **Fichier de création de personnage d'Eldar** — [consulter le tableur](https://docs.google.com/spreadsheets/d/10mrLjo72sCeGLPuJFLkJ_2f_TXZB8scV/edit?gid=1820517714#gid=1820517714). Ce tableur a constitué une inspiration initiale pour l'approche de création du personnage, ainsi qu'un premier travail de regroupement des règles. L'application actuelle s'en est ensuite éloignée sur de nombreux points.
+- **Fiche Anarchy 2.0 de Devine-1** — [consulter le projet sur GitHub](https://github.com/Devine-1/Fiche-Anarchy-2.0). Le principe d'une fiche de personnage décrite en JSON et transformée en page web a inspiré le concept général de cet outil. Il s'agit d'une inspiration de conception : aucun code de ce projet n'a été repris.
+
+### Développement assisté par IA
+
+Le développement de ce projet a été réalisé avec l'aide d'outils d'intelligence artificielle générative :
+
+- **Claude (Anthropic)** a réalisé l'ensemble du code de l'application, ainsi que son intégration. Le rôle de l'auteur du projet a consisté à définir les besoins, proposer les fonctionnalités et guider les choix de conception et de présentation, sans intervenir directement dans l'écriture du code.
+- **ChatGPT (OpenAI)** a notamment contribué à la rédaction et à la mise en forme de ce README.
+
+Ces outils ont servi d'assistants de réalisation ; les orientations fonctionnelles et les choix du projet ont été définis par son auteur.
+
+Merci aux auteurs des ressources citées ci-dessus pour leur travail et pour leur contribution à la communauté Shadowrun.
 
 ## Licence
 
