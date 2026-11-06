@@ -36,16 +36,14 @@ section,.fr{border:1.5px solid var(--yd);background:#fff;border-radius:8px;overf
 .stretch section{height:100%;margin:0}
 section.brk{break-inside:auto}
 .r3{display:grid;grid-template-columns:2fr 3fr;gap:9px}
-.r4{display:grid;grid-template-columns:84mm 1fr;gap:9px}
-.r5,.r7{display:grid;grid-template-columns:1.15fr 1fr;gap:9px}.r7{grid-template-columns:1fr 1fr}
+.r4{display:grid;grid-template-columns:1.05fr 1fr 1.2fr;gap:5px;align-items:start}.ra{display:grid;grid-template-columns:1.75fr 1fr;gap:6px;align-items:start}.rb{display:grid;grid-template-columns:1fr 1.15fr;gap:6px;align-items:start}.cmp2{display:grid;grid-template-columns:1fr 1fr;gap:6px;align-items:start}
+.r5,.r7{display:grid;grid-template-columns:1.15fr 1fr;gap:9px}.r7{grid-template-columns:1fr 1fr}.r6{display:grid;grid-template-columns:1fr 1.25fr 1.25fr;gap:4px;align-items:start}.rg{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;text-align:center}.pcs{font-weight:700;font-size:9.5px}.pcs i{display:block;font-style:normal;font-weight:400;font-size:7px;color:var(--g)}.pcs.de{color:var(--od)}.vgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(88mm,1fr));gap:4px}.vgrid .card{margin-bottom:0}
 table{width:100%;border-collapse:collapse}
 td,th{padding:1px 3px;border-bottom:1px solid #e6dcb0;text-align:center}
 td:first-child,th:first-child{text-align:left}
 th{font:700 9px var(--f);text-transform:uppercase;color:var(--g)}
 .ct{table-layout:fixed}.ct td,.ct th{padding:1.5px 3px}
 .ct tbody.g:nth-of-type(even){background:#FFF9E3}
-.ct tbody.g td:first-child{border-left:3px solid var(--y)}
-.ct tbody.g tr.s td:first-child{border-left-color:var(--o)}
 .ct tbody.g tr:last-child td{border-bottom:1.5px solid #E5C75C}
 .ct tr.b td:first-child{font-weight:700}
 .ct tr.s td:first-child{padding-left:15px;font-style:italic}
@@ -79,7 +77,8 @@ ul{margin:0;padding-left:13px}li{margin:0;break-inside:avoid}
 .p2{margin-top:12px;padding-top:8px;border-top:2px dashed #bbb}
 .hd2{font:700 15px var(--f);text-transform:uppercase;letter-spacing:1px;border-bottom:3px solid var(--y);margin-bottom:7px;padding-bottom:2px}
 .lines{background:repeating-linear-gradient(to bottom,transparent 0,transparent 17px,#e3d9a8 17px,#e3d9a8 18px)}
-@media screen and (max-width:800px){.sheet{width:auto;padding:12px}.r2,.r3,.r4,.r5,.r7{grid-template-columns:1fr}}
+@media screen and (max-width:800px){.sheet{width:auto;padding:12px}.r2,.r3,.r4,.r5,.r6,.r7,.ra,.rb{grid-template-columns:1fr}.cmp2{grid-template-columns:1fr}}
+.meas .ra{grid-template-columns:1.75fr 1fr}.meas .rb{grid-template-columns:1fr 1.15fr}.meas .cmp2{grid-template-columns:1fr 1fr}.meas .r2{grid-template-columns:30mm 1fr 38mm}.meas .r3{grid-template-columns:2fr 3fr}.meas .r4{grid-template-columns:1.05fr 1fr 1.2fr}.meas .r5{grid-template-columns:1.15fr 1fr}.meas .r6{grid-template-columns:1fr 1.25fr 1.25fr}.meas .r7{grid-template-columns:1fr 1fr}
 @media print{@page{size:A4;margin:8mm 9mm}body{background:#fff}.no-print{display:none!important}.sheet{margin:0;width:auto;min-height:0;padding:0}.p2{break-before:page;margin:0;padding:0;border:0}}
 
 #topbar{max-width:none;display:flex;flex-wrap:wrap;gap:6px;align-items:center;border-radius:0;margin:0;padding:8px 12px;position:sticky;top:0;z-index:5}
@@ -137,6 +136,7 @@ label.f{display:block;font:500 9.5px var(--f);color:var(--g);text-transform:uppe
 .row.sp>select[data-act=specsel]{min-width:118px}.row.sp[style*="flex-wrap"]>select[data-act=specsel]{max-width:128px;min-width:100px}.row.sp[style*="flex-wrap"]>select.sa{width:60px!important}
 .row.sp.ef>select.ty{max-width:158px}
 .wt em{display:inline-block;font-style:normal;font:700 8px var(--f);text-transform:uppercase;letter-spacing:.4px;border-radius:3px;padding:0 4px;margin-top:1px}.wt sup{font-size:8px;font-weight:700}
+.ct thead th,.wt thead th,.bl th{background:#E4EBF3}.wt.wtw tbody.wb td{background:#fff}.wt.wtw tbody.wb:nth-of-type(even) td{background:#FFF9E3}
 </style></head><body>
 <div class="bar no-print" id="topbar"><b class="t">Anarchy PJ</b>
 <button class="tab on" data-tab="crea">Création</button><button class="tab" data-tab="fiche">Fiche</button>
@@ -177,7 +177,7 @@ const RRT=`<table class=rrt><tr><th>RR</th><th class=c1>Faible</th><th class=c2>
 let PORT=null;
 
 function derive(p){
-  const W=[],at=p.attributs||{},ar=p.armure||{},av=k=>at[k]||0;
+  const W=[],at=p.attributs||{},av=k=>at[k]||0;
   const evalVD=vd=>{if(vd==null||vd==='')return null;if(typeof vd==='number')return vd;let t=0,ok=false;String(vd).replace(/([+-]?)\s*(FOR|AGI|VOL|LOG|CHA|\d+)/gi,(m,sg,x)=>{const v=/\d/.test(x)?+x:av(AC[x.toUpperCase()]);t+=sg==='-'?-v:v;ok=true;return m});return ok?t:null};
   const armes=(p.armes||[]).filter(act).map(w=>({w,nom:w.nom,cat:w.categorie||'arme',spec:wSpec(w)?loose(wSpec(w)):null,specTxt:wSpec(w),expr:w.toxine?'':w.vd,val:w.toxine?null:evalVD(w.vd),tox:!!w.toxine,ports:w.portees||null,bonus:0,mount:(loose(w.specialisation||'')===loose('armes montées')&&w.monte_sur)||null,seuil:w.seuil,desc:w.description,tsort:w.type_sort||'',aire:!!w.aire,taille:!!w.taille,badge:null}));
   const mn={nom:'Mains nues',cat:'arme',spec:'mains nues',specTxt:'mains nues',expr:'FOR',val:av('force'),ports:['OK','-','-','-'],bonus:0,builtin:true};
@@ -233,39 +233,42 @@ function derive(p){
 }
 
 function render(p){
-  const D=derive(p),at=p.attributs||{},I=p.identite||{},ar=p.armure||{},C=costs(p),mx=maxOf(p),av=k=>at[k]||0;
+  const D=derive(p),at=p.attributs||{},I=p.identite||{},C=costs(p),mx=maxOf(p),av=k=>at[k]||0;
   const dots=n=>'●'.repeat(Math.min(3,n||0));
   const sec=(t,b,c)=>b?`<section${c?' class='+c:''}><h2>${t}</h2>${b}</section>`:'';
   const li=(a,c)=>a.length?`<ul${c?' class='+c:''}>${a.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:'';
   const badge=x=>x?`<span class=tag2>atout niv. ${x.niv}</span> <span class=m>${esc(x.effet)}</span>`:'';
   const lst=(a,c)=>a.length?`<ul${c?' class='+c:''}>${a.map(x=>`<li>${esc(x.nom)}${badge(x.badge)}</li>`).join('')}</ul>`:'';
   const row=(n,i,a,rd,r,s)=>`<tr class=${s?'s':'b'}><td>${s?'<span class=ar>↳</span>':''}${esc(n)}</td><td class=ix>${i??''}</td><td>${AT[a]||''}</td><td class=rd><b>${rd}</b></td><td class=rr>${dots(r)}</td></tr>`;
-  const comps=D.comps.map(c=>'<tbody class=g>'+row(c.nom,c.indice,c.attribut,c.rd,c.rr)+c.specs.map(s=>row(s.nom,s.indice,s.attribut,s.rd,s.rr,1)).join('')+'</tbody>').join('');
+  const cblk=D.comps.map(c=>({n:1+c.specs.length,h:'<tbody class=g>'+row(c.nom,c.indice,c.attribut,c.rd,c.rr)+c.specs.map(s=>row(s.nom,s.indice,s.attribut,s.rd,s.rr,1)).join('')+'</tbody>'}));
+  const ctot=cblk.reduce((t,x)=>t+x.n,0);let cacc=0,csp=0;cblk.forEach((x,i)=>{if(cacc+x.n/2<=ctot/2)csp=i+1;cacc+=x.n});
+  const ctab=l=>`<table class=ct><colgroup><col><col style="width:7mm"><col style="width:8mm"><col style="width:9mm"><col style="width:7mm"></colgroup><thead><tr><th>Compétence</th><th>Ind.</th><th>Att.</th><th>RD</th><th>RR</th></tr></thead>${l.map(x=>x.h).join('')}</table>`;
+  const comps=`<div class=cmp2>${ctab(cblk.slice(0,csp))}${csp<cblk.length?ctab(cblk.slice(csp)):''}</div>`;
   const atouts=D.atouts.map(a=>{const c=tcol(a.type),fx=(a.effets||[]).map(e=>e.texte).filter(Boolean);
-    return `<div class=at${c?` style="border-left-color:${c}"`:''}><span class=lv>niv. ${lvl(a)}</span>${a.type?`<em style="color:${c};background:${c}1f">${esc(a.type)}</em> `:''}<b>${esc(a.nom)}</b>${fx.map(t=>`<div class=ln>${esc(t)}</div>`).join('')}${a.lien?`<div class=m>↔ voir ${a.lien}</div>`:''}</div>`}).join('');
+    return `<div class=at${c?` style="border-left-color:${c}"`:''}><span class=lv>niv. ${lvl(a)}</span>${a.type?`<em style="color:${c};background:${c}1f">${esc(a.type)}</em> `:''}<b>${esc(a.nom)}</b>${fx.map(t=>`<div class=ln>${esc(t)}</div>`).join('')}</div>`}).join('');
   /* armes */
   const vdSub=x=>{const s=[];if(typeof x.expr==='string'&&/[A-Z]/.test(x.expr))s.push(x.expr);if(x.bonus)s.push('+atout');return s.length?`<div class=m>${esc(s.join(' '))}</div>`:''};
   const pc=v=>{const t=(v||'').trim();return `<td class="pc${t==='OK'?' ok':t==='Dés'?' de':''}">${t==='-'?'–':esc(t)}</td>`};
-  const wrow=x=>`<tr><td><b>${esc(x.nom)}</b>${x.cat==='arme_specialiste'?'<span class=tag>spé.</span>':''}${x.badge?` <span class=tag2>atout niv. ${x.badge.niv}</span>`:''}${x.mount?`<div class=m>${esc(x.specTxt||'armes montées')} (sur <b>${esc(((D.vehs.find(v=>norm(v.nom)===norm(x.mount))||{}).type||'').toLowerCase())} ${esc(x.mount)}</b>)</div>`:x.specTxt&&norm(x.specTxt)!==norm(x.nom)?`<div class=m>${esc(x.specTxt)}</div>`:''}${x.tox&&x.desc?`<div class=m style="white-space:pre-line">${esc(x.desc)}</div>`:''}</td><td class=vd>${x.tox?'<b>toxine</b>':x.val!=null?`<b>${x.val+x.bonus}</b>`:''}${vdSub(x)}</td>${[0,1,2,3].map(i=>pc((x.ports||[])[i])).join('')}</tr>`;
-  const armes=`<table class=wt><colgroup><col><col style="width:17mm"><col style="width:12mm"><col style="width:12mm"><col style="width:14mm"><col style="width:12mm"></colgroup><thead><tr><th>Arme</th><th>VD</th><th>Contact<br><i>≤ 2 m</i></th><th>Courte<br><i>3-15 m</i></th><th>Moyenne<br><i>16-60 m</i></th><th>Longue<br><i>&gt; 60 m</i></th></tr></thead><tbody>${[D.mn,...D.main].map(wrow).join('')}</tbody></table>`;
-  const spl=(a,t)=>a.length?`<table class=wt><colgroup><col style="width:24%"><col style="width:32mm"><col></colgroup><thead><tr><th>Nom</th><th>Seuil</th><th>Description</th></tr></thead><tbody>${a.map(x=>{const c=x.tsort?tcol(x.tsort):null;return `<tr><td><b>${esc(x.nom)}</b>${badge(x.badge)}${t&&x.tsort?`<div><em style="color:${c};background:${c}1f">${esc(x.tsort)}</em></div>`:''}</td><td class=vd><b>${esc(x.seuil??'')}</b>${t&&x.aire?'<sup>a</sup>':''}${t&&x.taille?'<sup>t</sup>':''}</td><td style="text-align:left;white-space:pre-line">${esc(x.desc||'')}</td></tr>`}).join('')}</tbody></table>${t?sortNotes(a):''}`:'';
+  const wrow=x=>`<tbody class=wb><tr><td><b>${esc(x.nom)}</b>${x.cat==='arme_specialiste'?'<span class=tag>spé.</span>':''}${x.badge?` <span class=tag2>atout niv. ${x.badge.niv}</span>`:''}${x.mount?`<div class=m>${esc(x.specTxt||'armes montées')} (sur <b>${esc(((D.vehs.find(v=>norm(v.nom)===norm(x.mount))||{}).type||'').toLowerCase())} ${esc(x.mount)}</b>)</div>`:x.specTxt&&norm(x.specTxt)!==norm(x.nom)?`<div class=m>${esc(x.specTxt)}</div>`:''}</td><td class=vd>${x.tox?'<b>toxine</b>':x.val!=null?`<b>${x.val+x.bonus}</b>`:''}${vdSub(x)}</td>${[0,1,2,3].map(i=>pc((x.ports||[])[i])).join('')}</tr>${x.tox&&x.desc?`<tr class=dr><td colspan=6 style="text-align:left;white-space:pre-line;font-size:9px;line-height:1.25">${esc(x.desc)}</td></tr>`:''}</tbody>`;
+  const armes=`<table class="wt wtw"><colgroup><col><col style="width:11mm"><col style="width:8mm"><col style="width:8.5mm"><col style="width:8mm"><col style="width:8.5mm"></colgroup><thead><tr><th>Arme</th><th>VD</th><th>Cont.</th><th>Court.</th><th>Moy.</th><th>Long.</th></tr></thead>${[D.mn,...D.main].map(wrow).join('')}</table><div class=m style="margin-top:2px">Cont. ≤ 2 m · Court. 3-15 m · Moy. 16-60 m · Long. &gt; 60 m</div>`;
+  const spl=(a,t)=>a.length?`<table class=wt><colgroup><col style="width:18%"><col style="width:30mm"><col></colgroup><thead><tr><th>Nom</th><th>Seuil</th><th>Description</th></tr></thead><tbody>${a.map(x=>{const c=x.tsort?tcol(x.tsort):null;return `<tr><td><b>${esc(x.nom)}</b>${badge(x.badge)}${t&&x.tsort?`<div><em style="color:${c};background:${c}1f">${esc(x.tsort)}</em></div>`:''}</td><td class=vd><b>${esc(x.seuil??'')}</b>${t&&x.aire?'<sup>a</sup>':''}${t&&x.taille?'<sup>t</sup>':''}</td><td style="text-align:left;white-space:pre-line">${esc(x.desc||'')}</td></tr>`}).join('')}</tbody></table>${t?sortNotes(a):''}`:'';
   const sortNotes=a=>{const n=[];if(a.some(x=>x.aire))n.push('<sup>a</sup> Seuil pour l’aire d’effet : 0 pour affecter une personne, puis +1 succès par tranche de 3 mètres de diamètre.');if(a.some(x=>x.taille))n.push('<sup>t</sup> Seuil pour la taille : 0 pour une cible de la taille d’un métahumain, 1 pour celle d’une voiture, 2 pour celle d’un bus, etc.');if(a.some(x=>x.tsort==='illusion'))n.push('Illusion : les témoins d’un sort d’illusion peuvent tenter de le percer à jour s’ils ont des raisons de douter, avec un test de Perception + Logique (avec avantage si c’est évident) contre les succès nets du sort. Ces sorts sont discrets même dans l’espace astral : pour les repérer, il faut réussir un test de Perception (astrale) + Logique contre les succès nets du sort.');return n.length?`<div class=m style="margin-top:2px">${n.map(x=>`<div>${x}</div>`).join('')}</div>`:''};
   /* véhicules, drones, cyberdecks */
   const bxs=(n,e,c)=>`<i class="bx ${c}"></i>`.repeat(n)+`<i class="bx e ${c}"></i>`.repeat(e);
   const vwr=x=>`<div class=m><b>${esc(x.nom)}</b>${x.specTxt?` <i>(${esc(x.specTxt)})</i>`:''}${x.val!=null?` · VD ${x.val+x.bonus}`:''}${x.ports?' · '+esc(x.ports.map(t=>t==='-'?'–':t).join(' / ')):''}</div>`;
   const mon=t=>`<div class=vr><i class=wl>${bxs(2,0,'l')}</i><i class=wg>${bxs(1,0,'g')}</i><i class=wi>${bxs(1,0,'i')}</i><b class=wl>${t[0]}</b><b class=wg>${t[1]}</b><b class=wi>${t[2]}</b></div>`;
-  const vc=v=>{const s=v.st||{},isD=v.kind==='Cyberdeck';const nb=v.notes.map(n=>`<div class=m>${esc(n)}</div>`).join(''),mt=v.mounts.length?`<div class=mnt><span class=m>Armes montées</span>${v.mounts.map(vwr).join('')}</div>`:'';
+  const vc=v=>{const s=v.st||{},isD=v.kind==='Cyberdeck';const nb=v.notes.map(n=>`<div class=m>${esc(n)}</div>`).join(''),mt=v.mounts.length?`<div class=mnt>${v.mounts.map(vwr).join('')}</div>`:'';
     const prog=isD?`<div class=prog><span class=m>Programmes</span>${[...v.prog,...Array(Math.max(0,5-v.prog.length)).fill('')].map(x=>`<div class=pl>${esc(x)}</div>`).join('')}</div>`:'';
     let m='';
     if(isD){if(s.firewall!=null){const F=+s.firewall||0;m=mon([F,F+3,F+6])}}
     else if(s.structure!=null){const S=+s.structure||0,B=+s.blindage||0;m=mon([S+B,2*S+B,3*S+B])}
     return `<div class="card${m?' vc2':''}"><span class=lv>niv. ${v.niveau}</span><div class=vl>${v.type?`<em style="color:${tcol(v.kind)};background:${tcol(v.kind)}1f">${esc(v.type)}</em> `:''}<b>${esc(v.nom)}</b><div class=st>${Object.entries(s).map(([k,x])=>`<span>${STL[k]||k} <i>${x}</i></span>`).join('')}</div>${prog}${nb}${mt}</div>${m}</div>`};
-  const vsec=(t,k)=>{const h=D.vehs.filter(v=>v.kind===k).map(vc).join('');return h?sec(t,`<div class=cc>${h}</div>`,'brk'):''};
+  const vsec=(t,k)=>{const h=D.vehs.filter(v=>v.kind===k).map(vc).join('');return h?sec(t,`<div class="cc vgrid">${h}</div>`,'brk'):''};
   /* blessures et armure */
-  const fo=av('force'),bp=D.bon.phys,bm=D.bon.ment,aP=D.bon.armP,arv=ar.valeur&&act(ar)?ar.valeur:0,cx=D.bon.cases;
+  const fo=av('force'),bp=D.bon.phys,bm=D.bon.ment,aP=D.bon.armP,cx=D.bon.cases;
   const nt=n=>n?` <i class=m>(+${n} atout)</i>`:'';
   const tr=(n,b)=>`<tr><td>${n}</td><td class=cl>${b}</td><td class=cg>${b+3}</td><td class=ci>${b+6}</td></tr>`;
-  const bless=`<table class=bl><tr><th></th><th class=tl>Légère<br>${bxs(2,cx.legere,'l')}</th><th class=tg>Grave<br>${bxs(1,cx.grave,'g')}</th><th class=ti>Incap.<br>${bxs(1,cx.incap,'i')}</th></tr>${tr('Sans armure'+nt(bp),fo+bp)}${tr(esc(ar.nom||'Armure')+' +'+arv+nt(bp+aP),fo+arv+bp+aP)}${tr('Mental'+nt(bm),av('volonte')+bm)}</table>`;
+  const bless=`<table class=bl><tr><th></th><th class=tl>Légère<br>${bxs(2,cx.legere,'l')}</th><th class=tg>Grave<br>${bxs(1,cx.grave,'g')}</th><th class=ti>Incap.<br>${bxs(1,cx.incap,'i')}</th></tr>${tr('Sans armure'+nt(bp),fo+bp)}${(p.armures||[]).filter(a=>act(a)).map(a=>tr(esc(a.nom||'Armure')+' +'+(a.valeur||0)+nt(bp+aP),fo+(+a.valeur||0)+bp+aP)).join('')}${tr('Mental'+nt(bm),av('volonte')+bm)}</table>`;
   /* identité */
   const fld=(l,v,c)=>`<div class="fld${c?' '+c:''}"><span>${l}</span><b>${esc(v||'')}</b></div>`;
   const kws=[I.metatype,...(I.mots_cles||[])].filter(Boolean).map(k=>`<span class=kwd>${esc(k)}</span>`).join('');
@@ -278,17 +281,17 @@ function render(p){
 <div class=hd><div><h1>${esc(I.pseudo)}</h1><div class=sub>${esc(I.nom)}</div></div><div class=logo>Shadowrun Anarchy 2.0</div></div>
 <div class=r2><div class=por>${pic?`<img src="${esc(pic)}" style="object-position:${pos};transform:scale(${(+I.portrait_zoom||100)/100});transform-origin:${pos}">`:'Portrait'}</div>
 <div class=mid><div class="fr attrs">${Object.keys(AT).map(k=>`<div class=attr><small><span class=ac>${AN[k][0]}</span>${AN[k][1]}</small><b>${at[k]??''}</b><i>max ${mx[AT_I(k)]??'?'}</i></div>`).join('')}<div class="attr o"><small><span class=ac>Anarchy</span></small><b>${I.metatype==='Humain'?4:3}</b><i>&nbsp;</i></div><div class="attr o"><small><span class=ac>Essence</span></small><b>${D.ess}</b><i>&nbsp;</i></div></div>
-<div class=fr><div class=idg>${fld('Train de vie',I.train_de_vie,'s3')}${fld('Nuyens (dispo / total)',nuy,'s3')}${fld('Date de naissance',I.naissance,'s2')}${fld('Taille',I.taille,'s2')}${fld('Poids',I.poids,'s2')}${fld('Particularités',I.particularites,'s6')}</div></div></div>
+<div class=fr><div class=idg>${fld('Train de vie',I.train_de_vie,'s3')}${fld('Nuyens (dispo / total)',nuy,'s3')}${fld('Naissance',I.naissance,'s2')}${fld('Taille',I.taille,'s2')}${fld('Poids',I.poids,'s2')}${fld('Particularités',I.particularites,'s6')}</div></div></div>
 <div class=stretch>${sec('Mots-clés',kws)}</div></div>
 <div class=r3>${sec('Répliques',li(I.repliques||[]))}${sec('Comportements',li(I.comportements||[]))}</div>
-<div class=r4><div>${sec('Compétences',`<table class=ct><colgroup><col><col style="width:9mm"><col style="width:10mm"><col style="width:11mm"><col style="width:12mm"></colgroup><thead><tr><th>Compétence</th><th>Ind.</th><th>Att.</th><th>RD</th><th>RR</th></tr></thead>${comps}</table>`)}${sec('Connaissances',li((p.connaissances||[]).filter(c=>act(c)&&c.nom).map(c=>c.nom),'cols2'))}</div>
-<div>${sec('Atouts',atouts)}${sec('Armes',armes)}</div></div>
-${sec('Sorts',spl(D.sorts,1))}${sec('Formes complexes',spl(D.formes))}
-<div class=r5>${sec('Blessures et armure',bless)}${sec('Réduction de risque — niveau de risque',RRT)}</div>
+<div class=ra><div>${sec('Compétences',comps)}</div>
+<div>${sec('Niveau de risque',RRT)}${sec('Connaissances',li((p.connaissances||[]).filter(c=>act(c)&&c.nom).map(c=>c.nom)))}${sec('Blessures et armure',bless)}</div></div>
+<div class=rb><div>${sec('Atouts',atouts)}</div><div>${sec('Armes',armes)}</div></div>
+
 </div><div class=p2><div class=hd2><span>${esc(I.pseudo)}</span><span>2/2</span></div>
-${vsec('Véhicules','Véhicule')}${vsec('Drones','Drone')}${vsec('Cyberdecks','Cyberdeck')}
-${sec('Équipement',(()=>{const e=(p.equipement||[]).map((x,i)=>({x,i})).filter(o=>act(o.x)&&o.x.nom);return e.length?`<ul>${e.map(o=>`<li><b>${esc(o.x.nom)}</b>${o.x.description?` — ${esc(o.x.description)}`:''}${o.x.offert?' <span class=m>(offert)</span>':''}${badge(D.eqBadge[o.i])}</li>`).join('')}</ul>`:''})(),'')}
-<div class=r7>${sec('Contacts',contacts)}${sec('Nuyens',nuyBlock)}</div>
+<div class=mv>${sec('Sorts',spl(D.sorts,1))}${sec('Formes complexes',spl(D.formes))}</div><div class=mv>${vsec('Véhicules','Véhicule')}${vsec('Drones','Drone')}${vsec('Cyberdecks','Cyberdeck')}</div>
+<div class=mv>${sec('Équipement',(()=>{const e=(p.equipement||[]).map((x,i)=>({x,i})).filter(o=>act(o.x)&&o.x.nom);return e.length?`<ul>${e.map(o=>`<li><b>${esc(o.x.nom)}</b>${o.x.description?` — ${esc(o.x.description)}`:''}${o.x.offert?' <span class=m>(offert)</span>':''}${badge(D.eqBadge[o.i])}</li>`).join('')}</ul>`:''})(),'')}</div>
+${sec('Contacts',contacts)}
 ${sec('Notes','<div class=lines style="min-height:46mm"></div>')}</div></div>`;
   document.title=(I.pseudo||'Fiche')+' – fiche Anarchy';
   $('#warns').innerHTML=D.W.map(w=>`<div class=warn>${esc(w)}</div>`).join('');
@@ -323,6 +326,7 @@ const VMOD=[
 const TSORT=['combat','détection','illusion','manipulation','santé'];
 const WT=[
 {id:'nues',nom:'Mains nues',vd:'FOR',p:['OK','-','-','-'],sp:['mains nues']},
+{id:'injecteur',nom:'Injecteur',vd:'',p:['OK','-','-','-'],sp:['mains nues']},
 {id:'courtes',nom:'Armes courtes',vd:'FOR+1',p:['OK','-','-','-'],sp:['lames','armes contondantes','mains nues']},
 {id:'longues',nom:'Armes longues',vd:'FOR+2',p:['OK','-','-','-'],sp:['lames','armes contondantes']},
 {id:'contact+',nom:'Armes de contact avancées',vd:5,p:['OK','-','-','-'],sp:['lames']},
@@ -344,15 +348,16 @@ const WT=[
 {id:'lgrenade',nom:'Lance-grenades',vd:7,p:['-','Dés','OK','OK'],spe:1,sp:['lance-grenades']},
 {id:'roquette',nom:'Lance-roquettes',vd:12,p:['-','-','Dés','OK'],spe:1,note:'anti-véhicules : VD 16',sp:['armes lourdes']}];
 const FAMS={m:['mains nues','lames','armes contondantes'],j:['armes de jet','armes de trait'],f:['pistolets','mitraillettes','fusils','armes lourdes','lance-grenades']};
-const WFAM={nues:'m',courtes:'m',longues:'m','contact+':'m',jet:'j',arc:'j',arbalete:'j',grenade:'j',gaz:'j',taser:'f',poche:'f',leger:'f',auto:'f',lourd:'f',mitraillette:'f',assaut:'f',shotgun:'f',precision:'f',mitrailleuse:'f',lgrenade:'f',roquette:'f'};
+const WFAM={injecteur:'m',nues:'m',courtes:'m',longues:'m','contact+':'m',jet:'j',arc:'j',arbalete:'j',grenade:'j',gaz:'j',taser:'f',poche:'f',leger:'f',auto:'f',lourd:'f',mitraillette:'f',assaut:'f',shotgun:'f',precision:'f',mitrailleuse:'f',lgrenade:'f',roquette:'f'};
 const wExo=(p=PJ)=>{const c=(p.competences||[]).find(c=>/rapproch/.test(norm(c.nom)));return c?(c.specialites||[]).filter(t=>t.actif!==false&&norm(t.nom||'')==='arme exotique'&&t.detail).map(t=>`${t.nom} (${t.detail})`):[]};
-const wTox=x=>WFAM[x.id]==='f'||x.id==='grenade'||x.id==='gaz';
+const wTxForced=x=>x.id==='gaz'||x.id==='injecteur';
+const wTox=x=>['f','j'].includes(WFAM[x.id])||wTxForced(x);
 const wAllowed=(x,p)=>[...(FAMS[WFAM[x.id]]||x.sp),...(WFAM[x.id]==='m'?wExo(p):[]),'armes montées'];
 const wPN=a=>(a||[]).map(t=>t==='–'?'-':(t||''));
 const wVN=v=>String(v==null?'':v).toUpperCase().replace(/\s/g,'');
 function wtSync(w,keepCat,p){const x=WT.find(y=>y.id===w.type_arme);if(!x)return;
-w.vd=x.vd;w.portees=[...x.p];if(x.id==='gaz')w.toxine=true;else if(!wTox(x))delete w.toxine;if(w.monte_sur)w.specialisation='armes montées';
-if(!wAllowed(x,p).includes(w.specialisation))w.specialisation=x.sp[0];if(w.specialisation!=='armes montées')delete w.monte_sur;
+w.vd=x.vd;w.portees=[...x.p];if(wTxForced(x))w.toxine=true;else if(!wTox(x))delete w.toxine;if(w.monte_sur)w.specialisation='armes montées';
+if(!wAllowed(x,p).includes(w.specialisation))w.specialisation=x.sp[0];if(w.specialisation!=='armes montées'){delete w.monte_sur;delete w.monte_ref};
 if(!keepCat&&((w.categorie||'arme')==='arme'||w.categorie==='arme_specialiste'))w.categorie=x.spe?'arme_specialiste':'arme'}
 function wtNorm(w,p){const c=w.categorie||'arme';if(c!=='arme'&&c!=='arme_specialiste')return;
 if(w.exotique){if(norm(w.specialisation||'')==='arme exotique')w.specialisation=`arme exotique (${w.exotique})`;delete w.exotique}
@@ -416,6 +421,21 @@ if(a.type!=='Cyberdeck'||!a.stats)return;const f=(a.stats.firewall==null?1:a.sta
 if(f<0||f>5||t<0||t>5)return;
 const ef=(a.effets||[]).filter(e=>!e.stat);if(f)ef.push({pre:'fw',qte:f});if(t)ef.push({pre:'att',qte:t});
 a.effets=ef;delete a.stats;ef.forEach(e=>{if(e.pre)syncEf(e)})}
+const uid=()=>Math.random().toString(36).slice(2,8);
+function refItems(p){const L=[];(p.armes||[]).filter(w=>['arme','arme_specialiste'].includes(w.categorie||'arme')).forEach(w=>L.push({g:'Armes',id:w.id,nom:w.nom}));(p.armures||[]).forEach(a=>{if(a.nom)L.push({g:'Armures',id:a.id,nom:a.nom})});(p.equipement||[]).forEach(e=>L.push({g:'Équipement',id:e.id,nom:e.nom}));return L}
+function mountOpts(p,w){const H=(p.atouts||[]).filter(a=>/Véhicule|Drone|Cyberdeck/.test(a.type||'')&&a.id);return `<option value="">${w.monte_ref?'—':(w.monte_sur?esc(w.monte_sur)+' (non lié)':'—')}</option>`+H.map(a=>`<option value="${a.id}"${w.monte_ref===a.id?' selected':''}>${esc(a.nom||'(sans nom)')}</option>`).join('')}
+function syncRefs(p){(p.atouts||[]).forEach(a=>{if(!a.id)a.id=uid()});(p.armures||[]).forEach(a=>{if(!a.id)a.id=uid()});(p.armes||[]).forEach(w=>{if(!w.id)w.id=uid()});(p.equipement||[]).forEach(e=>{if(!e.id)e.id=uid()});
+const L=refItems(p);
+for(const a of p.atouts||[]){if(a.type!=='Équipement')continue;if(a.ref==='armure')a.ref=(p.armures&&p.armures[0]&&p.armures[0].id)||undefined;if(!a.ref)delete a.ref;
+if(!a.ref&&a.nom){const k=strip(a.nom),it=L.find(x=>x.nom&&strip(x.nom)===k)||L.find(x=>x.nom&&near(strip(x.nom),k));if(it)a.ref=it.id}
+if(a.ref){const it=L.find(x=>x.id===a.ref);if(it){const n=it.nom||'équipement sans nom';if(a.nom!==n)a.nom=n}else delete a.ref}}
+const Hs=(p.atouts||[]).filter(a=>/Véhicule|Drone|Cyberdeck/.test(a.type||''));
+for(const w of p.armes||[]){if(loose(w.specialisation||'')!==loose('armes montées')){delete w.monte_ref;continue}
+if(!w.monte_ref&&w.monte_sur){const k=strip(w.monte_sur),h=Hs.find(a=>strip(a.nom)===k)||Hs.find(a=>near(strip(a.nom),k));if(h)w.monte_ref=h.id}
+if(w.monte_ref){const h=Hs.find(a=>a.id===w.monte_ref);if(h){if(w.monte_sur!==h.nom)w.monte_sur=h.nom}else delete w.monte_ref}}}
+function arefOpts(p,a){const L=refItems(p),g={};L.forEach(x=>(g[x.g]=g[x.g]||[]).push(x));
+return (a.ref?'':`<option value="" selected>${a.nom?esc(a.nom)+' (non lié)':'— choisir —'}</option>`)+Object.keys(g).map(k=>`<optgroup label="${k}">${g[k].map(x=>`<option value="${x.id}"${a.ref===x.id?' selected':''}>${esc(x.nom||'équipement sans nom')}</option>`).join('')}</optgroup>`).join('')+'<option value="__new">+ Nouvel équipement</option>'}
+function updAref(){$$('[data-act=wmount]').forEach(sel=>{const w=PJ.armes[+sel.dataset.i];if(!w)return;const h=mountOpts(PJ,w);if(sel._h!==h){sel.innerHTML=h;sel._h=h}});$$('[data-act=aref]').forEach(sel=>{const a=PJ.atouts[+sel.dataset.i];if(!a)return;const h=arefOpts(PJ,a);if(sel._h!==h){sel.innerHTML=h;sel._h=h}})}
 function syncVeh(a){const v=a.vehicule;if(!v)return;const b=v.base||{};
 if(v.plus||v.volant!==undefined){a.effets=a.effets||[];const M={autopilote:'vap',maniabilite:'vman',vitesse:'vvit',blindage:'vbl'};for(const k in M)if(v.plus&&v.plus[k]>0){const e={pre:M[k],qte:v.plus[k]};syncEf(e);a.effets.push(e)}if(v.volant){const e={pre:'vvol',qte:1};syncEf(e);a.effets.push(e)}delete v.plus;delete v.volant}
 if(v.modele===undefined){const c=VMOD.filter(y=>y.s===b.structure&&y.m===b.maniabilite&&y.v===b.vitesse);const x=c.find(y=>y.k===a.type);v.modele=x?x.id:'perso'}
@@ -465,9 +485,12 @@ function normalize(p){
   out.forEach(c=>{c.specialites=c.specialites||[];c.indice=c.indice||0;if(c.actif===undefined)c.actif=true;c.specialites.forEach(s=>{if(s.actif===undefined)s.actif=true})});
   p.competences=out;p.competences.forEach(c=>c.specialites.forEach(s=>{if(norm(s.nom||'')==='formes compexes')s.nom='formes complexes'}));
   p.contacts=p.contacts||[];p.connaissances=p.connaissances||[];p.atouts=p.atouts||[];
-  p.atouts.forEach(migVeh);p.atouts.forEach(migDeck);p.atouts.forEach(a=>{const pr=ATYPES.find(x=>x[0]===a.type);if(pr&&!a.type_perso&&!['Éveil','Trait'].includes(a.type)){a.niveau_base=pr[1];a.perte_essence=pr[2]}});p.atouts.forEach(a=>{if(a.vehicule){a.vehicule.base=Object.assign({structure:4,maniabilite:4,vitesse:4},a.vehicule.base);}});p.atouts.forEach(syncVeh);p.armes=p.armes||[];p.armes.forEach(w=>wtNorm(w,p));p.atouts.forEach(a=>(a.effets||[]).forEach(fixEf));
+  p.atouts.forEach(migVeh);p.atouts.forEach(migDeck);p.atouts.forEach(a=>{const pr=ATYPES.find(x=>x[0]===a.type);if(pr&&!a.type_perso&&!['Éveil','Trait'].includes(a.type)){a.niveau_base=pr[1];a.perte_essence=pr[2]}});p.atouts.forEach(a=>{if(a.vehicule){a.vehicule.base=Object.assign({structure:4,maniabilite:4,vitesse:4},a.vehicule.base);}});p.atouts.forEach(syncVeh);p.armes=p.armes||[];p.armes.forEach(w=>wtNorm(w,p));syncRefs(p);p.atouts.forEach(a=>(a.effets||[]).forEach(fixEf));
   p.equipement=p.equipement||[{nom:'Faux SIN',actif:true,offert:true},{nom:'Commlink',actif:true,offert:true}];
-  p.armure=Object.assign({nom:'',valeur:p.armure?0:3,actif:true},p.armure);
+  {const L=Array.isArray(p.armures)?p.armures:[];
+   if(!Array.isArray(p.armures)){if(p.armure)L.push({nom:p.armure.nom||'',valeur:p.armure.valeur==null?0:p.armure.valeur,actif:p.armure.actif!==false});else L.push({nom:'',valeur:3,actif:true})}
+   p.armures=L;delete p.armure;
+   p.equipement=(p.equipement||[]).filter(e=>{if(+e.armure>0){L.push({nom:e.nom||'',valeur:+e.armure,actif:e.actif!==false});return false}delete e.armure;return true})}
   return p;
 }
 const maxOf=p=>{const m=p.attributs_max||META[p.identite.metatype];return KEYS.map((k,i)=>m?(Array.isArray(m)?m[i]:m[k]):null)};
@@ -482,7 +505,8 @@ function costs(p){
   C.atouts=p.atouts.map(a=>({niv:lvl(a),cost:on(a)?5000*lvl(a):0}));
   C.armes=p.armes.map(w=>on(w)?(w.categorie==='arme_specialiste'||w.categorie==='sort'||w.categorie==='forme_complexe'?5000:2500):0);
   C.equip=p.equipement.map(e=>e.offert?null:on(e)?2500:0);
-  C.armureCost=on(p.armure)?2500*(p.armure.valeur||0):0;
+  C.armures=p.armures.map(a=>on(a)?2500*(a.valeur||0):0);
+  C.armureCost=C.armures.reduce((t,x)=>t+x,0);
   const sum=a=>a.reduce((t,x)=>t+(x||0),0);
   C.att=sum(C.attCost);C.compT=sum(C.comp.map(c=>c.cost));C.spec=sum(C.comp.map(c=>sum(c.specs.map(s=>s.cost))));
   C.conn=2500*p.connaissances.filter(c=>on(c)&&c.nom).length;C.at=sum(C.atouts.map(a=>a.cost));
@@ -558,7 +582,7 @@ else body=`<input class=n data-p="${pre}.texte" type=text placeholder="Effet (te
     return `<div class="row sp ef">${sel}${st}</div>${inf?`<div class="row sp">${inf}</div>`:''}`};
 
   const atRow=(a,i)=>{const pr=ATYPES.find(x=>x[0]===a.type),cu=a.type_perso||(a.type&&!pr),sk=STK[a.type],fxB=pr&&!cu&&!['Éveil','Trait'].includes(a.type)&&a.niveau_base===pr[1],fxE=pr&&!cu&&(a.perte_essence||0)===pr[2];
-    return `<div class=cb data-row="atouts.${i}"><div class=row>${Ck(`atouts.${i}.actif`)}<select class=ty data-act=atype data-i=${i}>${opt([['','— type —'],...ATYPES.map(x=>[x[0],x[0]]),['__autre','Personnalisé…']],cu?'__autre':(a.type||''))}</select>${cu?`<input class=ty data-p="atouts.${i}.type" type=text placeholder="Type" value="${esc(a.type||'')}">`:''}<input class=nm data-p="atouts.${i}.nom" type=text placeholder="Nom de l’atout" value="${esc(a.nom)}">${fxB?`<span class=mini>base</span><b>${a.niveau_base}</b>`:`<span class=mini>base</span>${Nu(`atouts.${i}.niveau_base`,-10,30,1)}`}${fxE?(pr[2]?`<span class=mini>ess.</span><b>−${pr[2]}</b>`:''):`<span class=mini>ess.</span>${Nu(`atouts.${i}.perte_essence`,0,6,.25)}`}<span class=rdv data-v="atout.${i}.niv"></span><span class=cv data-v="atout.${i}.cost"></span><button class=btn data-act=delatout data-i=${i}>✕</button></div>
+    return `<div class=cb data-row="atouts.${i}"><div class=row>${Ck(`atouts.${i}.actif`)}<select class=ty data-act=atype data-i=${i}>${opt([['','— type —'],...ATYPES.map(x=>[x[0],x[0]]),['__autre','Personnalisé…']],cu?'__autre':(a.type||''))}</select>${cu?`<input class=ty data-p="atouts.${i}.type" type=text placeholder="Type" value="${esc(a.type||'')}">`:''}${a.type==='Équipement'?`<select class=nm data-act=aref data-i=${i}>${arefOpts(PJ,a)}</select>`:`<input class=nm data-p="atouts.${i}.nom" type=text placeholder="Nom de l’atout" value="${esc(a.nom)}">`}${fxB?`<span class=mini>base</span><b>${a.niveau_base}</b>`:`<span class=mini>base</span>${Nu(`atouts.${i}.niveau_base`,-10,30,1)}`}${fxE?(pr[2]?`<span class=mini>ess.</span><b>−${pr[2]}</b>`:''):`<span class=mini>ess.</span>${Nu(`atouts.${i}.perte_essence`,0,6,.25)}`}<span class=rdv data-v="atout.${i}.niv"></span><span class=cv data-v="atout.${i}.cost"></span><button class=btn data-act=delatout data-i=${i}>✕</button></div>
 ${a.vehicule?vEd(a,i):''}${a.type==='Cyberdeck'?`<div class="row sp ef"><span class=mini>Programmes (un par ligne)</span><textarea class=n data-l="atouts.${i}.programmes" style="height:44px">${esc((a.programmes||[]).join('\n'))}</textarea></div>`:''}${a.type==='Cyberdeck'&&!a.stats?`<div class="row sp"><div class=st><span>Firewall <i>${vStats(a).firewall}</i></span><span>Attaque <i>${vStats(a).attaque}</i></span></div><span class=mini>base : Firewall 1, Attaque 0 · améliorations par les effets « Firewall + » et « Attaque + »</span></div>`:''}${sk&&a.stats&&!a.vehicule?`<div class="row sp">${sk.map(k=>`<span class=mini>${STL[k]}</span>${Nu(`atouts.${i}.stats.${k}`,0,30)}`).join('')}</div>`:''}
 ${(a.effets||[]).map((e,j)=>efRow(i,j,e)).join('')}
 <select data-act=efadd data-i=${i} class=ty style="margin:3px 0 2px 20px;max-width:340px"><option value="">+ ajouter un effet ou un bonus…</option>${EFP.map((x,n)=>(!x.only||x.only.includes(a.type))?`<option value="${n}">${esc(x.l)}</option>`:'').join('')}</select></div>`};
@@ -570,12 +594,12 @@ ${(a.effets||[]).map((e,j)=>efRow(i,j,e)).join('')}
   const wArm=(w,i)=>{const cat=w.categorie||'arme',x=WT.find(y=>y.id===w.type_arme),mt=loose(w.specialisation||'')===loose('armes montées'),exo=norm(w.specialisation||'')==='arme exotique';
     const head=`<div class=row data-row="armes.${i}" style="flex-wrap:wrap">${Ck(`armes.${i}.actif`)}<input class=nm data-p="armes.${i}.nom" type=text placeholder="Nom" value="${esc(w.nom)}" style="flex:1 1 140px"><label class=mini><input type=checkbox data-act=wspe data-i=${i}${cat==='arme_specialiste'?' checked':''}> arme de spécialiste</label><span class=cv data-v="arme.${i}"></span><button class=btn data-act=delarme data-i=${i}>✕</button></div>`;
     const tsel=`<select class=ty data-act=wtype data-i=${i}>${opt([['','— type d’arme —'],...WT.map(y=>[y.id,y.nom+(y.spe?' (spé.)':'')])],w.type_arme||'')}</select>`,
-    msel=mt?`<span class=mini>montée sur</span><select class=ty data-act=wmount data-i=${i}>${opt([['','—'],...hosts.map(h=>[h,h])],w.monte_sur||'')}</select>`:'',
+    msel=mt?`<span class=mini>montée sur</span><select class=ty data-act=wmount data-i=${i}>${mountOpts(PJ,w)}</select>`:'',
     exi='';
     if(!x)return head+`<div class="row sp ef">${tsel}<span class=mini>VD</span><input data-p="armes.${i}.vd" type=text placeholder="7 ou FOR+2" value="${esc(w.vd??'')}" style="width:84px;flex:none"><span class=mini>spé.</span><input data-p="armes.${i}.specialisation" list=spes type=text placeholder="mains nues, lames…" value="${esc(w.specialisation||'')}" style="width:130px;flex:none">${exi}${msel}${wRng(w,i,null)}</div>`;
-    const tx=wTox(x),vdv=w.toxine?'<b>toxine</b>':`<b>${esc(w.vd)}</b>`,txc=tx?`<label class=mini><input type=checkbox data-act=wtox data-i=${i}${w.toxine?' checked':''}${x.id==='gaz'?' disabled':''}> toxine</label>`:'',txd=w.toxine?`<textarea data-p="armes.${i}.description" rows=2 placeholder="Toxine : effet, durée, résistance…" style="flex:1 1 100%">${esc(w.description||'')}</textarea>`:'',
+    const tx=wTox(x),vdv=w.toxine?'<b>toxine</b>':`<b>${esc(w.vd)}</b>`,txc=tx?`<label class=mini><input type=checkbox data-act=wtox data-i=${i}${w.toxine?' checked':''}${wTxForced(x)?' disabled':''}> toxine</label>`:'',txd=w.toxine?`<textarea data-p="armes.${i}.description" rows=2 placeholder="Toxine : effet, durée, résistance…" style="flex:1 1 100%">${esc(w.description||'')}</textarea>`:'',
     sp=`<select class=ty data-act=wspec data-i=${i}>${opt(wAllowed(x).map(y=>[y,y]),w.specialisation||'')}</select>`;
-    return head+`<div class="row sp ef">${tsel}<span class=mini>VD</span>${vdv}${txc}<span class=mini>spé.</span>${sp}${msel}${wRng(w,i,x)}${txd}</div>`};
+    return head+`<div class="row sp ef">${tsel}${w.toxine?'':`<span class=mini>VD</span>${vdv}`}${txc}<span class=mini>spé.</span>${sp}${msel}${wRng(w,i,x)}${txd}</div>`};
   const wSort=(w,i,form)=>`<div class="row sline" data-row="armes.${i}" style="align-items:flex-start">${Ck(`armes.${i}.actif`)}<input class=nm data-p="armes.${i}.nom" type=text placeholder="Nom" value="${esc(w.nom)}">${form?'':`<select class=ty data-p="armes.${i}.type_sort">${opt([['','type…'],...TSORT.map(y=>[y,y])],w.type_sort||'')}</select>`}<input class=sd data-p="armes.${i}.seuil" type=text placeholder="Seuil" value="${esc(w.seuil??'')}">${form?'':`<label class="mini vp"><input type=checkbox data-p="armes.${i}.aire"${w.aire?' checked':''}> aire d’effet</label><label class="mini vp"><input type=checkbox data-p="armes.${i}.taille"${w.taille?' checked':''}> selon taille</label>`}<textarea class=ds data-p="armes.${i}.description" rows=2 placeholder="Description">${esc(w.description||'')}</textarea><span class=cv data-v="arme.${i}"></span><button class=btn data-act=delarme data-i=${i}>✕</button></div>`;
   const ix=f=>p.armes.map((w,i)=>[w,i]).filter(([w])=>f(w.categorie||'arme')),hasC=n=>p.competences.some(c=>norm(c.nom)===n&&c.actif!==false),
     A=ix(c=>c==='arme'||c==='arme_specialiste'),S=ix(c=>c==='sort'),FC=ix(c=>c==='forme_complexe');
@@ -583,7 +607,9 @@ ${(a.effets||[]).map((e,j)=>efRow(i,j,e)).join('')}
    +(hasC('sorcellerie')||S.length?`<section><h2>Sorts <small class=pr>5 000 ¥ chacun</small></h2>${S.map(([w,i])=>wSort(w,i,false)).join('')}<button class=btn data-act=addarme data-c=sort>+ sort</button></section>`:'')
    +(hasC('technomancie')||FC.length?`<section><h2>Formes complexes <small class=pr>5 000 ¥ chacune</small></h2>${FC.map(([w,i])=>wSort(w,i,true)).join('')}<button class=btn data-act=addarme data-c=forme_complexe>+ forme complexe</button></section>`:'');
   const eRow=(e,i)=>`<div class=row data-row="equipement.${i}" style="flex-wrap:wrap">${Ck(`equipement.${i}.actif`)}<input class=nm data-p="equipement.${i}.nom" type=text placeholder="Équipement" value="${esc(e.nom)}" style="flex:1 1 130px"><input data-p="equipement.${i}.description" type=text placeholder="Description (facultatif)" value="${esc(e.description||'')}" style="flex:2 1 160px;min-width:110px"><label class=mini><input data-p="equipement.${i}.offert" type=checkbox${e.offert?' checked':''}> offert</label><span class=cv data-v="equip.${i}"></span><button class=btn data-act=delequip data-i=${i}>✕</button></div>`;
-  const eq=`<section><h2>Armure et équipement <small class=pr>armure 2 500 ¥ par point · équipement 2 500 ¥ par ligne (hors offert)</small></h2><div class=row data-row="armure">${Ck('armure.actif')}<input class=nm data-p="armure.nom" type=text placeholder="Armure portée" value="${esc(p.armure.nom)}"><span class=mini>points</span>${Nu('armure.valeur',0,20)}<span class=cv data-v=armure></span></div>${p.equipement.map(eRow).join('')}<button class=btn data-act=addequip style="margin-top:4px">+ équipement</button></section>`;
+  const aRow=(a,i)=>`<div class=row data-row="armures.${i}">${Ck(`armures.${i}.actif`)}<input class=nm data-p="armures.${i}.nom" type=text placeholder="Armure" value="${esc(a.nom||'')}"><span class=mini>points</span>${Nu(`armures.${i}.valeur`,0,20)}<span class=cv data-v="armure.${i}"></span><button class=btn data-act=delarmure data-i=${i}>✕</button></div>`;
+  const eq=`<section><h2>Armures <small class=pr>2 500 ¥ par point</small></h2>${p.armures.map(aRow).join('')}<button class=btn data-act=addarmure style="margin-top:4px">+ armure</button></section>
+<section><h2>Équipement <small class=pr>2 500 ¥ par ligne (hors offert)</small></h2>${p.equipement.map(eRow).join('')}<button class=btn data-act=addequip style="margin-top:4px">+ équipement</button></section>`;
   $('#form').innerHTML=`<div class=top2>${ident}<div>${niv}${att}</div></div>`+competences+conn+ctc+atouts+armes+eq;
 }
 
@@ -597,7 +623,7 @@ function vv_(k,C){const[t,a,b]=k.split('.');
 
 if(t==='arme')return fmt(C.armes[a]);
   if(t==='equip')return C.equip[a]===null?'offert':fmt(C.equip[a]);
-  if(t==='armure')return fmt(C.armureCost);
+  if(t==='armure')return fmt(C.armures[a]);
   if(t==='dispo')return fmt(C.dispo);
   if(t==='veh'){const at=PJ.atouts[a],s=vStats(at),v=at.vehicule,sum=(v.base.structure||0)+(v.base.maniabilite||0)+(v.base.vitesse||0),tg=v.micro?10:12;return sum===tg?'':'⚠ Répartition de base structure + maniabilité + vitesse : '+sum+' / '+tg+' ✖'}
   return '';
@@ -619,6 +645,7 @@ function panel(C,D){
 <section><h2>Limites</h2><ul>${L.join('')}</ul></section>${D.W.length?`<section><h2>Avertissements</h2><ul>${D.W.map(w=>`<li class=m>⚠ ${esc(w)}</li>`).join('')}</ul></section>`:''}`;
 }
 function refresh(){
+  syncRefs(PJ);updAref();
   const C=costs(PJ),D=derive(PJ);
   $$('[data-v]').forEach(el=>el.textContent=vv(el.dataset.v,C));
   $$('[data-t]').forEach(el=>{el.textContent='→ '+(get(PJ,el.dataset.t)||'')});
@@ -626,7 +653,8 @@ function refresh(){
   pvUpdate();
   panel(C,D);
 }
-function touch(rb){DIRTY=true;$('#dirty').textContent='● non enregistré';if(rb)buildForm();refresh();clearTimeout(SAVE_T);SAVE_T=setTimeout(()=>{try{localStorage.setItem('anarchy-pj',JSON.stringify(PJ))}catch(e){}},500)}
+const SER=(p,ind)=>JSON.stringify(p,(k,v)=>k[0]==='_'||k==='lien'?undefined:v,ind);
+function touch(rb){DIRTY=true;$('#dirty').textContent='● non enregistré';if(rb)buildForm();refresh();clearTimeout(SAVE_T);SAVE_T=setTimeout(()=>{try{localStorage.setItem('anarchy-pj',SER(PJ))}catch(e){}},500)}
 function rebuild(){buildForm();refresh()}
 
 function upd(t){
@@ -662,11 +690,12 @@ form.addEventListener('change',e=>{
     touch(true)}
   else if(a==='vmod'){const at=PJ.atouts[t.dataset.i],v=at.vehicule,x=VMOD.find(y=>y.id===t.value);if(t.value==='perso'){v.modele='perso'}else{if(!x)return;v.modele=x.id}syncVeh(at);touch(true)}
   else if(a==='wtype'){const w=PJ.armes[t.dataset.i],x=WT.find(y=>y.id===t.value);if(x){w.type_arme=x.id;wtSync(w)}else delete w.type_arme;touch(true)}
+  else if(a==='aref'){const at=PJ.atouts[t.dataset.i];if(t.value==='__new'){const e={id:uid(),nom:'équipement sans nom',actif:true,offert:false};PJ.equipement.push(e);at.ref=e.id}else if(t.value)at.ref=t.value;syncRefs(PJ);touch(true)}
   else if(a==='wtox'){const w=PJ.armes[t.dataset.i];if(t.checked)w.toxine=true;else delete w.toxine;touch(true)}
-  else if(a==='wspec'){const w=PJ.armes[t.dataset.i];w.specialisation=t.value;if(t.value!=='arme exotique')delete w.exotique;if(t.value!=='armes montées')delete w.monte_sur;touch(true)}
+  else if(a==='wspec'){const w=PJ.armes[t.dataset.i];w.specialisation=t.value;if(t.value!=='arme exotique')delete w.exotique;if(t.value!=='armes montées'){delete w.monte_sur;delete w.monte_ref}touch(true)}
   else if(a==='wspe'){PJ.armes[t.dataset.i].categorie=t.checked?'arme_specialiste':'arme';touch(true)}
   else if(/^competences\.\d+\.actif$/.test(t.dataset.p||'')&&['sorcellerie','technomancie'].includes(norm(PJ.competences[+t.dataset.p.split('.')[1]].nom))){upd(t);touch(true)}
-  else if(a==='wmount'){const w=PJ.armes[t.dataset.i];if(t.value)w.monte_sur=t.value;else delete w.monte_sur;touch(true)}
+  else if(a==='wmount'){const w=PJ.armes[t.dataset.i],h=PJ.atouts.find(x=>x.id===t.value);if(h){w.monte_ref=h.id;w.monte_sur=h.nom}else{delete w.monte_ref;delete w.monte_sur}touch(true)}
   else if(a==='wcat'){PJ.armes[t.dataset.i].categorie=t.value;touch(true)}
   else if(a==='port'){const w=PJ.armes[t.dataset.i];w.portees=w.portees||['','','',''];w.portees[+t.dataset.k]=t.value;if(w.portees.every(x=>!x))delete w.portees;touch()}
   else if(a==='efadd'){if(t.value==='')return;const x=EFP[+t.value];if(!x)return;const at=PJ.atouts[t.dataset.i];at.effets=at.effets||[];
@@ -698,6 +727,8 @@ form.addEventListener('click',e=>{
   else if(a==='delarme')PJ.armes.splice(i,1);
   else if(a==='addcontact')PJ.contacts.push({nom:'',type:'',description:'',actif:true});
   else if(a==='delcontact')PJ.contacts.splice(i,1);
+  else if(a==='addarmure')PJ.armures.push({nom:'',valeur:1,actif:true});
+  else if(a==='delarmure')PJ.armures.splice(i,1);
   else if(a==='addequip')PJ.equipement.push({nom:'',actif:true,offert:false});
   else if(a==='delequip')PJ.equipement.splice(i,1);
   else if(a==='addatout')PJ.atouts.push({type:'',nom:'',actif:true,niveau_base:0,effets:[]});
@@ -713,16 +744,24 @@ form.addEventListener('click',e=>{
 
 /* ---------------- onglets, fichiers ---------------- */
 const AVAIL=(297-16-9)*96/25.4;
+function zoomOf(el,min){
+  el.style.zoom='';
+  const box=document.createElement('div');box.style.cssText='position:absolute;left:-99999px;top:0;width:192mm;visibility:hidden';
+  const cl=el.cloneNode(true);cl.classList.add('meas');box.appendChild(cl);document.body.appendChild(box);
+  const hh=()=>cl.getBoundingClientRect().height;let z=1,h=hh();
+  while(h>AVAIL&&z>min){z=Math.max(min,z*Math.min(.98,AVAIL/h));cl.style.zoom=z;h=hh()}
+  document.body.removeChild(box);return z}
 function fitPages(){
   const sh=document.querySelector('#out .sheet');if(!sh)return;
-  [['.pg1',.7],['.p2',.7]].forEach(([q,min])=>{
-    const el=sh.querySelector(q);if(!el)return;el.style.zoom='';
-    const box=document.createElement('div');box.style.cssText='position:absolute;left:-99999px;top:0;width:192mm;visibility:hidden';
-    const cl=el.cloneNode(true);cl.classList.add('meas');box.appendChild(cl);document.body.appendChild(box);
-    const hh=()=>cl.getBoundingClientRect().height;let z=1,h=hh();
-    while(h>AVAIL&&z>min){z=Math.max(min,z*Math.min(.98,AVAIL/h));cl.style.zoom=z;h=hh()}
-    document.body.removeChild(box);if(z<1)el.style.zoom=z;
+  const p1=sh.querySelector('.pg1'),p2=sh.querySelector('.p2');if(!p1||!p2)return;
+  const hd=p2.querySelector('.hd2'),rem=[];
+  [...p2.querySelectorAll(':scope > .mv')].forEach(b=>{
+    if(!b.textContent.trim()){b.remove();return}
+    p1.appendChild(b);
+    if(zoomOf(p1,.7)<.95){rem.push(b);p2.appendChild(b)}
   });
+  rem.slice().reverse().forEach(b=>hd.after(b));
+  [[p1,.7],[p2,.7]].forEach(([el,min])=>{const z=zoomOf(el,min);if(z<1)el.style.zoom=z})
 }
 function showTab(t){
   $('#crea').hidden=t!=='crea';$('#mini').hidden=t!=='crea';$('#fiche').hidden=t!=='fiche';
@@ -735,11 +774,11 @@ function openText(t){
   try{const p=JSON.parse(t);
     if(p.format==='anarchy-fiche-gsheet')throw Error('Ancien format : réexporte la feuille avec ExportPJ.gs.');
     if(p.format!=='anarchy-pj')throw Error('Format inconnu (attendu : anarchy-pj).');
-    setPJ(p);$('#msg').textContent='';try{localStorage.setItem('anarchy-pj',JSON.stringify(PJ))}catch(e){}
+    setPJ(p);$('#msg').textContent='';try{localStorage.setItem('anarchy-pj',SER(PJ))}catch(e){}
   }catch(e){$('#msg').textContent='Erreur : '+e.message}
 }
 function save(){
-  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(PJ,null,2)],{type:'application/json'}));
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([SER(PJ,2)],{type:'application/json'}));
   a.download=(PJ.identite.pseudo||'pj').replace(/[^\w\-]+/g,'_')+'.json';a.click();DIRTY=false;$('#dirty').textContent='';
 }
 $$('.tab').forEach(b=>b.onclick=()=>showTab(b.dataset.tab));

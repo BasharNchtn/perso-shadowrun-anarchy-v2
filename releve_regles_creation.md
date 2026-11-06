@@ -15,9 +15,8 @@ Les règles sont reprises telles qu'écrites dans Shadowrun Anarchy v2.
 | **Atout** | 5 000 par niveau |
 | **Arme** | 2 500 ; **arme de spécialiste** 5 000 |
 | **Sort** ou **forme complexe** | 5 000 |
-| **Armure principale** | 2 500 par point (3 points par défaut = 7 500) |
-| **Autre équipement** | 2 500 par ligne remplie (le commlink et le faux SIN offerts sont gratuits) |
-| **Autre armure** | à saisir dans l'équipement : 2 500 **par point** (une armure de 2 = deux lignes) |
+| **Armure** | 2 500 par point (la première armure a 3 points par défaut = 7 500 ¥) ; on peut posséder plusieurs armures |
+| **Équipement** | 2 500 par ligne remplie (le commlink et le faux SIN de la ligne offerte sont gratuits) |
 
 Total dépensé = somme des postes.
 Nuyens disponibles = **base du niveau de jeu + gains** (voir section 3).
@@ -59,7 +58,7 @@ Les seuils se lisent dans l'ordre : blessure légère, grave, incapacitante. Cha
 | Moniteur | Légère | Grave | Incapacitante |
 |---|---|---|---|
 | Personnage, sans armure | Force | Force + 3 | Force + 6 |
-| Personnage, armure portée | Force + armure | Force + armure + 3 | Force + armure + 6 |
+| Personnage, avec une armure portée (une ligne par armure possédée) | Force + armure | Force + armure + 3 | Force + armure + 6 |
 | Personnage, mental | Volonté | Volonté + 3 | Volonté + 6 |
 | Véhicule ou drone (blindage toujours inclus) | Structure + Blindage | 2 × Structure + Blindage | 3 × Structure + Blindage |
 | Cyberdeck (moniteur matriciel) | Firewall | Firewall + 3 | Firewall + 6 |
@@ -88,7 +87,7 @@ Un métatype « Personnalisé » permet de saisir les maximums à la main.
 
 ### Autres listes
 - **Train de vie** : squatter, bas (par défaut), moyen, élevé.
-- **Type d'arme** : Arme, Arme de spécialiste, Forme complexe, Sort.
+- **Catégories** : armes (avec la case « arme de spécialiste »), sorts, formes complexes.
 
 ### Types d'atouts (niveau de base et perte d'Essence)
 
@@ -196,7 +195,7 @@ Le type d'arme **fixe** la VD et les portées (Contact / Courte / Moyenne / Long
 
 **Arme exotique** : une arme exotique n'est proposée comme spécialisation de l'arme que si le personnage l'a prise dans ses compétences (Combat rapproché). On peut en prendre plusieurs, en précisant le nom de chacune (fouet, tronçonneuse…), à 2 500 ¥ la spécialisation. L'effet « VD + sur arme exotique » s'applique à toutes les armes exotiques.
 
-**Toxine** : pour les armes à feu et les grenades, la VD peut être remplacée par une toxine, décrite par un texte (effet, durée, résistance…). Les grenades à gaz ont toujours une toxine, jamais de VD.
+**Toxine** : pour les armes à feu, les armes de jet et de trait (grenades comprises), la VD peut être remplacée par une toxine, décrite par un texte (effet, durée, résistance…) ; la VD n'est alors plus affichée. Les grenades à gaz et les injecteurs ont toujours une toxine, jamais de VD.
 
 **Modifier la base** : pour changer la VD ou les portées, il faut associer à l'arme un atout (de type Équipement, portant le nom de l'arme) avec les effets « VD +1 » (1 niveau par point, maximum 2) et « Portée » (2 niveaux par changement de portée). Les autres effets (narratif, VD +1 d'une autre nature…) se prennent dans cet atout, avec un effet personnalisé.
 
@@ -204,6 +203,7 @@ Le type d'arme **fixe** la VD et les portées (Contact / Courte / Moyenne / Long
 |---|---|---|---|---|---|---|
 | Mains nues | FOR | OK | – | – | – | mains nues |
 | Armes courtes | FOR+1 | OK | – | – | – | lames |
+| Injecteur | toxine | OK | – | – | – | mains nues |
 | Armes longues | FOR+2 | OK | – | – | – | lames |
 | Armes de contact avancées | 5 | OK | – | – | – | lames |
 | Armes de jet | FOR+1 | OK | OK | Dés. | – | armes de jet |
@@ -231,7 +231,7 @@ Le type d'arme **fixe** la VD et les portées (Contact / Courte / Moyenne / Long
 - Un sort a un **seuil** (texte libre) et une description sur plusieurs lignes.
 - Case **aire d'effet** : le seuil dépend de l'aire. Il se complète par un seuil pour l'aire : 0 pour affecter une personne, puis +1 succès par tranche de 3 mètres de diamètre.
 - Case **selon taille** : le seuil dépend de la taille de la cible. Il se complète par un seuil pour la taille : 0 pour une cible de la taille d'un métahumain, 1 pour celle d'une voiture, 2 pour celle d'un bus, etc.
-- Sur la fiche, une case cochée ajoute un indice « a » (aire d'effet) ou « t » (taille) au seuil, et la règle correspondante est rappelée sous les sorts.
+- Sur la fiche, une case cochée ajoute un exposant « a » (aire d'effet) ou « t » (taille) au seuil, et la règle correspondante est rappelée sous les sorts.
 - **Illusion** : les témoins d'un sort d'illusion peuvent tenter de le percer à jour s'ils ont des raisons de douter, avec un test de Perception + Logique (avec avantage si c'est évident) contre les succès nets du sort. Les sorts d'illusion, à l'inverse des autres, sont discrets même dans l'espace astral : pour les repérer, il faut réussir un test de Perception (astrale) + Logique contre les succès nets du sort. Ce rappel figure sur la fiche dès qu'un sort d'illusion est pris.
 
 ## 5. Règles de saisie dans l'appli
@@ -239,11 +239,13 @@ Le type d'arme **fixe** la VD et les portées (Contact / Courte / Moyenne / Long
 - Une spécialisation possédée coûte 2 500 et vaut l'indice de la compétence + 2.
 - Les compétences « spécifiques » (Conjuration, Sorcellerie, Enchantement, Technomancie) se cochent librement. Leur accès dépend de l'Éveil ou de la technomancie du personnage : c'est à la table de le vérifier à la main.
 - La spécialisation « arme exotique » se prend plusieurs fois, en précisant le nom de chaque arme exotique (fouet, tronçonneuse…), à 2 500 ¥ chacune.
+- Un atout de type Équipement se choisit parmi les armes, les armures et les équipements déjà présents ; « nouvel équipement » crée une ligne « équipement sans nom » dans la liste d'équipement. Le nom de l'atout suit celui de l'élément lié.
 - Les niveaux d'atout sont toujours des nombres entiers.
+- Armures et équipements sont deux catégories distinctes : une armure se saisit avec son nom et son niveau, et chaque armure active ajoute une ligne de seuils de blessure sur la fiche.
 - Un équipement peut avoir une description facultative (effet d'une toxine, usage d'un stim patch…), affichée sur la fiche sur la même ligne que son nom.
 - Sur la fiche, les compétences générales apparaissent même à 0 ; les compétences spécifiques (Conjuration, Sorcellerie, Enchantement, Technomancie) n'apparaissent que si elles sont cochées.
 - Le niveau d'un atout est la somme de son niveau de base et du niveau de ses effets. Il détermine le coût (5 000 par niveau). Il est recalculé automatiquement, sauf pour les effets personnalisés.
-- Une ligne par arme, par sort et par forme complexe.
+- Une ligne par arme, par sort et par forme complexe, chacun dans sa section.
 - Les RR d'un atout s'appliquent à la compétence ou spécialisation choisie dans l'effet.
 
 ---
