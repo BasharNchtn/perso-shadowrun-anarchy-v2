@@ -39,6 +39,17 @@ Une fois le personnage créé, l'onglet **Fiche** permet de consulter une versio
 
 La fiche est accessible directement dans le navigateur et peut être exportée en PDF pour être imprimée ou conservée sous forme numérique.
 
+### Plusieurs personnages en même temps
+
+- **Ouvrir** accepte plusieurs fichiers JSON à la fois ; **Dossier** ouvre d'un coup tous les personnages d'un dossier (les autres fichiers sont ignorés) ; **Nouveau** ajoute un personnage sans fermer les autres.
+- Une puce par personnage apparaît au-dessus des onglets : cliquer dessus change de personnage, **×** le ferme, et un « ● » signale les modifications non enregistrées.
+- Quand plusieurs personnages ouverts portent le même nom (par exemple deux versions d'un même personnage), les suivants sont numérotés dans l'ordre d'ouverture : « Lame », « Lame (2) »… Dans Comparer, l'en-tête de chaque colonne indique aussi le nom du fichier.
+- Chaque personnage garde son propre fichier : **Enregistrer** réécrit le bon fichier (voir ci-dessous), et **Tout enregistrer** enregistre d'un coup tous les personnages modifiés. Survoler une puce affiche le nom de son fichier.
+- Sur Chrome et Edge, les fichiers sont retrouvés après un rechargement de la page (le navigateur redemande alors l'accès à l'enregistrement). Ailleurs, l'enregistrement se fait par téléchargement.
+- L'onglet **Comparer** présente un tableau de synthèse, une colonne par personnage coché (une case par personnage ouvert permet de choisir lesquels comparer ; le tableau se met à jour quand on ouvre ou ferme un personnage) : essence et nuyens, attributs, compétences (indice, RD, RR, spécialisations), atouts, véhicules, armes et sorts. La meilleure valeur d'une ligne numérique est surlignée.
+- **Imprimer tous** (onglet Fiche) imprime toutes les fiches ouvertes à la suite, 2 pages A4 chacune.
+- Le navigateur conserve une copie de travail de tous les personnages ouverts.
+
 ### Sauvegarde des personnages en JSON
 
 Chaque personnage est représenté par **un unique fichier JSON**, qui constitue sa source de vérité.
@@ -48,7 +59,7 @@ L'application permet de :
 - Créer un nouveau personnage ;
 - Ouvrir un personnage existant depuis un fichier JSON ;
 - Modifier un personnage ;
-- Enregistrer le personnage dans un fichier JSON ;
+- Enregistrer le personnage dans un fichier JSON : sur Chrome et Edge, **Enregistrer** réécrit directement le fichier ouvert (et **Enregistrer sous** en crée un autre) ; sur les autres navigateurs, le fichier est téléchargé à chaque enregistrement ;
 - Générer sa fiche à partir des données enregistrées.
 
 Ce fonctionnement présente plusieurs avantages :
@@ -61,6 +72,9 @@ Ce fonctionnement présente plusieurs avantages :
 
 Le navigateur conserve également une copie de travail locale afin de retrouver le dernier personnage utilisé. Cette copie ne remplace pas la sauvegarde du fichier JSON.
 
+Le fichier porte un numéro de version de format (`version`). L'application refuse d'ouvrir un fichier créé avec une version plus récente et convertit automatiquement les versions plus anciennes. Le détail du format est décrit dans [`format_pj_v2.md`](format_pj_v2.md).
+
+
 ## Utilisation
 
 ### Prérequis
@@ -69,7 +83,7 @@ L'application fonctionne dans un navigateur Web moderne prenant en charge JavaSc
 
 Aucune installation de dépendance, aucun serveur applicatif et aucun compte utilisateur ne sont nécessaires pour l'utilisation courante.
 
-Une connexion Internet peut être nécessaire pour charger certaines ressources externes, notamment la police de caractères utilisée par l'interface.
+Aucune ressource externe n'est chargée : la police de caractères est embarquée dans `index.html`, et l'application fonctionne aussi hors ligne une fois la page enregistrée.
 
 ### Lancer l'application
 
@@ -96,6 +110,11 @@ Une connexion Internet peut être nécessaire pour charger certaines ressources 
 
 **Attention :** le stockage local du navigateur n'est pas un système de sauvegarde. Pour conserver durablement un personnage ou le transférer sur un autre ordinateur, il faut conserver son fichier JSON.
 
+## Documentation
+
+- [`format_pj_v2.md`](format_pj_v2.md) : description du format JSON d'un personnage.
+- [`releve_regles_creation.md`](releve_regles_creation.md) : règles de création utilisées (coûts, limites, effets, types d'armes et de véhicules).
+
 ## Données et confidentialité
 
 Les personnages sont gérés dans le navigateur et enregistrés dans des fichiers JSON que l'utilisateur conserve lui-même.
@@ -121,6 +140,7 @@ Ce projet s'appuie sur plusieurs ressources et travaux qui ont contribué à sa 
 - **Liste des atouts et équipements de Daegann** — [consulter le document PDF](https://daegann.fr/wp-content/uploads/aides/Liste_des_atouts_et_equipements.pdf). Cette compilation a été une ressource particulièrement utile pour le regroupement et la consultation des atouts et équipements. C'est une mine d'informations qui mérite d'être connue des joueurs de Shadowrun Anarchy.
 - **Fichier de création de personnage d'Eldar** — [consulter le tableur](https://docs.google.com/spreadsheets/d/10mrLjo72sCeGLPuJFLkJ_2f_TXZB8scV/edit?gid=1820517714#gid=1820517714). Ce tableur a constitué une inspiration initiale pour l'approche de création du personnage, ainsi qu'un premier travail de regroupement des règles. L'application actuelle s'en est ensuite éloignée sur de nombreux points.
 - **Fiche Anarchy 2.0 de Devine-1** — [consulter le projet sur GitHub](https://github.com/Devine-1/Fiche-Anarchy-2.0). Le principe d'une fiche de personnage décrite en JSON et transformée en page web a inspiré le concept général de cet outil. Il s'agit d'une inspiration de conception : aucun code de ce projet n'a été repris.
+- **Police Oswald** — sous-ensemble latin (graisses 500 et 700) embarqué dans `index.html`, sous licence [SIL Open Font License 1.1](https://openfontlicense.org/).
 
 ### Développement assisté par IA
 

@@ -7,7 +7,6 @@ Principes :
 - Chaque élément ajoutable a un champ **`actif`** : à `false`, il est grisé dans la création, n'est pas compté dans les coûts et n'apparaît pas sur la fiche, mais ses valeurs sont conservées.
 - Les nombres sont de vrais nombres JSON. Les niveaux d'atout sont des entiers.
 - Les armes, armures, équipements et atouts ont un **`id`** (texte court généré par l'application). Il sert à les relier entre eux : renommer un élément ne casse pas les liens.
-- Exemples : `pj_Marsy.json`, `pj_RoseRed.json`, `pj_Tilah.json`.
 
 ---
 
@@ -15,7 +14,7 @@ Principes :
 
 | Clé | Type | Contenu |
 |---|---|---|
-| `format`, `version` | texte, entier | `"anarchy-pj"`, `2` |
+| `format`, `version` | texte, entier | `"anarchy-pj"`, `2` : version du format. L'application refuse une version supérieure à la sienne ; une version absente est lue comme la version actuelle |
 | `identite` | objet | voir ci-dessous |
 | `niveau_de_jeu` | objet | voir ci-dessous |
 | `gains` | nombre | somme globale des gains, en nuyens, saisie à la main |

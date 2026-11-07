@@ -1,0 +1,14 @@
+{
+  "name": "perso-shadowrun-anarchy-v2",
+  "private": true,
+  "description": "Tests de l'application de création de personnages Shadowrun Anarchy 2.0",
+  "scripts": {
+    "test": "node tests/logique.js && node tests/fichier.js && node tests/multi.js && node tests/fichiers.js",
+    "test:impression": "node tests/impression.js"
+  },
+  "devDependencies": {
+    "@sparticuz/chromium": "*",
+    "jsdom": "*",
+    "puppeteer-core": "*"
+  }
+}
