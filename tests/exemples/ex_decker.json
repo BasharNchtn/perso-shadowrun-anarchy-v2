@@ -1,0 +1,428 @@
+{
+  "format": "anarchy-pj",
+  "version": 2,
+  "identite": {
+    "pseudo": "Pixel",
+    "nom": "Exemple fictif",
+    "metatype": "Humain",
+    "mots_cles": [
+      "Runner",
+      "Decker",
+      "Autodidacte"
+    ],
+    "train_de_vie": "Train de vie bas",
+    "naissance": "",
+    "taille": "",
+    "poids": "",
+    "particularites": "",
+    "repliques": [
+      "Donnez-moi dix minutes et un port libre.",
+      "Je ne touche à rien, je regarde."
+    ],
+    "comportements": [
+      "Méfiant avec les inconnus"
+    ]
+  },
+  "niveau_de_jeu": {
+    "nom": "Runner",
+    "limites_actives": true,
+    "nuyens": 375000,
+    "nb_attributs_max": 1,
+    "indice_max_competence": 5,
+    "rr_max_competence": 1,
+    "rr_max_specialisation": 2
+  },
+  "gains": 0,
+  "attributs": {
+    "force": 2,
+    "agilite": 3,
+    "volonte": 3,
+    "logique": 4,
+    "charisme": 3
+  },
+  "attributs_max": null,
+  "competences": [
+    {
+      "nom": "Armes à distance",
+      "actif": false,
+      "attribut": "agilite",
+      "indice": 0,
+      "specialites": []
+    },
+    {
+      "nom": "Athlétisme",
+      "actif": false,
+      "attribut": "force",
+      "indice": 0,
+      "specialites": []
+    },
+    {
+      "nom": "Combat rapproché",
+      "actif": false,
+      "attribut": "agilite",
+      "indice": 0,
+      "specialites": []
+    },
+    {
+      "nom": "Conjuration",
+      "actif": false,
+      "attribut": "logique",
+      "indice": 0,
+      "specialites": []
+    },
+    {
+      "nom": "Électronique",
+      "actif": true,
+      "attribut": "logique",
+      "indice": 5,
+      "specialites": [
+        {
+          "nom": "protection matricielle",
+          "actif": true,
+          "attribut": "logique"
+        }
+      ]
+    },
+    {
+      "nom": "Enchantement",
+      "actif": false,
+      "attribut": "volonte",
+      "indice": 0,
+      "specialites": []
+    },
+    {
+      "nom": "Furtivité",
+      "actif": true,
+      "attribut": "agilite",
+      "indice": 3,
+      "specialites": []
+    },
+    {
+      "nom": "Influence",
+      "actif": false,
+      "attribut": "charisme",
+      "indice": 0,
+      "specialites": []
+    },
+    {
+      "nom": "Ingénierie",
+      "actif": true,
+      "attribut": "logique",
+      "indice": 3,
+      "specialites": [
+        {
+          "nom": "C&R drones",
+          "actif": true,
+          "attribut": "logique"
+        }
+      ]
+    },
+    {
+      "nom": "Perception",
+      "actif": true,
+      "attribut": "logique",
+      "indice": 3,
+      "specialites": [
+        {
+          "nom": "matricielle",
+          "actif": true,
+          "attribut": "logique"
+        }
+      ]
+    },
+    {
+      "nom": "Pilotage",
+      "actif": false,
+      "attribut": "agilite",
+      "indice": 0,
+      "specialites": []
+    },
+    {
+      "nom": "Piratage",
+      "actif": true,
+      "attribut": "logique",
+      "indice": 5,
+      "specialites": [
+        {
+          "nom": "cybercombat",
+          "actif": true,
+          "attribut": "volonte"
+        },
+        {
+          "nom": "backdoor",
+          "actif": true,
+          "attribut": "logique"
+        }
+      ]
+    },
+    {
+      "nom": "Réseau",
+      "actif": true,
+      "attribut": "charisme",
+      "indice": 4,
+      "specialites": [
+        {
+          "nom": "matriciel",
+          "actif": true,
+          "attribut": "charisme"
+        }
+      ]
+    },
+    {
+      "nom": "Sorcellerie",
+      "actif": false,
+      "attribut": "volonte",
+      "indice": 0,
+      "specialites": []
+    },
+    {
+      "nom": "Survie",
+      "actif": false,
+      "attribut": "logique",
+      "indice": 0,
+      "specialites": []
+    },
+    {
+      "nom": "Technomancie",
+      "actif": false,
+      "attribut": "logique",
+      "indice": 0,
+      "specialites": []
+    }
+  ],
+  "contacts": [
+    {
+      "nom": "Le Colporteur",
+      "type": "Revendeur",
+      "description": "Vend du matériel qui n’existe pas.",
+      "actif": true
+    }
+  ],
+  "connaissances": [
+    {
+      "nom": "Matrice de Seattle",
+      "actif": true
+    },
+    {
+      "nom": "Marché gris",
+      "actif": true
+    },
+    {
+      "nom": "Culture hacker",
+      "actif": true
+    },
+    {
+      "nom": "Sociétés de Seattle",
+      "actif": true
+    }
+  ],
+  "atouts": [
+    {
+      "id": "at1",
+      "type": "Cyberdeck",
+      "nom": "Cyberdeck Hermès",
+      "actif": true,
+      "programmes": [
+        "Marteau",
+        "Bouclier",
+        "Fantôme",
+        "Détecteur",
+        "Éditeur"
+      ],
+      "effets": [
+        {
+          "pre": "fw",
+          "qte": 2,
+          "texte": "Firewall +2",
+          "niveau": 2
+        },
+        {
+          "pre": "att",
+          "qte": 2,
+          "texte": "Attaque +2",
+          "niveau": 2
+        }
+      ],
+      "niveau_base": 1,
+      "perte_essence": 0
+    },
+    {
+      "id": "at2",
+      "type": "Cyberware",
+      "nom": "Datajack",
+      "actif": true,
+      "effets": [
+        {
+          "pre": "ia2",
+          "qte": 1,
+          "texte": "Initiative astrale/matricielle +2",
+          "niveau": 3
+        }
+      ],
+      "niveau_base": 1,
+      "perte_essence": 1
+    },
+    {
+      "id": "at6",
+      "type": "Trait",
+      "nom": "Roi de la matrice",
+      "actif": true,
+      "niveau_base": 0,
+      "effets": [
+        {
+          "texte": "RR1 en piratage (cybercombat)",
+          "niveau": 2,
+          "bonus": {
+            "type": "rr",
+            "competence": "Piratage",
+            "specialisation": "cybercombat",
+            "valeur": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "at4",
+      "type": "Contact",
+      "nom": "Le Colporteur",
+      "actif": true,
+      "effets": [],
+      "niveau_base": 0,
+      "perte_essence": 0
+    },
+    {
+      "id": "at5",
+      "type": "Cyberware",
+      "nom": "Cortex accéléré",
+      "actif": true,
+      "effets": [
+        {
+          "pre": "ia1",
+          "qte": 1,
+          "texte": "Initiative astrale/matricielle +1",
+          "niveau": 1
+        }
+      ],
+      "niveau_base": 1,
+      "perte_essence": 1
+    },
+    {
+      "id": "at3",
+      "type": "Drone",
+      "nom": "Rat",
+      "actif": true,
+      "vehicule": {
+        "modele": "mini",
+        "micro": false,
+        "base": {
+          "structure": 1,
+          "maniabilite": 10,
+          "vitesse": 1
+        }
+      },
+      "effets": [
+        {
+          "pre": "vap",
+          "qte": 2,
+          "texte": "Autopilote +2",
+          "niveau": 2
+        },
+        {
+          "pre": "drn",
+          "qte": 1,
+          "texte": "Drone supplémentaire identique",
+          "niveau": 2
+        }
+      ],
+      "niveau_base": 1,
+      "perte_essence": 0
+    }
+  ],
+  "armes": [
+    {
+      "id": "ar_1",
+      "nom": "Pistolet léger",
+      "actif": true,
+      "categorie": "arme",
+      "type_arme": "leger",
+      "vd": 4,
+      "portees": [
+        "OK",
+        "OK",
+        "Dés",
+        "-"
+      ],
+      "specialisation": "pistolets"
+    }
+  ],
+  "equipement": [
+    {
+      "id": "eq_1",
+      "nom": "Outils de piratage",
+      "actif": true
+    },
+    {
+      "id": "eq_2",
+      "nom": "Commlink",
+      "actif": true
+    },
+    {
+      "id": "eqm_0",
+      "nom": "Kit de crochetage",
+      "actif": true
+    },
+    {
+      "id": "eqm_1",
+      "nom": "Lampe tactique",
+      "actif": true
+    },
+    {
+      "id": "eqm_2",
+      "nom": "Jumelles",
+      "actif": true
+    },
+    {
+      "id": "eqm_3",
+      "nom": "Briquet et corde",
+      "actif": true
+    },
+    {
+      "id": "eqm_4",
+      "nom": "Trousse de maquillage",
+      "actif": true
+    },
+    {
+      "id": "eqm_5",
+      "nom": "Gilet de survie",
+      "actif": true
+    },
+    {
+      "id": "eqm_6",
+      "nom": "Montre étanche",
+      "actif": true
+    },
+    {
+      "id": "eqm_7",
+      "nom": "Sac à dos renforcé",
+      "actif": true
+    },
+    {
+      "id": "eqm_8",
+      "nom": "Appareil photo",
+      "actif": true
+    },
+    {
+      "id": "eqm_9",
+      "nom": "Multitool",
+      "actif": true
+    }
+  ],
+  "armures": [
+    {
+      "id": "am_1",
+      "nom": "Veste doublée",
+      "valeur": 1,
+      "actif": true
+    }
+  ]
+}

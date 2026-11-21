@@ -1,0 +1,466 @@
+{
+  "format": "anarchy-pj",
+  "version": 2,
+  "identite": {
+    "pseudo": "Lame",
+    "nom": "Exemple fictif",
+    "metatype": "Ork",
+    "mots_cles": [
+      "Rue",
+      "Garde du corps",
+      "Ex-militaire"
+    ],
+    "train_de_vie": "Train de vie moyen",
+    "naissance": "",
+    "taille": "",
+    "poids": "",
+    "particularites": "",
+    "repliques": [
+      "On ne touche pas au client.",
+      "Je passe devant."
+    ],
+    "comportements": [
+      "Loyal jusqu’au bout"
+    ]
+  },
+  "niveau_de_jeu": {
+    "nom": "Runner",
+    "limites_actives": true,
+    "nuyens": 375000,
+    "nb_attributs_max": 1,
+    "indice_max_competence": 5,
+    "rr_max_competence": 1,
+    "rr_max_specialisation": 2
+  },
+  "gains": 0,
+  "attributs": {
+    "force": 5,
+    "agilite": 3,
+    "volonte": 3,
+    "logique": 3,
+    "charisme": 3
+  },
+  "attributs_max": null,
+  "competences": [
+    {
+      "nom": "Armes à distance",
+      "actif": true,
+      "attribut": "agilite",
+      "indice": 4,
+      "specialites": [
+        {
+          "nom": "fusils",
+          "actif": true,
+          "attribut": "agilite"
+        },
+        {
+          "nom": "pistolets",
+          "actif": true,
+          "attribut": "agilite"
+        }
+      ]
+    },
+    {
+      "nom": "Athlétisme",
+      "actif": true,
+      "attribut": "force",
+      "indice": 4,
+      "specialites": [
+        {
+          "nom": "course",
+          "actif": true,
+          "attribut": "force"
+        }
+      ]
+    },
+    {
+      "nom": "Combat rapproché",
+      "actif": true,
+      "attribut": "agilite",
+      "indice": 4,
+      "specialites": [
+        {
+          "nom": "lames",
+          "actif": true,
+          "attribut": "agilite"
+        }
+      ]
+    },
+    {
+      "nom": "Conjuration",
+      "actif": false,
+      "attribut": "logique",
+      "indice": 0,
+      "specialites": []
+    },
+    {
+      "nom": "Électronique",
+      "actif": false,
+      "attribut": "logique",
+      "indice": 0,
+      "specialites": []
+    },
+    {
+      "nom": "Enchantement",
+      "actif": false,
+      "attribut": "volonte",
+      "indice": 0,
+      "specialites": []
+    },
+    {
+      "nom": "Furtivité",
+      "actif": true,
+      "attribut": "agilite",
+      "indice": 3,
+      "specialites": []
+    },
+    {
+      "nom": "Influence",
+      "actif": false,
+      "attribut": "charisme",
+      "indice": 0,
+      "specialites": []
+    },
+    {
+      "nom": "Ingénierie",
+      "actif": false,
+      "attribut": "logique",
+      "indice": 0,
+      "specialites": []
+    },
+    {
+      "nom": "Perception",
+      "actif": true,
+      "attribut": "logique",
+      "indice": 3,
+      "specialites": []
+    },
+    {
+      "nom": "Pilotage",
+      "actif": false,
+      "attribut": "agilite",
+      "indice": 0,
+      "specialites": []
+    },
+    {
+      "nom": "Piratage",
+      "actif": false,
+      "attribut": "logique",
+      "indice": 0,
+      "specialites": []
+    },
+    {
+      "nom": "Réseau",
+      "actif": false,
+      "attribut": "charisme",
+      "indice": 0,
+      "specialites": []
+    },
+    {
+      "nom": "Sorcellerie",
+      "actif": false,
+      "attribut": "volonte",
+      "indice": 0,
+      "specialites": []
+    },
+    {
+      "nom": "Survie",
+      "actif": true,
+      "attribut": "logique",
+      "indice": 2,
+      "specialites": []
+    },
+    {
+      "nom": "Technomancie",
+      "actif": false,
+      "attribut": "logique",
+      "indice": 0,
+      "specialites": []
+    }
+  ],
+  "contacts": [
+    {
+      "nom": "Mme Vega",
+      "type": "Fixeuse",
+      "description": "Trouve du travail et ferme les yeux sur le reste.",
+      "actif": true
+    }
+  ],
+  "connaissances": [
+    {
+      "nom": "Quartiers de Seattle",
+      "actif": true
+    },
+    {
+      "nom": "Milieu des gardes du corps",
+      "actif": true
+    },
+    {
+      "nom": "Armurerie",
+      "actif": true
+    }
+  ],
+  "atouts": [
+    {
+      "id": "at1",
+      "type": "Cyberware",
+      "nom": "Réflexes câblés",
+      "actif": true,
+      "effets": [
+        {
+          "pre": "ip1",
+          "qte": 1,
+          "texte": "Initiative physique +1",
+          "niveau": 2
+        }
+      ],
+      "niveau_base": 1,
+      "perte_essence": 1
+    },
+    {
+      "id": "at3",
+      "type": "Cyberware",
+      "nom": "Peau renforcée",
+      "actif": true,
+      "effets": [
+        {
+          "texte": "Armure physique +1",
+          "niveau": 1,
+          "bonus": {
+            "type": "armure",
+            "portee": "physique",
+            "valeur": 1
+          }
+        }
+      ],
+      "niveau_base": 1,
+      "perte_essence": 1
+    },
+    {
+      "id": "at4",
+      "type": "Contact",
+      "nom": "Mme Vega",
+      "actif": true,
+      "effets": [],
+      "niveau_base": 0,
+      "perte_essence": 0
+    },
+    {
+      "id": "at5",
+      "type": "Bioware",
+      "nom": "Muscles tressés",
+      "actif": true,
+      "effets": [
+        {
+          "texte": "Case de blessure légère en plus",
+          "niveau": 3,
+          "bonus": {
+            "type": "case",
+            "gravite": "legere",
+            "valeur": 1
+          }
+        }
+      ],
+      "niveau_base": 2,
+      "perte_essence": 0.5
+    },
+    {
+      "id": "at7",
+      "type": "Véhicule",
+      "nom": "Pick-up blindé",
+      "actif": true,
+      "vehicule": {
+        "modele": "suv",
+        "micro": false,
+        "base": {
+          "structure": 7,
+          "maniabilite": 1,
+          "vitesse": 4
+        }
+      },
+      "effets": [
+        {
+          "pre": "vbl",
+          "qte": 2,
+          "texte": "Blindage +2",
+          "niveau": 2
+        }
+      ],
+      "niveau_base": 1,
+      "perte_essence": 0
+    },
+    {
+      "id": "at8",
+      "type": "Équipement",
+      "ref": "ar_1",
+      "nom": "Fusil d’assaut",
+      "actif": true,
+      "effets": [
+        {
+          "texte": "VD +1",
+          "niveau": 1,
+          "bonus": {
+            "type": "vd",
+            "cible": "Fusil d’assaut",
+            "valeur": 1
+          }
+        }
+      ],
+      "niveau_base": 0,
+      "perte_essence": 0
+    },
+    {
+      "id": "at2",
+      "type": "Trait",
+      "nom": "Vétéran",
+      "actif": true,
+      "niveau_base": 0,
+      "effets": [
+        {
+          "texte": "RR1 en combat rapproché (lames)",
+          "niveau": 2,
+          "bonus": {
+            "type": "rr",
+            "competence": "Combat rapproché",
+            "specialisation": "lames",
+            "valeur": 1
+          }
+        }
+      ]
+    }
+  ],
+  "armes": [
+    {
+      "id": "ar_4",
+      "nom": "Mitrailleuse du pick-up",
+      "actif": true,
+      "categorie": "arme",
+      "type_arme": "mitrailleuse",
+      "specialisation": "armes montées",
+      "monte_ref": "at7",
+      "monte_sur": "Pick-up blindé",
+      "vd": 9,
+      "portees": [
+        "-",
+        "OK",
+        "OK",
+        "OK"
+      ]
+    },
+    {
+      "id": "ar_3",
+      "nom": "Pistolet lourd",
+      "actif": true,
+      "categorie": "arme",
+      "type_arme": "lourd",
+      "specialisation": "pistolets",
+      "vd": 5,
+      "portees": [
+        "OK",
+        "OK",
+        "Dés",
+        "-"
+      ]
+    },
+    {
+      "id": "ar_1",
+      "nom": "Fusil d’assaut",
+      "actif": true,
+      "categorie": "arme",
+      "type_arme": "assaut",
+      "specialisation": "fusils",
+      "vd": 7,
+      "portees": [
+        "Dés",
+        "OK",
+        "OK",
+        "Dés"
+      ]
+    },
+    {
+      "id": "ar_2",
+      "nom": "Machette",
+      "actif": true,
+      "categorie": "arme",
+      "type_arme": "contact+",
+      "specialisation": "lames",
+      "vd": 5,
+      "portees": [
+        "OK",
+        "-",
+        "-",
+        "-"
+      ]
+    }
+  ],
+  "equipement": [
+    {
+      "id": "eq_1",
+      "nom": "Commlink",
+      "actif": true
+    },
+    {
+      "id": "eq_2",
+      "nom": "Trousse de soins",
+      "actif": true
+    },
+    {
+      "id": "eqm_0",
+      "nom": "Kit de crochetage",
+      "actif": true
+    },
+    {
+      "id": "eqm_1",
+      "nom": "Lampe tactique",
+      "actif": true
+    },
+    {
+      "id": "eqm_2",
+      "nom": "Jumelles",
+      "actif": true
+    },
+    {
+      "id": "eqm_3",
+      "nom": "Briquet et corde",
+      "actif": true
+    },
+    {
+      "id": "eqm_4",
+      "nom": "Trousse de maquillage",
+      "actif": true
+    },
+    {
+      "id": "eqm_5",
+      "nom": "Gilet de survie",
+      "actif": true
+    },
+    {
+      "id": "eqm_6",
+      "nom": "Montre étanche",
+      "actif": true
+    },
+    {
+      "id": "eqm_7",
+      "nom": "Sac à dos renforcé",
+      "actif": true
+    },
+    {
+      "id": "eqm_8",
+      "nom": "Appareil photo",
+      "actif": true
+    },
+    {
+      "id": "eqm_9",
+      "nom": "Multitool",
+      "actif": true
+    }
+  ],
+  "armures": [
+    {
+      "id": "am_1",
+      "nom": "Veste pare-balles",
+      "valeur": 2,
+      "actif": true
+    }
+  ]
+}

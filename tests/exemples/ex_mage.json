@@ -1,0 +1,380 @@
+{
+  "format": "anarchy-pj",
+  "version": 2,
+  "identite": {
+    "pseudo": "Ondine",
+    "nom": "Exemple fictif",
+    "metatype": "Elfe",
+    "mots_cles": [
+      "Runner",
+      "Mage de combat",
+      "Ancienne étudiante"
+    ],
+    "train_de_vie": "Train de vie moyen",
+    "naissance": "",
+    "taille": "",
+    "poids": "",
+    "particularites": "",
+    "repliques": [
+      "Laissez-moi respirer le mana.",
+      "Pas de panique, j’ai un sort pour ça."
+    ],
+    "comportements": [
+      "Curieuse jusqu’à l’imprudence"
+    ]
+  },
+  "niveau_de_jeu": {
+    "nom": "Runner",
+    "limites_actives": true,
+    "nuyens": 375000,
+    "nb_attributs_max": 1,
+    "indice_max_competence": 5,
+    "rr_max_competence": 1,
+    "rr_max_specialisation": 2
+  },
+  "gains": 0,
+  "attributs": {
+    "force": 3,
+    "agilite": 3,
+    "volonte": 3,
+    "logique": 3,
+    "charisme": 5
+  },
+  "attributs_max": null,
+  "competences": [
+    {
+      "nom": "Armes à distance",
+      "actif": false,
+      "attribut": "agilite",
+      "indice": 0,
+      "specialites": []
+    },
+    {
+      "nom": "Athlétisme",
+      "actif": false,
+      "attribut": "force",
+      "indice": 0,
+      "specialites": []
+    },
+    {
+      "nom": "Combat rapproché",
+      "actif": false,
+      "attribut": "agilite",
+      "indice": 0,
+      "specialites": []
+    },
+    {
+      "nom": "Conjuration",
+      "actif": true,
+      "attribut": "logique",
+      "indice": 3,
+      "specialites": []
+    },
+    {
+      "nom": "Électronique",
+      "actif": false,
+      "attribut": "logique",
+      "indice": 0,
+      "specialites": []
+    },
+    {
+      "nom": "Enchantement",
+      "actif": false,
+      "attribut": "volonte",
+      "indice": 0,
+      "specialites": []
+    },
+    {
+      "nom": "Furtivité",
+      "actif": false,
+      "attribut": "agilite",
+      "indice": 0,
+      "specialites": []
+    },
+    {
+      "nom": "Influence",
+      "actif": true,
+      "attribut": "charisme",
+      "indice": 3,
+      "specialites": [
+        {
+          "nom": "étiquette",
+          "actif": true,
+          "attribut": "charisme"
+        }
+      ]
+    },
+    {
+      "nom": "Ingénierie",
+      "actif": false,
+      "attribut": "logique",
+      "indice": 0,
+      "specialites": []
+    },
+    {
+      "nom": "Perception",
+      "actif": true,
+      "attribut": "logique",
+      "indice": 4,
+      "specialites": []
+    },
+    {
+      "nom": "Pilotage",
+      "actif": false,
+      "attribut": "agilite",
+      "indice": 0,
+      "specialites": []
+    },
+    {
+      "nom": "Piratage",
+      "actif": false,
+      "attribut": "logique",
+      "indice": 0,
+      "specialites": []
+    },
+    {
+      "nom": "Réseau",
+      "actif": true,
+      "attribut": "charisme",
+      "indice": 3,
+      "specialites": []
+    },
+    {
+      "nom": "Sorcellerie",
+      "actif": true,
+      "attribut": "volonte",
+      "indice": 5,
+      "specialites": [
+        {
+          "nom": "sorts de combat",
+          "actif": true,
+          "attribut": "volonte"
+        },
+        {
+          "nom": "sorts de manipulation",
+          "actif": true,
+          "attribut": "volonte"
+        }
+      ]
+    },
+    {
+      "nom": "Survie",
+      "actif": true,
+      "attribut": "logique",
+      "indice": 2,
+      "specialites": []
+    },
+    {
+      "nom": "Technomancie",
+      "actif": false,
+      "attribut": "logique",
+      "indice": 0,
+      "specialites": []
+    }
+  ],
+  "contacts": [
+    {
+      "nom": "Maître Kwan",
+      "type": "Mentor",
+      "description": "Ancien professeur, connaît tout le monde.",
+      "actif": true
+    }
+  ],
+  "connaissances": [
+    {
+      "nom": "Traditions magiques",
+      "actif": true
+    },
+    {
+      "nom": "Université de Seattle",
+      "actif": true
+    },
+    {
+      "nom": "Esprits et conjuration",
+      "actif": true
+    },
+    {
+      "nom": "Vie nocturne",
+      "actif": true
+    }
+  ],
+  "atouts": [
+    {
+      "id": "at1",
+      "type": "Éveil",
+      "nom": "Magicienne",
+      "actif": true,
+      "niveau_base": 2,
+      "effets": [
+        {
+          "pre": "maint",
+          "qte": 1,
+          "texte": "Sort maintenu supplémentaire",
+          "niveau": 2
+        },
+        {
+          "pre": "esp",
+          "qte": 1,
+          "texte": "Esprit supplémentaire",
+          "niveau": 3
+        }
+      ]
+    },
+    {
+      "id": "at2",
+      "type": "Initiation (magie)",
+      "nom": "Initiée",
+      "actif": true,
+      "effets": [
+        {
+          "pre": "ia2",
+          "qte": 1,
+          "texte": "Initiative astrale/matricielle +2",
+          "niveau": 3
+        }
+      ],
+      "niveau_base": 3,
+      "perte_essence": 0
+    },
+    {
+      "id": "at4",
+      "type": "Contact",
+      "nom": "Maître Kwan",
+      "actif": true,
+      "effets": [],
+      "niveau_base": 0,
+      "perte_essence": 0
+    },
+    {
+      "id": "at5",
+      "type": "Équipement",
+      "ref": "eq_1",
+      "nom": "Focus de sorcellerie",
+      "actif": true,
+      "effets": [
+        {
+          "pre": "nar",
+          "qte": 1,
+          "texte": "Effet narratif",
+          "niveau": 1
+        }
+      ],
+      "niveau_base": 0,
+      "perte_essence": 0
+    },
+    {
+      "id": "at3",
+      "type": "Trait",
+      "nom": "Curieuse",
+      "actif": true,
+      "niveau_base": 0,
+      "effets": [
+        {
+          "texte": "RR1 sur Sorcellerie (sorts de combat)",
+          "niveau": 2,
+          "bonus": {
+            "type": "rr",
+            "competence": "Sorcellerie",
+            "specialisation": "sorts de combat",
+            "valeur": 1
+          }
+        }
+      ]
+    }
+  ],
+  "armes": [
+    {
+      "id": "so_1",
+      "nom": "Éclair mana",
+      "actif": true,
+      "categorie": "sort",
+      "type_sort": "combat",
+      "seuil": "2",
+      "description": "Dégâts directs ignorant l’armure."
+    },
+    {
+      "id": "so_2",
+      "nom": "Soins",
+      "actif": true,
+      "categorie": "sort",
+      "type_sort": "santé",
+      "seuil": "3",
+      "description": "Soigne une blessure par succès."
+    },
+    {
+      "id": "so_3",
+      "nom": "Invisibilité",
+      "actif": true,
+      "categorie": "sort",
+      "type_sort": "illusion",
+      "seuil": "3",
+      "aire": true,
+      "description": "La cible devient invisible aux sens ordinaires."
+    }
+  ],
+  "equipement": [
+    {
+      "id": "eq_1",
+      "nom": "Focus de sorcellerie",
+      "actif": true
+    },
+    {
+      "id": "eq_2",
+      "nom": "Commlink",
+      "actif": true
+    },
+    {
+      "id": "eqm_0",
+      "nom": "Kit de crochetage",
+      "actif": true
+    },
+    {
+      "id": "eqm_1",
+      "nom": "Lampe tactique",
+      "actif": true
+    },
+    {
+      "id": "eqm_2",
+      "nom": "Jumelles",
+      "actif": true
+    },
+    {
+      "id": "eqm_3",
+      "nom": "Briquet et corde",
+      "actif": true
+    },
+    {
+      "id": "eqm_4",
+      "nom": "Trousse de maquillage",
+      "actif": true
+    },
+    {
+      "id": "eqm_5",
+      "nom": "Gilet de survie",
+      "actif": true
+    },
+    {
+      "id": "eqm_6",
+      "nom": "Montre étanche",
+      "actif": true
+    },
+    {
+      "id": "eqm_7",
+      "nom": "Sac à dos renforcé",
+      "actif": true
+    },
+    {
+      "id": "eqm_8",
+      "nom": "Appareil photo",
+      "actif": true
+    }
+  ],
+  "armures": [
+    {
+      "id": "am_1",
+      "nom": "Manteau renforcé",
+      "valeur": 1,
+      "actif": true
+    }
+  ]
+}

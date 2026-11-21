@@ -80,7 +80,7 @@ ul{margin:0;padding-left:13px}li{margin:0;break-inside:avoid}
 .p2{margin-top:12px;padding-top:8px;border-top:2px dashed #bbb}
 .hd2{font:700 15px var(--f);text-transform:uppercase;letter-spacing:1px;border-bottom:3px solid var(--y);margin-bottom:7px;padding-bottom:2px}
 .lines{background:repeating-linear-gradient(to bottom,transparent 0,transparent 17px,#e3d9a8 17px,#e3d9a8 18px)}
-@media screen and (max-width:800px){.sheet{width:auto;padding:12px}.r2,.r3,.r4,.r5,.r6,.r7,.ra,.rb{grid-template-columns:1fr}.cmp2{grid-template-columns:1fr}}
+@media screen and (max-width:800px){.planche .pcols{column-count:1}.planche{padding:8px}.sheet{width:auto;padding:12px}.r2,.r3,.r4,.r5,.r6,.r7,.ra,.rb{grid-template-columns:1fr}.cmp2{grid-template-columns:1fr}}
 .meas .ra{grid-template-columns:1.75fr 1fr}.meas .rb{grid-template-columns:1fr 1.15fr}.meas .cmp2{grid-template-columns:1fr 1fr}.meas .r2{grid-template-columns:30mm 1fr 38mm}.meas .r3{grid-template-columns:2fr 3fr}.meas .r4{grid-template-columns:1.05fr 1fr 1.2fr}.meas .r5{grid-template-columns:1.15fr 1fr}.meas .r6{grid-template-columns:1fr 1.25fr 1.25fr}.meas .r7{grid-template-columns:1fr 1fr}
 @media print{@page{size:A4;margin:8mm 9mm}body{background:#fff}.no-print{display:none!important}.sheet{margin:0;width:auto;min-height:0;padding:0}.p2{break-before:page;margin:0;padding:0;border:0}}
 
@@ -109,7 +109,7 @@ label.f{display:block;font:500 9.5px var(--f);color:var(--g);text-transform:uppe
 .pr{font:400 10px Arial,sans-serif;text-transform:none;letter-spacing:0;color:#6b5a1a;margin-left:8px}
 #mini{display:none}
 @media screen and (max-width:760px){body{padding-bottom:42px}#mini{display:block;position:fixed;left:0;right:0;bottom:0;background:var(--yb);border-top:2px solid var(--yd);padding:8px 12px;font:700 12px Arial,sans-serif;z-index:6}#crea{grid-template-columns:1fr}#panel{position:static;max-height:none;order:2}.g2{grid-template-columns:1fr}.g2 .w{grid-column:auto}}
-@media print{#crea,#topbar,#mini,#pjs,#fiche .bar{display:none!important}.sheet+.sheet{break-before:page}}
+@media print{#crea,#topbar,#mini,#pjs,#fiche .bar{display:none!important}.sheet+.sheet{break-before:page}.planche{margin:0;padding:0;max-width:none;width:auto;background:none}}
 
 #crea select.ty{width:auto;max-width:150px;flex:none}.mini{font-size:9.5px;color:var(--g);white-space:nowrap}.ef{flex-wrap:wrap}.ef .m{flex-basis:100%;margin-left:4px}.ef input[type=text]{flex:1;min-width:120px;width:auto}.cb .nm{min-width:110px}
 
@@ -160,7 +160,30 @@ label.f{display:block;font:500 9.5px var(--f);color:var(--g);text-transform:uppe
 .cmp td .l{display:block;line-height:1.35}.cmp td .l i{font-style:normal;color:var(--g);font-size:10.5px}
 .cmp td.n{color:var(--g)}
 #comp .csel{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;margin:0 0 8px;font-size:13px}
-#comp .csel b{color:#fff}
+#fmodes{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;margin:0 0 6px;font-size:13px}
+#fmodes label{color:var(--k);display:inline-flex;gap:5px;align-items:center;background:#fff;border:1px solid var(--ln);border-radius:6px;padding:4px 9px;cursor:pointer}
+#fmodes .sep{flex-basis:100%;height:0}
+.planche{max-width:210mm;margin:10px auto;padding:8mm 9mm;background:#fff;font-size:8.5px;line-height:1.3}
+.planche .pcols{column-count:2;column-gap:7px}
+.planche .pn{color:var(--g);font-size:8px;margin-top:2px}
+.pnj{display:block;margin:0 0 7px;border:1.5px solid var(--yd);border-radius:8px;overflow:hidden;background:#fff;break-inside:avoid;page-break-inside:avoid}
+.pnj>header{background:var(--yl);padding:3px 7px;display:flex;align-items:baseline;gap:6px;border-bottom:1px solid var(--yd)}
+.pnj>header b{font:700 13px var(--f);text-transform:uppercase;letter-spacing:.3px}
+.pnj>header span{color:var(--g);font-size:8px;flex:1}
+.pnj>header i{font-style:normal;font:700 8px var(--f);border:1px solid var(--yd);border-radius:4px;padding:0 4px;background:#fff}
+.pnj .pb{padding:3px 7px;border-bottom:1px dotted var(--ln)}.pnj .pb:last-child{border-bottom:0}
+.pnj .at5{display:flex;gap:3px}.pnj .at5 span{flex:1;text-align:center;background:#E4EBF3;border-radius:4px;padding:1px 0;font-size:7.5px;color:var(--g)}.pnj .at5 b{display:block;font-size:12px;color:var(--k)}
+.pnj .pk{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}.pnj .pk div{display:flex;gap:4px;align-items:baseline;border-bottom:1px solid #f1ede0;padding:.5px 0}
+.pnj .pk b.v{font-size:10px;min-width:11px;text-align:right}.pnj .pk i.sx{font-style:normal;color:var(--g);font-size:7.5px}
+.pnj .pk .n{flex:1}
+.pnj .pa{display:block;padding:.5px 0}.pnj .pa em{font-style:normal;font-weight:700;font-size:7px;border-radius:3px;padding:0 3px;text-transform:uppercase}.pnj .pa span{color:var(--g)}
+.pnj table{width:100%;border-collapse:collapse;font-size:8px}.pnj th{font:700 7px var(--f);background:#E4EBF3;color:var(--g);padding:1px 2px;text-align:center;text-transform:none}.pnj th:first-child,.pnj td:first-child{text-align:left}
+.pnj td{padding:1px 2px;text-align:center;border-bottom:1px solid #f1ede0}.pnj td.ok{color:#15803d;font-weight:700}.pnj td.de{color:#c2410c;font-weight:700}.pnj td.no{color:var(--g)}
+.pnj .bl2{display:grid;grid-template-columns:auto 1fr 1fr 1fr;gap:0 6px;align-items:center}.pnj .bl2 i{font-style:normal;color:var(--g)}.pnj .bl2 b{text-align:center}
+.pnj .cs{letter-spacing:1px;font-size:9px}
+#comp .csel b,#comp .chint{color:#fff}
+#comp .chint{font-size:12px;margin:0 0 8px;opacity:.85}
+.cmp td.df{background:#FFE3A3}.cmp td .l.add{background:#FFE3A3;border-radius:3px;padding:0 3px}.cmp td .l.del{text-decoration:line-through;color:var(--g)}
 #comp .csel label{display:inline-flex;gap:5px;align-items:center;background:#fff;border-radius:6px;padding:4px 9px;cursor:pointer}
 </style></head><body>
 <div class="bar no-print" id="topbar"><b class="t">Anarchy PJ</b>
@@ -171,7 +194,7 @@ label.f{display:block;font:500 9.5px var(--f);color:var(--g);text-transform:uppe
 <div id="mini" class="no-print"></div>
 <div id="crea"><div id="form"></div><aside id="panel"></aside></div>
 <div id="comp" class="no-print" hidden></div>
-<div id="fiche" hidden><div class="bar no-print"><div id="warns"></div></div><div id="out"></div></div>
+<div id="fiche" hidden><div class="bar no-print"><div id="fmodes"></div><div id="warns"></div></div><div id="out"></div></div>
 <footer id="credit" class="no-print">Outil de fan, indépendant et non officiel, pour Shadowrun Anarchy 2.0. Shadowrun est une marque déposée de Topps Company, Inc. / Catalyst Game Labs ; les règles du jeu appartiennent à leurs auteurs et ayants droit. Code sous licence MIT · <a href="https://github.com/BasharNchtn/perso-shadowrun-anarchy-v2">code source</a></footer>
 <script>
 const CATALOGUE=[{"nom": "Armes à distance", "attribut": "agilite", "specs": [{"nom": "armes de jet", "attribut": "agilite"}, {"nom": "armes de trait", "attribut": "agilite"}, {"nom": "armes lourdes", "attribut": "agilite"}, {"nom": "armes montées", "attribut": "agilite"}, {"nom": "fusils", "attribut": "agilite"}, {"nom": "lance-grenades", "attribut": "agilite"}, {"nom": "mitraillettes", "attribut": "agilite"}, {"nom": "pistolets", "attribut": "agilite"}]}, {"nom": "Athlétisme", "attribut": "force", "specs": [{"nom": "course", "attribut": "force"}, {"nom": "défense à distance", "attribut": "agilite"}, {"nom": "escalade", "attribut": "force"}, {"nom": "natation", "attribut": "force"}, {"nom": "parkour", "attribut": "agilite"}]}, {"nom": "Combat rapproché", "attribut": "agilite", "specs": [{"nom": "armes contondantes", "attribut": "agilite"}, {"nom": "combat astral", "attribut": "volonte"}, {"nom": "défense", "attribut": "agilite"}, {"nom": "lames", "attribut": "agilite"}, {"nom": "arme exotique", "attribut": "agilite"}, {"nom": "mains nues", "attribut": "agilite"}]}, {"nom": "Conjuration", "attribut": "logique", "specs": [{"nom": "bannissement", "attribut": "logique"}, {"nom": "esprits des aînés", "attribut": "logique"}, {"nom": "esprits de l'air", "attribut": "logique"}, {"nom": "esprits des bêtes", "attribut": "logique"}, {"nom": "esprits de l'eau", "attribut": "logique"}, {"nom": "esprits du feu", "attribut": "logique"}, {"nom": "esprits des plantes", "attribut": "logique"}, {"nom": "esprits de la terre", "attribut": "logique"}]}, {"nom": "Électronique", "attribut": "logique", "specs": [{"nom": "appareils personnels", "attribut": "logique"}, {"nom": "protection matricielle", "attribut": "logique"}, {"nom": "recherche matricielle", "attribut": "logique"}]}, {"nom": "Enchantement", "attribut": "volonte", "specs": [{"nom": "dissipation", "attribut": "volonte"}, {"nom": "s. de combat", "attribut": "volonte"}, {"nom": "s. de détection", "attribut": "volonte"}, {"nom": "s. d'illusion", "attribut": "volonte"}, {"nom": "s. de manipulation", "attribut": "volonte"}, {"nom": "s. de santé", "attribut": "volonte"}]}, {"nom": "Furtivité", "attribut": "agilite", "specs": [{"nom": "crochetage", "attribut": "agilite"}, {"nom": "discrétion astrale", "attribut": "agilite"}, {"nom": "discrétion matricielle", "attribut": "logique"}, {"nom": "discrétion physique", "attribut": "agilite"}, {"nom": "escamotage", "attribut": "agilite"}]}, {"nom": "Influence", "attribut": "charisme", "specs": [{"nom": "bluff", "attribut": "charisme"}, {"nom": "étiquette", "attribut": "charisme"}, {"nom": "imposture", "attribut": "charisme"}, {"nom": "intimidation", "attribut": "charisme"}, {"nom": "négociation", "attribut": "charisme"}]}, {"nom": "Ingénierie", "attribut": "logique", "specs": [{"nom": "armes contrôlées à distance", "attribut": "logique"}, {"nom": "C&R appareils électroniques", "attribut": "logique"}, {"nom": "C&R drones", "attribut": "logique"}, {"nom": "C&R engins mécaniques", "attribut": "logique"}, {"nom": "C&R implants cybernétiques", "attribut": "logique"}, {"nom": "C&R véhicules", "attribut": "logique"}, {"nom": "explosifs", "attribut": "logique"}, {"nom": "guerre électronique", "attribut": "logique"}]}, {"nom": "Perception", "attribut": "logique", "specs": [{"nom": "astrale", "attribut": "logique"}, {"nom": "matricielle", "attribut": "logique"}, {"nom": "physique", "attribut": "logique"}, {"nom": "sociale", "attribut": "logique"}]}, {"nom": "Pilotage", "attribut": "agilite", "specs": [{"nom": "camions", "attribut": "agilite"}, {"nom": "drones aquatiques", "attribut": "agilite"}, {"nom": "drones terrestres", "attribut": "agilite"}, {"nom": "drones volants", "attribut": "agilite"}, {"nom": "motos", "attribut": "agilite"}, {"nom": "véhicules aquatiques", "attribut": "agilite"}, {"nom": "véhicules volants", "attribut": "agilite"}, {"nom": "voitures", "attribut": "agilite"}]}, {"nom": "Piratage", "attribut": "logique", "specs": [{"nom": "backdoor", "attribut": "logique"}, {"nom": "cybercombat", "attribut": "volonte"}, {"nom": "force brute", "attribut": "logique"}]}, {"nom": "Réseau", "attribut": "charisme", "specs": [{"nom": "corporatiste", "attribut": "charisme"}, {"nom": "criminel", "attribut": "charisme"}, {"nom": "la rue", "attribut": "charisme"}, {"nom": "gouvernemental", "attribut": "charisme"}, {"nom": "ingénierie", "attribut": "charisme"}, {"nom": "magique", "attribut": "charisme"}, {"nom": "matriciel", "attribut": "charisme"}, {"nom": "médiatique", "attribut": "charisme"}, {"nom": "médical", "attribut": "charisme"}, {"nom": "universitaire", "attribut": "charisme"}]}, {"nom": "Sorcellerie", "attribut": "volonte", "specs": [{"nom": "contresort", "attribut": "volonte"}, {"nom": "sorts de combat", "attribut": "volonte"}, {"nom": "sorts de détection", "attribut": "volonte"}, {"nom": "sorts d'illusion", "attribut": "volonte"}, {"nom": "sorts de manipulation", "attribut": "volonte"}, {"nom": "sorts de santé", "attribut": "volonte"}]}, {"nom": "Survie", "attribut": "logique", "specs": [{"nom": "dressage", "attribut": "charisme"}, {"nom": "orientation", "attribut": "logique"}, {"nom": "milieu hostile", "attribut": "logique"}, {"nom": "premiers soins", "attribut": "logique"}, {"nom": "sang-froid", "attribut": "volonte"}]}, {"nom": "Technomancie", "attribut": "logique", "specs": [{"nom": "compilation", "attribut": "logique"}, {"nom": "décompilation", "attribut": "logique"}, {"nom": "formes complexes", "attribut": "logique"}]}];
@@ -494,7 +517,7 @@ if(a.vehicule&&a.vehicule.modele==='perso'){const b=a.vehicule.base||{},sm=(b.st
 return W}
 const fmt=n=>Number(n||0).toLocaleString('fr-FR')+' ¥';
 const catOf=n=>CATALOGUE.find(c=>norm(c.nom)===norm(n));
-let PJ=null,DIRTY=false,SAVE_T=null,FH=null,SESS=[],CUR=-1,MULTI=false;
+let PJ=null,DIRTY=false,SAVE_T=null,FH=null,SESS=[],CUR=-1,MULTI=false,CMODE=null,FMODE='pj';
 /* Mémoire des fichiers liés aux personnages (IndexedDB) : après un rechargement, « Enregistrer » réécrit
    encore le bon fichier (le navigateur redemande l'accès). Remplaçable par window.__hstore (tests). */
 const HSTORE=window.__hstore||(()=>{
@@ -808,18 +831,18 @@ function fitPages(){
   [[p1,.7],[p2,.7]].forEach(([el,min])=>{const z=zoomOf(el,min);if(z<1)el.style.zoom=z})
 }
 function showTab(t){
-  $('#crea').hidden=t!=='crea';$('#mini').hidden=t!=='crea';$('#fiche').hidden=t!=='fiche';$('#comp').hidden=t!=='comp';$('#bprintall').hidden=t!=='fiche'||SESS.length<2;
+  $('#crea').hidden=t!=='crea';$('#mini').hidden=t!=='crea';$('#fiche').hidden=t!=='fiche';$('#comp').hidden=t!=='comp';$('#bprintall').hidden=t!=='fiche'||SESS.length<2||FMODE!=='pj';
   if(t==='comp')renderComp();
   $$('.tab').forEach(b=>b.classList.toggle('on',b.dataset.tab===t));$('#bprint').hidden=t!=='fiche';
   if(t==='crea'&&PJ)buildForm(),refresh();
-  if(t==='fiche'){render(PJ);fitPages();document.title=(PJ.identite.pseudo||'Fiche')+' – fiche Anarchy'}
+  if(t==='fiche'){fmodeBar();renderFiche();document.title=FMODE==='pj'?(PJ.identite.pseudo||'Fiche')+' – fiche Anarchy':'Planche de PNJ – Anarchy'}
 }
 /* Plusieurs personnages ouverts en même temps : PJ, FH et DIRTY désignent toujours le personnage actif ;
    les autres sont rangés dans SESS (stash() recopie l'actif dans SESS avant tout changement). */
 function stash(){const s=SESS[CUR];if(s){s.pj=PJ;s.fh=FH;s.dirty=DIRTY}}
 function persist(){
   clearTimeout(SAVE_T);
-  try{stash();localStorage.setItem('anarchy-pjs',JSON.stringify({cur:CUR,list:SESS.map(s=>({id:s.id,dirty:!!s.dirty,cmp:s.cmp!==false,pj:JSON.parse(SER(s.pj))}))}))}catch(e){}
+  try{stash();localStorage.setItem('anarchy-pjs',JSON.stringify({cur:CUR,mode:CMODE,fmode:FMODE,list:SESS.map(s=>({id:s.id,dirty:!!s.dirty,cmp:s.cmp!==false,pl:s.pl!==false,pj:JSON.parse(SER(s.pj))}))}))}catch(e){}
   SESS.forEach(s=>{if(s.fh&&s.fhSaved!==s.fh){s.fhSaved=s.fh;Promise.resolve().then(()=>HSTORE.put(s.id,s.fh)).catch(()=>{})}})
 }
 /* Noms affichés : si plusieurs personnages ouverts portent le même pseudo (versions d'un même personnage),
@@ -836,8 +859,9 @@ function chips(){
   const el=$('#pjs');if(!el)return;
   el.hidden=SESS.length<2;$('#bsaveall').hidden=SESS.length<2;
   el.innerHTML=SESS.map((s,i)=>`<span class="chip${i===CUR?' on':''}"><button data-go="${i}" title="${esc(((i===CUR?FH:s.fh)||{}).name||'Pas encore de fichier')}">${(i===CUR?DIRTY:s.dirty)?'● ':''}${esc(pseudoDe(i))}</button><button class="x" data-x="${i}" title="Fermer">×</button></span>`).join('');
-  $('#bprintall').hidden=$('#fiche').hidden||SESS.length<2;
+  $('#bprintall').hidden=$('#fiche').hidden||SESS.length<2||FMODE!=='pj';
   if(!$('#comp').hidden)renderComp();
+  if(!$('#fiche').hidden&&FMODE!=='pj'){fmodeBar();planche()}
 }
 function addPJ(p,fh,dirty,id){
   stash();
@@ -932,6 +956,42 @@ async function saveAll(){
   activate(cur);
   flash(ok||ko.length?`${ok} enregistré(s)`+(ko.length?' ; non enregistré(s) : '+ko.join(', '):''):'Rien à enregistrer')
 }
+/* ===================== Fiches de PNJ : blocs compacts, en RD ou en seuils fixes ===================== */
+/* Seuil fixe : s = RD/3 + RR + 1, arrondi au plus proche. */
+const seuil=(rd,rr)=>Math.round((rd||0)/3)+(rr||0)+1;
+function blocPNJ(p,mode){
+  const D=derive(p),at=p.attributs||{},I=p.identite||{},av=k=>at[k]||0,sd=mode==='seuil';
+  const val=(rd,rr)=>sd?seuil(rd,rr):rd;
+  const rrt=r=>r?`<i class=sx>RR${r}</i>`:'';
+  const comps=D.comps.filter(c=>c.indice||c.rr).map(c=>`<div><span class=n>${esc(c.nom)}${c.specs.length?` <i class=sx>${c.specs.map(x=>esc(x.nom)+' <b>'+val(x.rd,x.rr)+'</b>'+(!sd&&x.rr?' RR'+x.rr:'')).join(', ')}</i>`:''}</span>${sd?'':rrt(c.rr)}<b class=v>${val(c.rd,c.rr)}</b></div>`).join('');
+  const kws=[I.metatype,...(I.mots_cles||[])].filter(Boolean).map(esc).join(' · ');
+  const atouts=D.atouts.filter(a=>a.type!=='Contact').map(a=>{const c=tcol(a.type),t=(a.effets||[]).map(e=>e.texte).filter(Boolean).join(' ; ');return `<div class=pa>${c?`<em style="color:${c};background:${c}1f">${esc(a.type)}</em> `:''}<b>${esc(a.nom||'')}</b> <span>${esc(t)}</span></div>`}).join('');
+  const pt=t=>t==='OK'?'<td class=ok>OK</td>':t==='Dés'?'<td class=de>Dés</td>':'<td class=no>–</td>';
+  const armes=D.main.length?`<table><tr><th>Arme</th><th>VD</th><th>≤ 2 m</th><th>3-15 m</th><th>16-60 m</th><th>&gt; 60 m</th></tr>${D.main.map(x=>`<tr><td><b>${esc(x.nom)}</b>${x.specTxt?` <i class=sx style="color:var(--g)">${esc(x.specTxt)}</i>`:''}</td><td><b>${x.tox?'toxine':esc(x.val??x.expr??'')}</b></td>${(x.ports||['','','','']).map(pt).join('')}</tr>`).join('')}</table>`:'';
+  const sorts=[...D.sorts,...D.formes].map(x=>`<div class=pa><b>${esc(x.nom)}</b> <span>${[x.tsort,x.seuil?'seuil '+x.seuil:'',x.aire?'aire':''].filter(Boolean).map(esc).join(' · ')}</span></div>`).join('');
+  const veh=D.vehs.map(v=>`<div class=pa><b>${esc(v.nom)}</b> <span>${esc(v.type||v.kind)} · ${Object.entries(v.st||{}).map(([k,x])=>(STL[k]||k)+' '+x).join(', ')}${v.prog&&v.prog.length?' · '+v.prog.map(esc).join(', '):''}</span></div>`).join('');
+  const fo=av('force'),bp=D.bon.phys,bm=D.bon.ment,aP=D.bon.armP,cx=D.bon.cases,bxs=n=>`<span class=cs>${'☐'.repeat(n)}</span>`;
+  const trb=(n,b)=>`<i>${n}</i><b>${b}</b><b>${b+3}</b><b>${b+6}</b>`;
+  const bless=`<div class=bl2><i></i><b>Légère ${bxs(2+(cx.legere||0))}</b><b>Grave ${bxs(1+(cx.grave||0))}</b><b>Incap. ${bxs(1+(cx.incap||0))}</b>${trb('Physique',fo+bp)}${(p.armures||[]).filter(a=>a.actif!==false).map(a=>trb(esc(a.nom||'Armure')+' +'+(a.valeur||0),fo+(+a.valeur||0)+bp+aP)).join('')}${trb('Mental',av('volonte')+bm)}</div>`;
+  const att=Object.keys(AL).map(k=>`<span>${AT[k]}<b>${av(k)}</b></span>`).join('')+`<span>ESS<b>${D.ess}</b></span>`;
+  const sec=(h)=>h?`<div class=pb>${h}</div>`:'';
+  return `<article class=pnj><header><b>${esc(I.pseudo||'Sans nom')}</b><span>${kws}</span><i>${sd?'SEUILS':'RD'}</i></header><div class=pb><div class=at5>${att}</div></div>${sec(comps?`<div class=pk>${comps}</div>`:'')}${sec(atouts)}${sec(armes)}${sec(sorts)}${sec(veh)}${sec(bless)}</article>`;
+}
+function planche(){
+  stash();
+  const sel=SESS.filter(s=>s.pl!==false);
+  const note=FMODE==='seuil'?'Seuils fixes : s = RD ÷ 3 + RR + 1, arrondi au plus proche. Une compétence ou spécialisation réussit si le seuil de l’action est inférieur ou égal à s.':'RD : réserve de dés de la compétence ou de la spécialisation ; RR : réduction de risque.';
+  $('#out').innerHTML=`<div class=planche><div class=pcols>${sel.map(s=>blocPNJ(s.pj,FMODE)).join('')}</div><div class=pn>${note}</div></div>`;
+  $('#warns').innerHTML='';
+}
+function renderFiche(){if(FMODE==='pj'){render(PJ);fitPages()}else planche()}
+function fmodeBar(){
+  const el=$('#fmodes');if(!el)return;
+  const r=(v,t)=>`<label><input type="radio" name="fmode" value="${v}"${FMODE===v?' checked':''}> ${t}</label>`;
+  let h=`<b>Fiche :</b> ${r('pj','PJ (complète)')}${r('rd','PNJ en RD')}${r('seuil','PNJ en seuils fixes')}`;
+  if(FMODE!=='pj'&&SESS.length>1){const lab=etiquettes();h+=`<span class="sep"></span><b>Sur la planche :</b> ${SESS.map((s,i)=>`<label><input type="checkbox" data-p="${i}"${s.pl!==false?' checked':''}> ${esc(lab[i])}</label>`).join('')}`}
+  el.innerHTML=h;
+}
 /* Onglet Comparer : tableau de synthèse, une colonne par personnage ouvert. */
 function renderComp(){
   const el=$('#comp');stash();
@@ -939,14 +999,20 @@ function renderComp(){
   if(SESS.length<2){el.innerHTML='<div class="cw ce">Ouvrez au moins deux personnages pour les comparer : <b>Ouvrir</b> accepte plusieurs fichiers à la fois, et <b>Nouveau</b> ajoute un personnage.</div>';return}
   const barre=`<div class="csel"><b>Comparer :</b> ${SESS.map((s,i)=>`<label><input type="checkbox" data-c="${i}"${s.cmp!==false?' checked':''}> ${esc(pseudoDe(i))}</label>`).join('')}</div>`;
   const lab=etiquettes(),idx=SESS.map((s,i)=>i).filter(i=>SESS[i].cmp!==false);
+  /* Surlignage : « différences » (par rapport à la première colonne), « meilleure valeur » ou rien.
+     Par défaut, les différences quand des versions d'un même personnage (même nom) sont comparées. */
+  const bases=idx.map(i=>SESS[i].pj.identite.pseudo||'Sans nom'),mode=CMODE||(new Set(bases).size<bases.length?'diff':'best');
+  const radio=(v,t)=>`<label><input type="radio" name="cmode" value="${v}"${mode===v?' checked':''}> ${t}</label>`;
+  const barre2=`<div class="csel"><b>Surligner :</b> ${radio('diff','les différences')}${radio('best','la meilleure valeur')}${radio('none','rien')}</div>`+(mode==='diff'?'<div class="chint">Surligné : ce qui diffère de la première colonne. Barré : élément absent de cette colonne.</div>':'');
   if(idx.length<2){el.innerHTML=barre+'<div class="cw ce">Coche au moins deux personnages pour les comparer.</div>';return}
   const cols=idx.map(i=>({p:SESS[i].pj,lab:lab[i],fh:SESS[i].fh,D:derive(SESS[i].pj),C:costs(SESS[i].pj)})),n=cols.length;
   const sec=t=>`<tr class="sec"><th colspan="${n+1}">${t}</th></tr>`;
   /* La meilleure valeur d'une ligne numérique (vals[].n) est surlignée quand les valeurs diffèrent. */
   const row=(lab,vals)=>{
     const ns=vals.map(v=>v.n).filter(x=>typeof x==='number'),mx=Math.max(...ns),dif=ns.length>1&&new Set(ns).size>1;
-    return `<tr><th>${lab}</th>${vals.map(v=>`<td class="${dif&&v.n===mx?'mx':''}${v.h===''||v.h==='–'?' n':''}">${v.h||'–'}</td>`).join('')}</tr>`};
-  const sc=(f,fmtv,num)=>cols.map(c=>{const v=f(c);return{n:num?v:undefined,h:fmtv?fmtv(v):esc(v)}});
+    const cl=(v,k)=>(mode==='best'&&dif&&v.n===mx?'mx':mode==='diff'&&k>0&&(v.k??v.h)!==(vals[0].k??vals[0].h)?'df':'')+(v.h===''||v.h==='–'?' n':'');
+    return `<tr><th>${lab}</th>${vals.map((v,k)=>`<td class="${cl(v,k)}">${v.h||'–'}</td>`).join('')}</tr>`};
+  const sc=(f,fmtv,num)=>cols.map(c=>{const v=f(c);return{n:num?v:undefined,k:String(v),h:fmtv?fmtv(v):esc(v)}});
   let h=`<table class="cmp"><thead><tr><th></th>${cols.map(c=>`<th>${esc(c.lab)}<small>${esc(c.p.identite.metatype||'')}${c.fh?' · '+esc(c.fh.name):''}</small></th>`).join('')}</tr></thead><tbody>`;
   h+=sec('Ressources');
   h+=row('Essence',sc(c=>c.D.ess,null,true));
@@ -961,15 +1027,19 @@ function renderComp(){
   noms.forEach(nm=>{
     h+=row(esc(nm),cols.map(c=>{
       const r=c.D.comps.find(x=>norm(x.nom)===norm(nm));
-      if(!r||!(r.indice||r.rr))return{h:''};
+      if(!r||!(r.indice||r.rr))return{k:'',h:''};
       const sp=r.specs.map(x=>`<small>↳ ${esc(x.nom)} : RD ${x.rd}${x.rr?' · RR'+x.rr:''}</small>`).join('');
-      return{n:r.indice||0,h:`<b>${r.indice||0}</b> <small style="display:inline">RD ${r.rd}${r.rr?' · RR'+r.rr:''}</small>${sp}`}
+      return{n:r.indice||0,k:`${r.indice}|${r.rr}|${r.specs.map(x=>x.nom+x.rd+x.rr).join(',')}`,h:`<b>${r.indice||0}</b> <small style="display:inline">RD ${r.rd}${r.rr?' · RR'+r.rr:''}</small>${sp}`}
     }));
   });
   const liste=(lab,f)=>{
     const ls=cols.map(c=>f(c));if(!ls.some(l=>l.length))return;
-    h+=row(lab,ls.map(l=>({h:l.map(x=>`<span class="l">${x}</span>`).join('')})));
+    h+=`<tr><th>${lab}</th>${ls.map((l,k)=>{
+      const ref=ls[0],diff=mode==='diff'&&k>0;
+      const items=l.map(x=>`<span class="l${diff&&!ref.includes(x)?' add':''}">${x}</span>`).join('')+(diff?ref.filter(x=>!l.includes(x)).map(x=>`<span class="l del">${x}</span>`).join(''):'');
+      return `<td${items?'':' class="n"'}>${items||'–'}</td>`}).join('')}</tr>`;
   };
+  liste('Connaissances',c=>(c.p.connaissances||[]).filter(x=>x&&x.nom&&x.actif!==false).map(x=>esc(x.nom)));
   h+=sec('Atouts et véhicules');
   liste('Atouts',c=>c.D.atouts.map(a=>`${esc(a.nom||'?')} <i>${esc(a.type||'')} · niv. ${lvl(a)}</i>`));
   liste('Véhicules et drones',c=>c.D.vehs.map(v=>`${esc(v.nom||'?')} <i>${esc(v.kind)} · niv. ${v.niveau}</i>`));
@@ -977,7 +1047,7 @@ function renderComp(){
   liste('Armes',c=>c.D.main.map(x=>`${esc(x.nom||'?')} <i>VD ${x.tox?'toxine':esc(x.val??x.expr??'')}</i>`));
   liste('Sorts',c=>c.D.sorts.map(x=>esc(x.nom||'?')));
   liste('Formes complexes',c=>c.D.formes.map(x=>esc(x.nom||'?')));
-  el.innerHTML=barre+'<div class="cw">'+h+'</tbody></table></div>';
+  el.innerHTML=barre+barre2+'<div class="cw">'+h+'</tbody></table></div>';
   const nw=el.querySelector('.cw');if(nw)nw.scrollLeft=sl;
 }
 /* Impression de toutes les fiches : chaque fiche est mise en page puis recopiée dans #out. */
@@ -987,13 +1057,14 @@ function prepAll(){
   $('#out').innerHTML=parts.join('');MULTI=true;
 }
 function printAll(){prepAll();print()}
-addEventListener('afterprint',()=>{if(MULTI){MULTI=false;render(PJ);fitPages()}});
+addEventListener('afterprint',()=>{if(MULTI){MULTI=false;renderFiche()}});
 $$('.tab').forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
-addEventListener('beforeprint',()=>{if(!MULTI)fitPages()});if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{if(!$('#fiche').hidden)fitPages()});
+addEventListener('beforeprint',()=>{if(!MULTI&&FMODE==='pj')fitPages()});if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{if(!$('#fiche').hidden)fitPages()});
 $('#mini').onclick=()=>$('#panel').scrollIntoView({behavior:'smooth'});
 $('#bsave').onclick=()=>save(false);$('#bsaveall').onclick=saveAll;$('#bdir').onclick=ouvrirDossier;
 $('#fdir').onchange=async e=>{const fs=[...e.target.files].filter(f=>/\.json$/i.test(f.name)&&(f.webkitRelativePath||'').split('/').length<=2).sort((x,y)=>x.name.localeCompare(y.name));e.target.value='';let n=0;for(const f of fs)if(openText(await f.text(),null,true))n++;bilanDossier(n,'ce dossier')};if(FSA){$('#bsaveas').hidden=false;$('#bsaveas').onclick=()=>save(true);$('#fopen').parentElement.onclick=e=>{e.preventDefault();openFile()}}$('#bprint').onclick=()=>print();$('#bprintall').onclick=printAll;
-$('#comp').onchange=e=>{const i=e.target.dataset&&e.target.dataset.c;if(i==null)return;SESS[+i].cmp=e.target.checked;persist();renderComp()};
+$('#fmodes').onchange=e=>{const t=e.target;if(t.name==='fmode'){FMODE=t.value;persist();showTab('fiche');chips();return}if(t.dataset&&t.dataset.p!=null){SESS[+t.dataset.p].pl=t.checked;persist();planche()}};
+$('#comp').onchange=e=>{if(e.target.name==='cmode'){CMODE=e.target.value;persist();renderComp();return}const i=e.target.dataset&&e.target.dataset.c;if(i==null)return;SESS[+i].cmp=e.target.checked;persist();renderComp()};
 $('#pjs').onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.go!=null)activate(+b.dataset.go);else if(b.dataset.x!=null)closePJ(+b.dataset.x)};
 $('#bnew').onclick=()=>{if(SESS[CUR]&&SESS[CUR].neuf&&!DIRTY){flash('Le personnage courant est déjà vide.');return}addPJ({});showTab('crea')};
 $('#fopen').onchange=async e=>{const fs=[...e.target.files];e.target.value='';for(const f of fs)openText(await f.text())};
@@ -1001,8 +1072,10 @@ addEventListener('beforeunload',e=>{stash();if(SESS.some(x=>x.dirty)){e.preventD
 {
   let rest=null;try{rest=JSON.parse(localStorage.getItem('anarchy-pjs')||'null')}catch(e){}
   if(!rest){try{const o=JSON.parse(localStorage.getItem('anarchy-pj')||'null');if(o)rest={cur:0,list:[{pj:o}]}}catch(e){}}
-  ((rest&&Array.isArray(rest.list))?rest.list:[]).forEach(e=>{try{if(e&&e.pj&&e.pj.format==='anarchy-pj'){migrate(e.pj);addPJ(e.pj,null,e.dirty,e.id);if(e.cmp===false)SESS[SESS.length-1].cmp=false}}catch(x){}});
+  ((rest&&Array.isArray(rest.list))?rest.list:[]).forEach(e=>{try{if(e&&e.pj&&e.pj.format==='anarchy-pj'){migrate(e.pj);addPJ(e.pj,null,e.dirty,e.id);if(e.cmp===false)SESS[SESS.length-1].cmp=false;if(e.pl===false)SESS[SESS.length-1].pl=false}}catch(x){}});
   if(!SESS.length)addPJ({});else if(rest.cur>0&&rest.cur<SESS.length)activate(rest.cur);
+  if(rest&&rest.mode)CMODE=rest.mode;
+  if(rest&&['pj','rd','seuil'].includes(rest.fmode))FMODE=rest.fmode;
   restoreHandles()
 }
 

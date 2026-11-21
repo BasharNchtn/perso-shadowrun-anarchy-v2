@@ -46,9 +46,18 @@ La fiche est accessible directement dans le navigateur et peut être exportée e
 - Quand plusieurs personnages ouverts portent le même nom (par exemple deux versions d'un même personnage), les suivants sont numérotés dans l'ordre d'ouverture : « Lame », « Lame (2) »… Dans Comparer, l'en-tête de chaque colonne indique aussi le nom du fichier.
 - Chaque personnage garde son propre fichier : **Enregistrer** réécrit le bon fichier (voir ci-dessous), et **Tout enregistrer** enregistre d'un coup tous les personnages modifiés. Survoler une puce affiche le nom de son fichier.
 - Sur Chrome et Edge, les fichiers sont retrouvés après un rechargement de la page (le navigateur redemande alors l'accès à l'enregistrement). Ailleurs, l'enregistrement se fait par téléchargement.
-- L'onglet **Comparer** présente un tableau de synthèse, une colonne par personnage coché (une case par personnage ouvert permet de choisir lesquels comparer ; le tableau se met à jour quand on ouvre ou ferme un personnage) : essence et nuyens, attributs, compétences (indice, RD, RR, spécialisations), atouts, véhicules, armes et sorts. La meilleure valeur d'une ligne numérique est surlignée.
+- L'onglet **Comparer** présente un tableau de synthèse, une colonne par personnage coché (une case par personnage ouvert permet de choisir lesquels comparer ; le tableau se met à jour quand on ouvre ou ferme un personnage) : essence et nuyens, attributs, compétences (indice, RD, RR, spécialisations), atouts, véhicules, armes et sorts. Trois modes de surlignage au choix : **les différences** (ce qui diffère de la première colonne ; un élément absent d'une colonne y apparaît barré, un élément ajouté est surligné), **la meilleure valeur** d'une ligne numérique, ou rien. Le mode « différences » est choisi d'office quand on compare des versions d'un même personnage (même nom), le mode « meilleure valeur » sinon. Les connaissances sont aussi comparées.
 - **Imprimer tous** (onglet Fiche) imprime toutes les fiches ouvertes à la suite, 2 pages A4 chacune.
 - Le navigateur conserve une copie de travail de tous les personnages ouverts.
+
+### Fiches de PNJ
+
+Un PNJ se crée exactement comme un PJ : même création, même fichier JSON. Sur l'onglet **Fiche**, le choix **PJ (complète)**, **PNJ en RD** ou **PNJ en seuils fixes** change le rendu (ce choix n'est pas enregistré dans le JSON).
+
+- La fiche PNJ est une **planche de blocs compacts**, en général 6 à 8 PNJ sur deux pages A4. Chaque bloc contient les attributs, les compétences et spécialisations actives, les atouts en une ligne, les armes avec leurs portées, les sorts, les véhicules et drones, et les seuils de blessures avec leurs cases.
+- En **RD**, chaque compétence et spécialisation affiche sa réserve de dés (et son RR).
+- En **seuils fixes**, elle affiche à la place un seuil `s = RD ÷ 3 + RR + 1`, arrondi au plus proche, calculé avec le RD et le RR de la ligne (par exemple RD 9 et RR 1 donnent 5).
+- La planche reprend tous les personnages ouverts ; des cases à cocher permettent de choisir lesquels imprimer. **Imprimer / PDF** imprime la planche.
 
 ### Sauvegarde des personnages en JSON
 
@@ -114,6 +123,18 @@ Aucune ressource externe n'est chargée : la police de caractères est embarqué
 
 - [`format_pj_v2.md`](format_pj_v2.md) : description du format JSON d'un personnage.
 - [`releve_regles_creation.md`](releve_regles_creation.md) : règles de création utilisées (coûts, limites, effets, types d'armes et de véhicules).
+
+## Tests
+
+Les tests vérifient quatre personnages fictifs (`tests/exemples/` : un samouraï, une mage, un decker, un adepte), qui utilisent ensemble tous les types d'atouts : aucun avertissement, nuyens restants attendus, enregistrement du fichier, gestion de la version du format, gestion de plusieurs personnages (ouverture, changement, fermeture, comparaison, copie locale), fichiers liés (mémorisation après rechargement, tout enregistrer, ouverture d'un dossier), fiches de PNJ (formule du seuil fixe, valeurs affichées, sélection) et impression en 2 pages A4 par fiche, y compris l'impression groupée.
+
+```
+npm install
+npm test                  # logique, enregistrement, version du format, plusieurs personnages, PNJ
+npm run test:impression   # impression (nécessite pdfinfo, du paquet poppler-utils)
+```
+
+Pour tester aussi tes propres personnages sans les publier, copie leurs fichiers JSON dans `tests/prives/` : ce dossier est ignoré par git, et les mêmes contrôles (avertissements, limites, impression en 2 pages) s'y appliquent.
 
 ## Données et confidentialité
 

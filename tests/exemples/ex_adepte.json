@@ -1,0 +1,436 @@
+{
+  "format": "anarchy-pj",
+  "version": 2,
+  "identite": {
+    "pseudo": "Ombre",
+    "nom": "Exemple fictif",
+    "metatype": "Humain",
+    "mots_cles": [
+      "Rue",
+      "Adepte",
+      "Moine déchu"
+    ],
+    "train_de_vie": "Train de vie bas",
+    "naissance": "",
+    "taille": "",
+    "poids": "",
+    "particularites": "",
+    "repliques": [
+      "Je n’ai pas besoin d’arme.",
+      "Respirez, ça ira plus vite."
+    ],
+    "comportements": [
+      "Calme jusqu’à la rupture"
+    ]
+  },
+  "niveau_de_jeu": {
+    "nom": "Runner",
+    "limites_actives": true,
+    "nuyens": 375000,
+    "nb_attributs_max": 1,
+    "indice_max_competence": 5,
+    "rr_max_competence": 1,
+    "rr_max_specialisation": 2
+  },
+  "gains": 0,
+  "attributs": {
+    "force": 3,
+    "agilite": 4,
+    "volonte": 3,
+    "logique": 2,
+    "charisme": 3
+  },
+  "attributs_max": null,
+  "competences": [
+    {
+      "nom": "Armes à distance",
+      "actif": true,
+      "attribut": "agilite",
+      "indice": 3,
+      "specialites": [
+        {
+          "nom": "armes de jet",
+          "actif": true,
+          "attribut": "agilite"
+        },
+        {
+          "nom": "armes de trait",
+          "actif": true,
+          "attribut": "agilite"
+        }
+      ]
+    },
+    {
+      "nom": "Athlétisme",
+      "actif": true,
+      "attribut": "force",
+      "indice": 4,
+      "specialites": [
+        {
+          "nom": "parkour",
+          "actif": true,
+          "attribut": "agilite"
+        }
+      ]
+    },
+    {
+      "nom": "Combat rapproché",
+      "actif": true,
+      "attribut": "agilite",
+      "indice": 5,
+      "specialites": [
+        {
+          "nom": "lames",
+          "actif": true,
+          "attribut": "agilite"
+        },
+        {
+          "nom": "arme exotique",
+          "actif": true,
+          "attribut": "agilite",
+          "detail": "fouet"
+        }
+      ]
+    },
+    {
+      "nom": "Conjuration",
+      "actif": false,
+      "attribut": "logique",
+      "indice": 0,
+      "specialites": []
+    },
+    {
+      "nom": "Électronique",
+      "actif": false,
+      "attribut": "logique",
+      "indice": 0,
+      "specialites": []
+    },
+    {
+      "nom": "Enchantement",
+      "actif": false,
+      "attribut": "volonte",
+      "indice": 0,
+      "specialites": []
+    },
+    {
+      "nom": "Furtivité",
+      "actif": true,
+      "attribut": "agilite",
+      "indice": 4,
+      "specialites": []
+    },
+    {
+      "nom": "Influence",
+      "actif": false,
+      "attribut": "charisme",
+      "indice": 0,
+      "specialites": []
+    },
+    {
+      "nom": "Ingénierie",
+      "actif": false,
+      "attribut": "logique",
+      "indice": 0,
+      "specialites": []
+    },
+    {
+      "nom": "Perception",
+      "actif": true,
+      "attribut": "logique",
+      "indice": 3,
+      "specialites": []
+    },
+    {
+      "nom": "Pilotage",
+      "actif": false,
+      "attribut": "agilite",
+      "indice": 0,
+      "specialites": []
+    },
+    {
+      "nom": "Piratage",
+      "actif": false,
+      "attribut": "logique",
+      "indice": 0,
+      "specialites": []
+    },
+    {
+      "nom": "Réseau",
+      "actif": false,
+      "attribut": "charisme",
+      "indice": 0,
+      "specialites": []
+    },
+    {
+      "nom": "Sorcellerie",
+      "actif": false,
+      "attribut": "volonte",
+      "indice": 0,
+      "specialites": []
+    },
+    {
+      "nom": "Survie",
+      "actif": true,
+      "attribut": "logique",
+      "indice": 2,
+      "specialites": []
+    },
+    {
+      "nom": "Technomancie",
+      "actif": false,
+      "attribut": "logique",
+      "indice": 0,
+      "specialites": []
+    }
+  ],
+  "contacts": [
+    {
+      "nom": "Sensei Hô",
+      "type": "Maître",
+      "description": "Ancien instructeur, refuse de parler du monastère.",
+      "actif": true
+    }
+  ],
+  "connaissances": [
+    {
+      "nom": "Arts martiaux",
+      "actif": true
+    }
+  ],
+  "atouts": [
+    {
+      "id": "at1",
+      "type": "Pouvoir d'adepte",
+      "nom": "Réflexes accrus",
+      "actif": true,
+      "effets": [
+        {
+          "pre": "ip2",
+          "qte": 1,
+          "texte": "Initiative physique +2",
+          "niveau": 5
+        }
+      ],
+      "niveau_base": 1,
+      "perte_essence": 0
+    },
+    {
+      "id": "at2",
+      "type": "Pouvoir d'adepte",
+      "nom": "Frappe mystique",
+      "actif": true,
+      "effets": [
+        {
+          "texte": "VD +1 en mêlée (lames)",
+          "niveau": 1,
+          "bonus": {
+            "type": "vd",
+            "cible": "lames",
+            "valeur": 1
+          }
+        },
+        {
+          "texte": "Corps à corps : mains nues +1",
+          "niveau": 1,
+          "bonus": {
+            "type": "vd",
+            "cible": "mains nues",
+            "valeur": 1
+          }
+        }
+      ],
+      "niveau_base": 1,
+      "perte_essence": 0
+    },
+    {
+      "id": "at3",
+      "type": "Pouvoir d'adepte",
+      "nom": "Armure mystique",
+      "actif": true,
+      "effets": [
+        {
+          "texte": "Armure +1 (physique et mentale)",
+          "niveau": 2,
+          "bonus": {
+            "type": "armure",
+            "portee": "tous",
+            "valeur": 1
+          }
+        }
+      ],
+      "niveau_base": 1,
+      "perte_essence": 0
+    },
+    {
+      "id": "at4",
+      "type": "Pouvoir d'adepte",
+      "nom": "Sens aiguisés",
+      "actif": true,
+      "effets": [
+        {
+          "texte": "RR1 en perception",
+          "niveau": 5,
+          "bonus": {
+            "type": "rr",
+            "competence": "Perception",
+            "specialisation": null,
+            "valeur": 1
+          }
+        }
+      ],
+      "niveau_base": 1,
+      "perte_essence": 0
+    },
+    {
+      "id": "at5",
+      "type": "Équipement",
+      "ref": "ar_1",
+      "nom": "Katana",
+      "actif": true,
+      "effets": [
+        {
+          "texte": "VD +1",
+          "niveau": 1,
+          "bonus": {
+            "type": "vd",
+            "cible": "Katana",
+            "valeur": 1
+          }
+        }
+      ],
+      "niveau_base": 0,
+      "perte_essence": 0
+    },
+    {
+      "id": "at6",
+      "type": "Mutation",
+      "type_perso": true,
+      "nom": "Tatouages réactifs",
+      "actif": true,
+      "niveau_base": 1,
+      "perte_essence": 0,
+      "effets": [
+        {
+          "texte": "Les tatouages brillent près de la magie",
+          "niveau": 1
+        },
+        {
+          "texte": "Visibles : malus social",
+          "niveau": -1
+        }
+      ]
+    },
+    {
+      "id": "at7",
+      "type": "Contact",
+      "nom": "Sensei Hô",
+      "actif": true,
+      "effets": [],
+      "niveau_base": 0,
+      "perte_essence": 0
+    },
+    {
+      "id": "at8",
+      "type": "Trait",
+      "nom": "Discipline",
+      "actif": true,
+      "niveau_base": 0,
+      "effets": [
+        {
+          "texte": "Case de blessure grave en plus",
+          "niveau": 6,
+          "bonus": {
+            "type": "case",
+            "gravite": "grave",
+            "valeur": 1
+          }
+        }
+      ]
+    }
+  ],
+  "armes": [
+    {
+      "id": "ar_1",
+      "nom": "Katana",
+      "actif": true,
+      "categorie": "arme",
+      "type_arme": "contact+",
+      "specialisation": "lames",
+      "vd": 5,
+      "portees": [
+        "OK",
+        "-",
+        "-",
+        "-"
+      ]
+    },
+    {
+      "id": "ar_2",
+      "nom": "Fouet de cuir",
+      "actif": true,
+      "categorie": "arme",
+      "type_arme": "contact+",
+      "specialisation": "arme exotique (fouet)",
+      "vd": 5,
+      "portees": [
+        "OK",
+        "-",
+        "-",
+        "-"
+      ]
+    },
+    {
+      "id": "ar_3",
+      "nom": "Arc composite",
+      "actif": true,
+      "categorie": "arme",
+      "type_arme": "arc",
+      "specialisation": "armes de trait",
+      "vd": "FOR+1",
+      "portees": [
+        "OK",
+        "OK",
+        "OK",
+        "-"
+      ]
+    },
+    {
+      "id": "ar_4",
+      "nom": "Shuriken empoisonnés",
+      "actif": true,
+      "categorie": "arme",
+      "type_arme": "jet",
+      "specialisation": "armes de jet",
+      "toxine": true,
+      "description": "Neurotoxine : la cible subit un malus de 2 dés\nà toutes ses actions pendant la scène.",
+      "vd": "FOR+1",
+      "portees": [
+        "OK",
+        "OK",
+        "Dés",
+        "-"
+      ]
+    }
+  ],
+  "equipement": [
+    {
+      "id": "eq_1",
+      "nom": "Bandages et baume",
+      "actif": true
+    },
+    {
+      "id": "eq_2",
+      "nom": "Commlink",
+      "actif": true
+    }
+  ],
+  "armures": [
+    {
+      "id": "am_1",
+      "nom": "Kimono renforcé",
+      "valeur": 1,
+      "actif": true
+    }
+  ]
+}

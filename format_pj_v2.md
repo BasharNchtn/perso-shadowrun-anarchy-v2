@@ -7,6 +7,7 @@ Principes :
 - Chaque élément ajoutable a un champ **`actif`** : à `false`, il est grisé dans la création, n'est pas compté dans les coûts et n'apparaît pas sur la fiche, mais ses valeurs sont conservées.
 - Les nombres sont de vrais nombres JSON. Les niveaux d'atout sont des entiers.
 - Les armes, armures, équipements et atouts ont un **`id`** (texte court généré par l'application). Il sert à les relier entre eux : renommer un élément ne casse pas les liens.
+- Exemples fictifs : `tests/exemples/ex_samourai.json`, `ex_mage.json`, `ex_decker.json`, `ex_adepte.json` (ensemble, un exemple de chaque type d'atout, dont un type personnalisé et un véhicule avec arme montée).
 
 ---
 

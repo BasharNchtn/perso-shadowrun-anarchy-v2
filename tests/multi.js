@@ -92,6 +92,36 @@ const nouveau = (store) => new JSDOM(html, { runScripts: 'dangerously', url: 'ht
     const apres = [...w3.document.querySelectorAll('#pjs .chip button[data-go]')].map(b => b.textContent.trim());
     verifie('plus de numéro quand le nom n’est plus partagé', apres.join('|') === 'Lame v2|Ondine|Lame', apres.join('|'));
   }
+  // surlignage des différences entre deux versions d'un même personnage
+  {
+    const w4 = nouveau();
+    w4.openText(ex('ex_samourai.json')); w4.openText(ex('ex_samourai.json'));
+    w4.eval('PJ.attributs.force=4;PJ.competences.find(x=>x.nom==="Perception").indice=4;PJ.atouts=PJ.atouts.filter(a=>a.nom!=="Vétéran");touch()');
+    w4.showTab('comp');
+    const doc = w4.document, radio = v => doc.querySelector('#comp input[name="cmode"][value="' + v + '"]');
+    const ligne = nom => [...doc.querySelectorAll('#comp tbody tr')].find(r => r.querySelector('th') && r.querySelector('th').textContent.trim().toLowerCase() === nom);
+    verifie('versions du même nom : mode « différences » par défaut', radio('diff').checked && /diffère/.test(doc.querySelector('#comp').textContent));
+    const f = ligne('force').querySelectorAll('td');
+    verifie('différence : seule la colonne modifiée est surlignée', !f[0].classList.contains('df') && f[1].classList.contains('df'));
+    const same = ligne('agilité').querySelectorAll('td');
+    verifie('valeur identique : pas de surlignage', !same[1].classList.contains('df'));
+    verifie('compétence modifiée surlignée', ligne('perception').querySelectorAll('td')[1].classList.contains('df'));
+    verifie('élément retiré : barré dans la colonne modifiée', [...doc.querySelectorAll('#comp td .l.del')].some(x => /Vétéran/.test(x.textContent)));
+    w4.eval('PJ.armes.push({id:"zz",nom:"Couteau",actif:true,categorie:"arme",type_arme:"contact",specialisation:"lames"});touch()');
+    w4.showTab('comp');
+    verifie('élément ajouté : surligné dans la colonne modifiée', [...doc.querySelectorAll('#comp td .l.add')].some(x => /Couteau/.test(x.textContent)));
+    doc.querySelector('#comp').onchange({ target: { name: 'cmode', value: 'best' } });
+    verifie('mode « meilleure valeur » : plus de différences, meilleure valeur surlignée', doc.querySelectorAll('#comp td.df').length === 0 && doc.querySelectorAll('#comp td.mx').length > 0);
+    doc.querySelector('#comp').onchange({ target: { name: 'cmode', value: 'none' } });
+    verifie('mode « rien » : aucun surlignage', doc.querySelectorAll('#comp td.df, #comp td.mx, #comp .l.add, #comp .l.del').length === 0);
+    w4.persist();
+    const w5 = nouveau({ 'anarchy-pjs': w4.localStorage.getItem('anarchy-pjs') });
+    w5.showTab('comp');
+    verifie('mode de surlignage conservé après rechargement', w5.document.querySelector('#comp input[name="cmode"][value="none"]').checked);
+    const w6 = nouveau();
+    w6.openText(ex('ex_mage.json')); w6.openText(ex('ex_decker.json')); w6.showTab('comp');
+    verifie('personnages différents : « meilleure valeur » par défaut', w6.document.querySelector('#comp input[name="cmode"][value="best"]').checked);
+  }
   // ancienne copie locale (clé unique) reprise
   const vieux = JSON.stringify(JSON.parse(ex('ex_samourai.json')));
   const w2 = nouveau({ 'anarchy-pj': vieux });

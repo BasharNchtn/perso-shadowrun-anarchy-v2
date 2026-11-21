@@ -42,6 +42,22 @@ const FICHIERS = ['exemples', 'prives'].map(d => path.join(__dirname, d)).filter
     await page.screenshot({ path: path.join(require('os').tmpdir(), 'comparer.png'), fullPage: false }).catch(() => {});
     await page.close();
   }
+  // Planche de PNJ : 3 à 4 PNJ par feuille A4
+  for (const mode of ['rd', 'seuil']) {
+    const page = await browser.newPage();
+    await page.setViewport({ width: 1200, height: 900 });
+    await page.evaluateOnNewDocument(() => { try { localStorage.clear(); } catch (e) {} });
+    await page.goto('file://' + path.join(__dirname, '..', 'index.html'));
+    for (const f of FICHIERS) await page.evaluate(t => openText(t), fs.readFileSync(f, 'utf8'));
+    await page.evaluate(m => { FMODE = m; showTab('fiche'); return document.fonts.ready; }, mode);
+    const pdf = path.join(require('os').tmpdir(), 'planche_' + mode + '.pdf');
+    await page.pdf({ path: pdf, preferCSSPageSize: true, printBackground: true });
+    const n = +/Pages:\s+(\d+)/.exec(execSync('pdfinfo ' + pdf).toString())[1];
+    const max = Math.ceil(FICHIERS.length / 3);
+    if (n > max) echecs++;
+    console.log((n <= max ? 'OK    ' : 'ÉCHEC ') + 'planche PNJ (' + mode + ') : ' + n + ' page(s) pour ' + FICHIERS.length + ' PNJ (3 à 4 par page)');
+    await page.close();
+  }
   await browser.close();
   process.exit(echecs ? 1 : 0);
 })();
