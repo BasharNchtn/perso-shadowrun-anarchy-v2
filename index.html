@@ -160,6 +160,10 @@ label.f{display:block;font:500 9.5px var(--f);color:var(--g);text-transform:uppe
 .cmp td .l{display:block;line-height:1.35}.cmp td .l i{font-style:normal;color:var(--g);font-size:10.5px}
 .cmp td.n{color:var(--g)}
 #comp .csel{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;margin:0 0 8px;font-size:13px}
+#anom{max-width:210mm;margin:6px auto;background:#fff;border:2px solid #E8890C;border-radius:8px;padding:6px 10px;font-size:12px;line-height:1.4}
+#anom .t{display:flex;align-items:center;gap:8px;font-weight:700;color:#9a3412}#anom .t span{flex:1}
+#anom button{border:0;background:none;font-size:15px;cursor:pointer;color:var(--g)}
+#anom ul{margin:4px 0 0 16px;padding:0}#anom li{margin:1px 0}#anom .h{color:var(--g);font-size:11px;margin-top:3px}
 #fmodes{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;margin:0 0 6px;font-size:13px}
 #fmodes label{color:var(--k);display:inline-flex;gap:5px;align-items:center;background:#fff;border:1px solid var(--ln);border-radius:6px;padding:4px 9px;cursor:pointer}
 #fmodes .sep{flex-basis:100%;height:0}
@@ -191,6 +195,7 @@ label.f{display:block;font:500 9.5px var(--f);color:var(--g);text-transform:uppe
 <label>Ouvrir<input id="fopen" type="file" accept=".json,application/json" multiple hidden></label><button id="bdir" title="Ouvrir tous les personnages d’un dossier">Dossier</button><input id="fdir" type="file" webkitdirectory multiple hidden><button id="bsave">Enregistrer</button><button id="bsaveas" hidden>Enregistrer sous</button><button id="bsaveall" hidden>Tout enregistrer</button><button id="bnew">Nouveau</button><button id="bprint" class="p" hidden>Imprimer / PDF</button><button id="bprintall" class="p" hidden>Imprimer tous</button>
 <span id="dirty"></span><span id="msg"></span></div>
 <div id="pjs" class="no-print" hidden></div>
+<div id="anom" class="no-print" hidden></div>
 <div id="mini" class="no-print"></div>
 <div id="crea"><div id="form"></div><aside id="panel"></aside></div>
 <div id="comp" class="no-print" hidden></div>
@@ -858,10 +863,11 @@ function restoreHandles(){
 function chips(){
   const el=$('#pjs');if(!el)return;
   el.hidden=SESS.length<2;$('#bsaveall').hidden=SESS.length<2;
-  el.innerHTML=SESS.map((s,i)=>`<span class="chip${i===CUR?' on':''}"><button data-go="${i}" title="${esc(((i===CUR?FH:s.fh)||{}).name||'Pas encore de fichier')}">${(i===CUR?DIRTY:s.dirty)?'● ':''}${esc(pseudoDe(i))}</button><button class="x" data-x="${i}" title="Fermer">×</button></span>`).join('');
+  el.innerHTML=SESS.map((s,i)=>`<span class="chip${i===CUR?' on':''}"><button data-go="${i}" title="${esc(((i===CUR?FH:s.fh)||{}).name||'Pas encore de fichier')}">${(i===CUR?DIRTY:s.dirty)?'● ':''}${(s.anom&&s.anom.length)?'⚠ ':''}${esc(pseudoDe(i))}</button><button class="x" data-x="${i}" title="Fermer">×</button></span>`).join('');
   $('#bprintall').hidden=$('#fiche').hidden||SESS.length<2||FMODE!=='pj';
   if(!$('#comp').hidden)renderComp();
   if(!$('#fiche').hidden&&FMODE!=='pj'){fmodeBar();planche()}
+  showAnom();
 }
 function addPJ(p,fh,dirty,id){
   stash();
@@ -891,11 +897,104 @@ function closePJ(i){
   chips();persist();
 }
 function setPJ(p){PJ=normalize(p);FH=null;DIRTY=false;$('#dirty').textContent='';rebuild();if(!$('#fiche').hidden)showTab('fiche')}
+/* ===================== Vérification d'un fichier à l'ouverture ===================== */
+/* L'application ouvre toujours un fichier tolérant, mais signale ce qu'elle ne reconnaît pas (fautes de frappe, valeurs hors liste).
+   Ces listes de champs doivent rester identiques à celles du schéma JSON (un test le vérifie). */
+const CHAMPS={
+  racine:['format','version','identite','niveau_de_jeu','gains','attributs','attributs_max','competences','contacts','connaissances','atouts','armes','equipement','armures'],
+  identite:['pseudo','nom','metatype','mots_cles','train_de_vie','naissance','taille','poids','particularites','repliques','comportements','portrait','portrait_x','portrait_y','portrait_zoom','portrait_ratio'],
+  niveau:['nom','limites_actives','nuyens','nb_attributs_max','indice_max_competence','rr_max_competence','rr_max_specialisation'],
+  attributs:KEYS,attributs_max:KEYS,
+  comp:['nom','actif','attribut','indice','perso','specialites'],spec:['nom','detail','actif','attribut','perso'],
+  conn:['nom','actif'],contact:['nom','type','description','actif'],
+  atout:['id','type','type_perso','nom','actif','niveau_base','perte_essence','effets','ref','programmes','vehicule'],
+  effet:['texte','niveau','bonus','pre','qte'],
+  bonus:['type','valeur','competence','specialisation','perso_comp','perso_spec','attribut','cible','portee','gravite','rang'],
+  vehicule:['modele','micro','base'],base:['structure','maniabilite','vitesse'],
+  arme:['id','nom','actif','categorie','type_arme','vd','portees','specialisation','toxine','description','monte_ref','monte_sur','type_sort','seuil','aire','taille'],
+  armure:['id','nom','valeur','actif'],equip:['id','nom','actif','offert','description']
+};
+const ANCIENS={identite:['statut_social','origine','role','autre_mot_cle'],racine:['armure'],equip:['armure']};
+const BONUS_TYPES=['rr','rr_attribut','vd','armure','case','portee'];
+function verifier(p){
+  const A=[],nm=(x,i)=>x&&x.nom?`« ${x.nom} »`:`n° ${i+1}`,est=(o,k)=>o&&typeof o==='object'&&!Array.isArray(o);
+  const champs=(o,cle,lieu)=>{if(est(o))Object.keys(o).filter(k=>k[0]!=='_'&&k!=='lien'&&!CHAMPS[cle].includes(k)&&!(ANCIENS[cle]||[]).includes(k)).forEach(k=>A.push(`Champ inconnu « ${k} » ${lieu} (ignoré).`))};
+  const nombre=(v,lieu)=>{if(typeof v==='string'&&v.trim()!==''&&!isNaN(v))A.push(`${lieu} : nombre écrit en texte (« ${v} »).`)};
+  const liste=(v,lieu)=>{if(v!=null&&!Array.isArray(v)){A.push(`${lieu} : une liste est attendue.`);return[]}return v||[]};
+  try{
+    champs(p,'racine','à la racine');
+    champs(p.identite,'identite','dans identite');champs(p.niveau_de_jeu,'niveau','dans niveau_de_jeu');
+    if(est(p.niveau_de_jeu)){const n=p.niveau_de_jeu;if(n.nom!=null&&![...Object.keys(NIV),'Choix'].includes(n.nom))A.push(`Niveau de jeu « ${n.nom} » inconnu (attendu : ${Object.keys(NIV).join(', ')}, Choix).`);['nuyens','nb_attributs_max','indice_max_competence','rr_max_competence','rr_max_specialisation'].forEach(k=>nombre(n[k],'niveau_de_jeu.'+k))}
+    nombre(p.gains,'gains');
+    if(est(p.attributs)){champs(p.attributs,'attributs','dans attributs');KEYS.forEach(k=>nombre(p.attributs[k],'Attribut '+k))}
+    if(est(p.attributs_max))champs(p.attributs_max,'attributs_max','dans attributs_max');
+    const ids=new Set(),dup=new Set(),vus=x=>{if(x&&x.id!=null){if(ids.has(x.id))dup.add(x.id);ids.add(x.id)}};
+    const atouts=liste(p.atouts,'atouts'),armes=liste(p.armes,'armes'),armures=liste(p.armures,'armures'),equip=liste(p.equipement,'equipement');
+    [...atouts,...armes,...armures,...equip].forEach(vus);
+    dup.forEach(i=>A.push(`Identifiant « ${i} » utilisé plusieurs fois.`));
+    liste(p.competences,'competences').forEach((c,i)=>{
+      if(!est(c))return;champs(c,'comp',`dans la compétence ${nm(c,i)}`);
+      const cat=CATALOGUE.find(x=>norm(x.nom)===norm(c.nom||''));
+      if(!cat&&!c.perso)A.push(`Compétence ${nm(c,i)} : nom inconnu (pour une compétence personnalisée, ajouter "perso": true).`);
+      if(c.attribut!=null&&!KEYS.includes(c.attribut))A.push(`Compétence ${nm(c,i)} : attribut « ${c.attribut} » inconnu.`);
+      nombre(c.indice,`Compétence ${nm(c,i)}, indice`);if(typeof c.indice==='number'&&(c.indice<0||c.indice>8||c.indice%1))A.push(`Compétence ${nm(c,i)} : indice ${c.indice} hors limites (entier de 0 à 8).`);
+      liste(c.specialites,`Compétence ${nm(c,i)}, specialites`).forEach((x,j)=>{if(!est(x))return;champs(x,'spec',`dans la spécialisation ${nm(x,j)}`);
+        if(cat&&!x.perso&&!cat.specs.some(y=>norm(y.nom)===norm(x.nom||''))&&norm(x.nom||'')!=='formes compexes')A.push(`Spécialisation ${nm(x,j)} : absente du catalogue de ${nm(c,i)} (si elle est personnalisée, ajouter "perso": true).`);
+        if(x.attribut!=null&&!KEYS.includes(x.attribut))A.push(`Spécialisation ${nm(x,j)} : attribut « ${x.attribut} » inconnu.`)})});
+    liste(p.connaissances,'connaissances').forEach(x=>champs(x,'conn','dans une connaissance'));
+    liste(p.contacts,'contacts').forEach(x=>champs(x,'contact','dans un contact'));
+    armures.forEach((x,i)=>{champs(x,'armure',`dans l'armure ${nm(x,i)}`);nombre(x&&x.valeur,`Armure ${nm(x,i)}, valeur`)});
+    equip.forEach((x,i)=>champs(x,'equip',`dans l'équipement ${nm(x,i)}`));
+    const idsAtout=new Set(atouts.map(a=>a&&a.id)),idsLien=new Set([...armes,...armures,...equip].map(a=>a&&a.id));
+    atouts.forEach((a,i)=>{
+      if(!est(a))return;const L=`Atout ${nm(a,i)}`;champs(a,'atout',`dans l'atout ${nm(a,i)}`);
+      if(!ATYPES.some(t=>t[0]===a.type)&&!a.type_perso)A.push(`${L} : type « ${a.type} » inconnu (pour un type personnalisé, ajouter "type_perso": true).`);
+      ['niveau_base','perte_essence'].forEach(k=>nombre(a[k],`${L}, ${k}`));
+      const vt=['Véhicule','Drone'].includes(a.type);
+      if(vt&&!a.vehicule)A.push(`${L} : le champ vehicule est obligatoire pour un atout ${a.type}.`);
+      if(!vt&&a.vehicule)A.push(`${L} : vehicule n'a de sens que pour un atout Véhicule ou Drone.`);
+      if(vt&&est(a.vehicule)){champs(a.vehicule,'vehicule',`dans le véhicule de ${nm(a,i)}`);champs(a.vehicule.base,'base',`dans la base du véhicule de ${nm(a,i)}`);
+        const ok=VMOD.filter(v=>v.k===a.type).map(v=>v.id);if(a.vehicule.modele!=null&&!ok.includes(a.vehicule.modele)&&a.vehicule.modele!=='perso')A.push(`${L} : modèle « ${a.vehicule.modele} » inconnu pour ${a.type==='Drone'?'un drone':'un véhicule'}.`)}
+      if(a.programmes&&a.type!=='Cyberdeck')A.push(`${L} : programmes n'a de sens que pour un Cyberdeck.`);
+      if(a.ref!=null){if(a.type!=='Équipement')A.push(`${L} : ref n'a de sens que pour un atout Équipement.`);else if(!idsLien.has(a.ref))A.push(`${L} : ref « ${a.ref} » ne correspond à aucune arme, armure ni équipement (lien rompu).`)}
+      liste(a.effets,`${L}, effets`).forEach((e,j)=>{
+        if(!est(e))return;const E=`${L}, effet ${j+1}`;champs(e,'effet',`dans ${E}`);nombre(e.niveau,E+', niveau');nombre(e.qte,E+', qte');
+        if(e.bonus){const b=e.bonus;champs(b,'bonus',`dans ${E}`);nombre(b.valeur,E+', valeur');
+          if(!BONUS_TYPES.includes(b.type))A.push(`${E} : type de bonus « ${b.type} » inconnu (${BONUS_TYPES.join(', ')}).`);
+          else{const req={rr:['competence'],rr_attribut:['attribut'],vd:['cible'],armure:['portee'],case:['gravite'],portee:['cible','rang']}[b.type];
+            req.filter(k=>b[k]==null||b[k]==='').forEach(k=>A.push(`${E} : champ « ${k} » manquant pour un bonus « ${b.type} ».`));
+            if(b.attribut!=null&&!KEYS.includes(b.attribut))A.push(`${E} : attribut « ${b.attribut} » inconnu.`);
+            if(b.portee!=null&&!['physique','mental','tous'].includes(b.portee))A.push(`${E} : portee « ${b.portee} » inconnue (physique, mental, tous).`);
+            if(b.gravite!=null&&!['legere','grave','incap'].includes(b.gravite))A.push(`${E} : gravite « ${b.gravite} » inconnue (legere, grave, incap).`);
+            if(b.rang!=null&&!['Contact','Courte','Moyenne','Longue'].includes(b.rang))A.push(`${E} : rang « ${b.rang} » inconnu (Contact, Courte, Moyenne, Longue).`)}}
+        else if(e.pre!=null){const ef=EFP.find(x=>x.id===e.pre);if(!ef)A.push(`${E} : code d'effet « ${e.pre} » inconnu.`);else if(ef.only&&!ef.only.includes(a.type))A.push(`${E} : l'effet « ${e.pre} » est réservé aux atouts ${ef.only.join(', ')} (ici : ${a.type}).`)}
+        else if(typeof e.niveau!=='number'||!e.texte)A.push(`${E} : un effet personnalisé exige texte et niveau.`)})});
+    armes.forEach((w,i)=>{
+      if(!est(w))return;const L=`Arme ${nm(w,i)}`;champs(w,'arme',`dans ${L.toLowerCase()}`);
+      if(!['arme','arme_specialiste','sort','forme_complexe'].includes(w.categorie)){A.push(`${L} : catégorie « ${w.categorie} » inconnue (arme, arme_specialiste, sort, forme_complexe).`);return}
+      if(w.categorie==='arme'||w.categorie==='arme_specialiste'){
+        if(w.type_arme!=null&&!WT.some(t=>t.id===w.type_arme))A.push(`${L} : type d'arme « ${w.type_arme} » inconnu.`);
+        if(w.type_arme==null&&(w.vd==null||w.portees==null))A.push(`${L} : sans type_arme, vd et portees sont obligatoires.`);
+        if(w.portees!=null&&(!Array.isArray(w.portees)||w.portees.length!==4||w.portees.some(x=>!['OK','Dés','-'].includes(x))))A.push(`${L} : portees doit contenir 4 valeurs parmi OK, Dés, - (respecter la casse).`);
+        ['type_sort','seuil','aire','taille'].filter(k=>w[k]!=null).forEach(k=>A.push(`${L} : « ${k} » ne concerne que les sorts et formes complexes.`))}
+      else{
+        ['type_arme','vd','portees','toxine','monte_ref','monte_sur'].filter(k=>w[k]!=null).forEach(k=>A.push(`${L} : « ${k} » ne concerne que les armes.`));
+        if(w.categorie==='sort'&&w.type_sort!=null&&!TSORT.includes(w.type_sort))A.push(`${L} : type de sort « ${w.type_sort} » inconnu (${TSORT.join(', ')}).`);
+        if(w.categorie==='forme_complexe'&&w.type_sort!=null)A.push(`${L} : « type_sort » ne concerne que les sorts.`)}
+      if(w.monte_ref!=null&&!idsAtout.has(w.monte_ref))A.push(`${L} : monte_ref « ${w.monte_ref} » ne correspond à aucun atout (lien rompu).`)});
+  }catch(e){A.push('Vérification incomplète : '+e.message)}
+  return A;
+}
+function showAnom(){
+  const el=$('#anom');if(!el)return;const s=SESS[CUR],a=(s&&s.anom)||[];
+  el.hidden=!a.length;if(!a.length)return;
+  el.innerHTML=`<div class=t><span>⚠ « ${esc(pseudoDe(CUR))} » : ${a.length} anomalie${a.length>1?'s':''} à l’ouverture du fichier</span><button data-close title="Masquer">×</button></div><ul>${a.slice(0,12).map(x=>`<li>${esc(x)}</li>`).join('')}</ul>${a.length>12?`<div class=h>… et ${a.length-12} autre(s).</div>`:''}<div class=h>Le fichier a été ouvert quand même ; ces éléments sont ignorés ou traités comme des valeurs personnalisées. Corrigez le fichier d’origine ou le personnage, puis enregistrez.</div>`;
+}
 function openText(t,fh,quiet){
   try{const p=JSON.parse(t);
     if(p.format==='anarchy-fiche-gsheet')throw Error('Ancien format de la feuille Google, qui n’est plus pris en charge.');
     if(p.format!=='anarchy-pj')throw Error('Format inconnu (attendu : anarchy-pj).');
-    migrate(p);addPJ(p,fh);$('#msg').textContent='';
+    migrate(p);const an=verifier(p);addPJ(p,fh);SESS[CUR].anom=an;showAnom();chips();$('#msg').textContent='';
     return true
   }catch(e){if(!quiet)$('#msg').textContent='Erreur : '+e.message;return false}
 }
@@ -1065,6 +1164,7 @@ $('#bsave').onclick=()=>save(false);$('#bsaveall').onclick=saveAll;$('#bdir').on
 $('#fdir').onchange=async e=>{const fs=[...e.target.files].filter(f=>/\.json$/i.test(f.name)&&(f.webkitRelativePath||'').split('/').length<=2).sort((x,y)=>x.name.localeCompare(y.name));e.target.value='';let n=0;for(const f of fs)if(openText(await f.text(),null,true))n++;bilanDossier(n,'ce dossier')};if(FSA){$('#bsaveas').hidden=false;$('#bsaveas').onclick=()=>save(true);$('#fopen').parentElement.onclick=e=>{e.preventDefault();openFile()}}$('#bprint').onclick=()=>print();$('#bprintall').onclick=printAll;
 $('#fmodes').onchange=e=>{const t=e.target;if(t.name==='fmode'){FMODE=t.value;persist();showTab('fiche');chips();return}if(t.dataset&&t.dataset.p!=null){SESS[+t.dataset.p].pl=t.checked;persist();planche()}};
 $('#comp').onchange=e=>{if(e.target.name==='cmode'){CMODE=e.target.value;persist();renderComp();return}const i=e.target.dataset&&e.target.dataset.c;if(i==null)return;SESS[+i].cmp=e.target.checked;persist();renderComp()};
+$('#anom').onclick=e=>{if(e.target.closest('[data-close]')&&SESS[CUR]){SESS[CUR].anom=[];showAnom();chips()}};
 $('#pjs').onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.go!=null)activate(+b.dataset.go);else if(b.dataset.x!=null)closePJ(+b.dataset.x)};
 $('#bnew').onclick=()=>{if(SESS[CUR]&&SESS[CUR].neuf&&!DIRTY){flash('Le personnage courant est déjà vide.');return}addPJ({});showTab('crea')};
 $('#fopen').onchange=async e=>{const fs=[...e.target.files];e.target.value='';for(const f of fs)openText(await f.text())};

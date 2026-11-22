@@ -1,0 +1,2594 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/BasharNchtn/perso-shadowrun-anarchy-v2/format_pj_v2.schema.json",
+  "title": "Personnage Shadowrun Anarchy 2.0 (format_pj_v2)",
+  "description": "Généré par outils/genere_schema.js à partir de index.html : ne pas modifier à la main. Les champs calculés (coûts, réserves de dés, Essence…) ne sont jamais stockés. Seul `format` est obligatoire ; l'application complète tout le reste (compétences officielles, `id`, niveaux de base, niveaux des effets prédéfinis).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format"
+  ],
+  "properties": {
+    "format": {
+      "const": "anarchy-pj"
+    },
+    "version": {
+      "const": 2
+    },
+    "identite": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "pseudo": {
+          "type": "string"
+        },
+        "nom": {
+          "type": "string"
+        },
+        "metatype": {
+          "type": "string",
+          "examples": [
+            "Humain",
+            "Elfe",
+            "Nain",
+            "Ork",
+            "Troll"
+          ]
+        },
+        "mots_cles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "train_de_vie": {
+          "type": "string"
+        },
+        "naissance": {
+          "type": "string"
+        },
+        "taille": {
+          "type": "string"
+        },
+        "poids": {
+          "type": "string"
+        },
+        "particularites": {
+          "type": "string"
+        },
+        "repliques": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "comportements": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "portrait": {
+          "type": "string",
+          "pattern": "^data:image/"
+        },
+        "portrait_x": {
+          "type": "number"
+        },
+        "portrait_y": {
+          "type": "number"
+        },
+        "portrait_zoom": {
+          "type": "number"
+        },
+        "portrait_ratio": {
+          "type": "number"
+        }
+      }
+    },
+    "niveau_de_jeu": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "nom": {
+          "enum": [
+            "Rue",
+            "Runner",
+            "Élite",
+            "Choix"
+          ]
+        },
+        "limites_actives": {
+          "type": "boolean"
+        },
+        "nuyens": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "nb_attributs_max": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 5
+        },
+        "indice_max_competence": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 8
+        },
+        "rr_max_competence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3
+        },
+        "rr_max_specialisation": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3
+        }
+      }
+    },
+    "gains": {
+      "type": "number"
+    },
+    "attributs": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "force": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 12
+        },
+        "agilite": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 12
+        },
+        "volonte": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 12
+        },
+        "logique": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 12
+        },
+        "charisme": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 12
+        }
+      }
+    },
+    "attributs_max": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "force": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 12
+            },
+            "agilite": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 12
+            },
+            "volonte": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 12
+            },
+            "logique": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 12
+            },
+            "charisme": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 12
+            }
+          }
+        }
+      ]
+    },
+    "competences": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/competence"
+      }
+    },
+    "contacts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/contact"
+      }
+    },
+    "connaissances": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/connaissance"
+      }
+    },
+    "atouts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/atout"
+      }
+    },
+    "armes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/arme"
+      }
+    },
+    "equipement": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/equipement"
+      }
+    },
+    "armures": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/armure"
+      }
+    }
+  },
+  "$defs": {
+    "attribut": {
+      "enum": [
+        "force",
+        "agilite",
+        "volonte",
+        "logique",
+        "charisme"
+      ]
+    },
+    "portee": {
+      "enum": [
+        "OK",
+        "Dés",
+        "-"
+      ]
+    },
+    "competence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "nom": {
+          "type": "string",
+          "minLength": 1
+        },
+        "actif": {
+          "type": "boolean"
+        },
+        "attribut": {
+          "$ref": "#/$defs/attribut"
+        },
+        "indice": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 8
+        },
+        "perso": {
+          "type": "boolean"
+        },
+        "specialites": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/specialite"
+          }
+        }
+      },
+      "required": [
+        "nom"
+      ],
+      "description": "Un nom absent du catalogue exige `perso: true`. Les 16 compétences officielles sont ajoutées par l'application si elles manquent.",
+      "allOf": [
+        {
+          "if": {
+            "not": {
+              "type": "object",
+              "required": [
+                "perso"
+              ],
+              "properties": {
+                "perso": {
+                  "const": true
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "nom": {
+                "enum": [
+                  "Armes à distance",
+                  "Athlétisme",
+                  "Combat rapproché",
+                  "Conjuration",
+                  "Électronique",
+                  "Enchantement",
+                  "Furtivité",
+                  "Influence",
+                  "Ingénierie",
+                  "Perception",
+                  "Pilotage",
+                  "Piratage",
+                  "Réseau",
+                  "Sorcellerie",
+                  "Survie",
+                  "Technomancie"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "nom"
+            ],
+            "properties": {
+              "nom": {
+                "const": "Armes à distance"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "specialites": {
+                "type": "array",
+                "items": {
+                  "if": {
+                    "not": {
+                      "type": "object",
+                      "required": [
+                        "perso"
+                      ],
+                      "properties": {
+                        "perso": {
+                          "const": true
+                        }
+                      }
+                    }
+                  },
+                  "then": {
+                    "type": "object",
+                    "properties": {
+                      "nom": {
+                        "enum": [
+                          "armes de jet",
+                          "armes de trait",
+                          "armes lourdes",
+                          "armes montées",
+                          "fusils",
+                          "lance-grenades",
+                          "mitraillettes",
+                          "pistolets"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "nom"
+            ],
+            "properties": {
+              "nom": {
+                "const": "Athlétisme"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "specialites": {
+                "type": "array",
+                "items": {
+                  "if": {
+                    "not": {
+                      "type": "object",
+                      "required": [
+                        "perso"
+                      ],
+                      "properties": {
+                        "perso": {
+                          "const": true
+                        }
+                      }
+                    }
+                  },
+                  "then": {
+                    "type": "object",
+                    "properties": {
+                      "nom": {
+                        "enum": [
+                          "course",
+                          "défense à distance",
+                          "escalade",
+                          "natation",
+                          "parkour"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "nom"
+            ],
+            "properties": {
+              "nom": {
+                "const": "Combat rapproché"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "specialites": {
+                "type": "array",
+                "items": {
+                  "if": {
+                    "not": {
+                      "type": "object",
+                      "required": [
+                        "perso"
+                      ],
+                      "properties": {
+                        "perso": {
+                          "const": true
+                        }
+                      }
+                    }
+                  },
+                  "then": {
+                    "type": "object",
+                    "properties": {
+                      "nom": {
+                        "enum": [
+                          "armes contondantes",
+                          "combat astral",
+                          "défense",
+                          "lames",
+                          "arme exotique",
+                          "mains nues"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "nom"
+            ],
+            "properties": {
+              "nom": {
+                "const": "Conjuration"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "specialites": {
+                "type": "array",
+                "items": {
+                  "if": {
+                    "not": {
+                      "type": "object",
+                      "required": [
+                        "perso"
+                      ],
+                      "properties": {
+                        "perso": {
+                          "const": true
+                        }
+                      }
+                    }
+                  },
+                  "then": {
+                    "type": "object",
+                    "properties": {
+                      "nom": {
+                        "enum": [
+                          "bannissement",
+                          "esprits des aînés",
+                          "esprits de l'air",
+                          "esprits des bêtes",
+                          "esprits de l'eau",
+                          "esprits du feu",
+                          "esprits des plantes",
+                          "esprits de la terre"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "nom"
+            ],
+            "properties": {
+              "nom": {
+                "const": "Électronique"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "specialites": {
+                "type": "array",
+                "items": {
+                  "if": {
+                    "not": {
+                      "type": "object",
+                      "required": [
+                        "perso"
+                      ],
+                      "properties": {
+                        "perso": {
+                          "const": true
+                        }
+                      }
+                    }
+                  },
+                  "then": {
+                    "type": "object",
+                    "properties": {
+                      "nom": {
+                        "enum": [
+                          "appareils personnels",
+                          "protection matricielle",
+                          "recherche matricielle"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "nom"
+            ],
+            "properties": {
+              "nom": {
+                "const": "Enchantement"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "specialites": {
+                "type": "array",
+                "items": {
+                  "if": {
+                    "not": {
+                      "type": "object",
+                      "required": [
+                        "perso"
+                      ],
+                      "properties": {
+                        "perso": {
+                          "const": true
+                        }
+                      }
+                    }
+                  },
+                  "then": {
+                    "type": "object",
+                    "properties": {
+                      "nom": {
+                        "enum": [
+                          "dissipation",
+                          "s. de combat",
+                          "s. de détection",
+                          "s. d'illusion",
+                          "s. de manipulation",
+                          "s. de santé"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "nom"
+            ],
+            "properties": {
+              "nom": {
+                "const": "Furtivité"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "specialites": {
+                "type": "array",
+                "items": {
+                  "if": {
+                    "not": {
+                      "type": "object",
+                      "required": [
+                        "perso"
+                      ],
+                      "properties": {
+                        "perso": {
+                          "const": true
+                        }
+                      }
+                    }
+                  },
+                  "then": {
+                    "type": "object",
+                    "properties": {
+                      "nom": {
+                        "enum": [
+                          "crochetage",
+                          "discrétion astrale",
+                          "discrétion matricielle",
+                          "discrétion physique",
+                          "escamotage"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "nom"
+            ],
+            "properties": {
+              "nom": {
+                "const": "Influence"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "specialites": {
+                "type": "array",
+                "items": {
+                  "if": {
+                    "not": {
+                      "type": "object",
+                      "required": [
+                        "perso"
+                      ],
+                      "properties": {
+                        "perso": {
+                          "const": true
+                        }
+                      }
+                    }
+                  },
+                  "then": {
+                    "type": "object",
+                    "properties": {
+                      "nom": {
+                        "enum": [
+                          "bluff",
+                          "étiquette",
+                          "imposture",
+                          "intimidation",
+                          "négociation"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "nom"
+            ],
+            "properties": {
+              "nom": {
+                "const": "Ingénierie"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "specialites": {
+                "type": "array",
+                "items": {
+                  "if": {
+                    "not": {
+                      "type": "object",
+                      "required": [
+                        "perso"
+                      ],
+                      "properties": {
+                        "perso": {
+                          "const": true
+                        }
+                      }
+                    }
+                  },
+                  "then": {
+                    "type": "object",
+                    "properties": {
+                      "nom": {
+                        "enum": [
+                          "armes contrôlées à distance",
+                          "C&R appareils électroniques",
+                          "C&R drones",
+                          "C&R engins mécaniques",
+                          "C&R implants cybernétiques",
+                          "C&R véhicules",
+                          "explosifs",
+                          "guerre électronique"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "nom"
+            ],
+            "properties": {
+              "nom": {
+                "const": "Perception"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "specialites": {
+                "type": "array",
+                "items": {
+                  "if": {
+                    "not": {
+                      "type": "object",
+                      "required": [
+                        "perso"
+                      ],
+                      "properties": {
+                        "perso": {
+                          "const": true
+                        }
+                      }
+                    }
+                  },
+                  "then": {
+                    "type": "object",
+                    "properties": {
+                      "nom": {
+                        "enum": [
+                          "astrale",
+                          "matricielle",
+                          "physique",
+                          "sociale"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "nom"
+            ],
+            "properties": {
+              "nom": {
+                "const": "Pilotage"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "specialites": {
+                "type": "array",
+                "items": {
+                  "if": {
+                    "not": {
+                      "type": "object",
+                      "required": [
+                        "perso"
+                      ],
+                      "properties": {
+                        "perso": {
+                          "const": true
+                        }
+                      }
+                    }
+                  },
+                  "then": {
+                    "type": "object",
+                    "properties": {
+                      "nom": {
+                        "enum": [
+                          "camions",
+                          "drones aquatiques",
+                          "drones terrestres",
+                          "drones volants",
+                          "motos",
+                          "véhicules aquatiques",
+                          "véhicules volants",
+                          "voitures"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "nom"
+            ],
+            "properties": {
+              "nom": {
+                "const": "Piratage"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "specialites": {
+                "type": "array",
+                "items": {
+                  "if": {
+                    "not": {
+                      "type": "object",
+                      "required": [
+                        "perso"
+                      ],
+                      "properties": {
+                        "perso": {
+                          "const": true
+                        }
+                      }
+                    }
+                  },
+                  "then": {
+                    "type": "object",
+                    "properties": {
+                      "nom": {
+                        "enum": [
+                          "backdoor",
+                          "cybercombat",
+                          "force brute"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "nom"
+            ],
+            "properties": {
+              "nom": {
+                "const": "Réseau"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "specialites": {
+                "type": "array",
+                "items": {
+                  "if": {
+                    "not": {
+                      "type": "object",
+                      "required": [
+                        "perso"
+                      ],
+                      "properties": {
+                        "perso": {
+                          "const": true
+                        }
+                      }
+                    }
+                  },
+                  "then": {
+                    "type": "object",
+                    "properties": {
+                      "nom": {
+                        "enum": [
+                          "corporatiste",
+                          "criminel",
+                          "la rue",
+                          "gouvernemental",
+                          "ingénierie",
+                          "magique",
+                          "matriciel",
+                          "médiatique",
+                          "médical",
+                          "universitaire"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "nom"
+            ],
+            "properties": {
+              "nom": {
+                "const": "Sorcellerie"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "specialites": {
+                "type": "array",
+                "items": {
+                  "if": {
+                    "not": {
+                      "type": "object",
+                      "required": [
+                        "perso"
+                      ],
+                      "properties": {
+                        "perso": {
+                          "const": true
+                        }
+                      }
+                    }
+                  },
+                  "then": {
+                    "type": "object",
+                    "properties": {
+                      "nom": {
+                        "enum": [
+                          "contresort",
+                          "sorts de combat",
+                          "sorts de détection",
+                          "sorts d'illusion",
+                          "sorts de manipulation",
+                          "sorts de santé"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "nom"
+            ],
+            "properties": {
+              "nom": {
+                "const": "Survie"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "specialites": {
+                "type": "array",
+                "items": {
+                  "if": {
+                    "not": {
+                      "type": "object",
+                      "required": [
+                        "perso"
+                      ],
+                      "properties": {
+                        "perso": {
+                          "const": true
+                        }
+                      }
+                    }
+                  },
+                  "then": {
+                    "type": "object",
+                    "properties": {
+                      "nom": {
+                        "enum": [
+                          "dressage",
+                          "orientation",
+                          "milieu hostile",
+                          "premiers soins",
+                          "sang-froid"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "nom"
+            ],
+            "properties": {
+              "nom": {
+                "const": "Technomancie"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "specialites": {
+                "type": "array",
+                "items": {
+                  "if": {
+                    "not": {
+                      "type": "object",
+                      "required": [
+                        "perso"
+                      ],
+                      "properties": {
+                        "perso": {
+                          "const": true
+                        }
+                      }
+                    }
+                  },
+                  "then": {
+                    "type": "object",
+                    "properties": {
+                      "nom": {
+                        "enum": [
+                          "compilation",
+                          "décompilation",
+                          "formes complexes"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "specialite": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "nom": {
+          "type": "string",
+          "minLength": 1
+        },
+        "detail": {
+          "type": "string"
+        },
+        "actif": {
+          "type": "boolean"
+        },
+        "attribut": {
+          "$ref": "#/$defs/attribut"
+        },
+        "perso": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "nom"
+      ]
+    },
+    "connaissance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "nom": {
+          "type": "string"
+        },
+        "actif": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "nom"
+      ]
+    },
+    "contact": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "nom": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "actif": {
+          "type": "boolean"
+        }
+      }
+    },
+    "armure": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "nom": {
+          "type": "string"
+        },
+        "valeur": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "actif": {
+          "type": "boolean"
+        }
+      }
+    },
+    "equipement": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "nom": {
+          "type": "string"
+        },
+        "actif": {
+          "type": "boolean"
+        },
+        "offert": {
+          "type": "boolean"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "nom"
+      ]
+    },
+    "effet": {
+      "description": "Trois formes : bonus typé (`bonus`), effet prédéfini (`pre` + `qte`) ou effet personnalisé (`texte` + `niveau`, sans `bonus` ni `pre`). Le niveau d'un bonus ou d'un effet prédéfini est calculé par l'application.",
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "texte": {
+              "type": "string"
+            },
+            "niveau": {
+              "type": "integer",
+              "minimum": -20,
+              "maximum": 30
+            },
+            "bonus": {
+              "$ref": "#/$defs/bonus"
+            }
+          },
+          "required": [
+            "bonus"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "texte": {
+              "type": "string"
+            },
+            "niveau": {
+              "type": "integer",
+              "minimum": -20,
+              "maximum": 30
+            },
+            "pre": {
+              "enum": [
+                "ip1",
+                "ip2",
+                "ip3",
+                "ia1",
+                "ia2",
+                "ia3",
+                "maint",
+                "esp",
+                "foc",
+                "cold",
+                "hot",
+                "fw",
+                "att",
+                "int",
+                "nar",
+                "vap",
+                "vman",
+                "vvit",
+                "vbl",
+                "vvol",
+                "drn",
+                "mnt",
+                "mam"
+              ]
+            },
+            "qte": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 10
+            }
+          },
+          "required": [
+            "pre"
+          ],
+          "description": "La quantité `qte` ne peut pas dépasser le maximum de chaque effet (voir generer_un_personnage.md).",
+          "allOf": [
+            {
+              "if": {
+                "required": [
+                  "pre"
+                ],
+                "properties": {
+                  "pre": {
+                    "const": "maint"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "qte": {
+                    "type": "integer",
+                    "maximum": 2
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "required": [
+                  "pre"
+                ],
+                "properties": {
+                  "pre": {
+                    "const": "esp"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "qte": {
+                    "type": "integer",
+                    "maximum": 1
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "required": [
+                  "pre"
+                ],
+                "properties": {
+                  "pre": {
+                    "const": "fw"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "qte": {
+                    "type": "integer",
+                    "maximum": 5
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "required": [
+                  "pre"
+                ],
+                "properties": {
+                  "pre": {
+                    "const": "att"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "qte": {
+                    "type": "integer",
+                    "maximum": 5
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "required": [
+                  "pre"
+                ],
+                "properties": {
+                  "pre": {
+                    "const": "vap"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "qte": {
+                    "type": "integer",
+                    "maximum": 6
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "required": [
+                  "pre"
+                ],
+                "properties": {
+                  "pre": {
+                    "const": "vman"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "qte": {
+                    "type": "integer",
+                    "maximum": 3
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "required": [
+                  "pre"
+                ],
+                "properties": {
+                  "pre": {
+                    "const": "vvit"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "qte": {
+                    "type": "integer",
+                    "maximum": 3
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "required": [
+                  "pre"
+                ],
+                "properties": {
+                  "pre": {
+                    "const": "vvol"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "qte": {
+                    "type": "integer",
+                    "maximum": 1
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "required": [
+                  "pre"
+                ],
+                "properties": {
+                  "pre": {
+                    "const": "drn"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "qte": {
+                    "type": "integer",
+                    "maximum": 3
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "required": [
+                  "pre"
+                ],
+                "properties": {
+                  "pre": {
+                    "const": "mnt"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "qte": {
+                    "type": "integer",
+                    "maximum": 6
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "required": [
+                  "pre"
+                ],
+                "properties": {
+                  "pre": {
+                    "const": "mam"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "qte": {
+                    "type": "integer",
+                    "maximum": 6
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "texte": {
+              "type": "string"
+            },
+            "niveau": {
+              "type": "integer",
+              "minimum": -20,
+              "maximum": 30
+            }
+          },
+          "required": [
+            "texte",
+            "niveau"
+          ]
+        }
+      ]
+    },
+    "bonus": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "rr"
+            },
+            "valeur": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5
+            },
+            "competence": {
+              "type": "string"
+            },
+            "specialisation": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "perso_comp": {
+              "type": "boolean"
+            },
+            "perso_spec": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "type",
+            "valeur",
+            "competence"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "rr_attribut"
+            },
+            "valeur": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5
+            },
+            "attribut": {
+              "$ref": "#/$defs/attribut"
+            }
+          },
+          "required": [
+            "type",
+            "valeur",
+            "attribut"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "vd"
+            },
+            "valeur": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5
+            },
+            "cible": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "type",
+            "valeur",
+            "cible"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "armure"
+            },
+            "valeur": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5
+            },
+            "portee": {
+              "enum": [
+                "physique",
+                "mental",
+                "tous"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "valeur",
+            "portee"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "case"
+            },
+            "valeur": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5
+            },
+            "gravite": {
+              "enum": [
+                "legere",
+                "grave",
+                "incap"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "valeur",
+            "gravite"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "const": "portee"
+            },
+            "valeur": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5
+            },
+            "cible": {
+              "type": "string"
+            },
+            "rang": {
+              "enum": [
+                "Contact",
+                "Courte",
+                "Moyenne",
+                "Longue"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "valeur",
+            "cible",
+            "rang"
+          ]
+        }
+      ]
+    },
+    "vehicule": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "modele": {
+          "enum": [
+            "micro",
+            "mini",
+            "petit",
+            "moyen",
+            "grand",
+            "moto-course",
+            "moto-tt",
+            "chopper",
+            "sport",
+            "berline",
+            "suv",
+            "van",
+            "bus",
+            "perso"
+          ]
+        },
+        "micro": {
+          "type": "boolean"
+        },
+        "base": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "structure": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 12
+            },
+            "maniabilite": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 12
+            },
+            "vitesse": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 12
+            }
+          }
+        }
+      },
+      "required": [
+        "modele"
+      ]
+    },
+    "atout": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type_perso": {
+          "type": "boolean"
+        },
+        "nom": {
+          "type": "string"
+        },
+        "actif": {
+          "type": "boolean"
+        },
+        "niveau_base": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 20
+        },
+        "perte_essence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 6
+        },
+        "effets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/effet"
+          }
+        },
+        "ref": {
+          "type": "string"
+        },
+        "programmes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "vehicule": {
+          "$ref": "#/$defs/vehicule"
+        }
+      },
+      "required": [
+        "type",
+        "nom"
+      ],
+      "description": "Un type hors liste exige `type_perso: true` (alors `niveau_base` et `perte_essence` sont saisis).",
+      "allOf": [
+        {
+          "if": {
+            "not": {
+              "type": "object",
+              "required": [
+                "type_perso"
+              ],
+              "properties": {
+                "type_perso": {
+                  "const": true
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "type": {
+                "enum": [
+                  "Éveil",
+                  "Cyberware",
+                  "Bioware",
+                  "Pouvoir d'adepte",
+                  "Équipement",
+                  "Cyberdeck",
+                  "Véhicule",
+                  "Drone",
+                  "Contact",
+                  "Trait",
+                  "Initiation (magie)"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "type"
+            ],
+            "properties": {
+              "type": {
+                "enum": [
+                  "Véhicule",
+                  "Drone"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "vehicule"
+            ]
+          },
+          "else": {
+            "not": {
+              "required": [
+                "vehicule"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "type"
+            ],
+            "properties": {
+              "type": {
+                "const": "Véhicule"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "vehicule": {
+                "type": "object",
+                "properties": {
+                  "modele": {
+                    "enum": [
+                      "moto-course",
+                      "moto-tt",
+                      "chopper",
+                      "sport",
+                      "berline",
+                      "suv",
+                      "van",
+                      "bus",
+                      "perso"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "type"
+            ],
+            "properties": {
+              "type": {
+                "const": "Drone"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "vehicule": {
+                "type": "object",
+                "properties": {
+                  "modele": {
+                    "enum": [
+                      "micro",
+                      "mini",
+                      "petit",
+                      "moyen",
+                      "grand",
+                      "perso"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "type"
+            ],
+            "properties": {
+              "type": {
+                "const": "Cyberdeck"
+              }
+            }
+          },
+          "else": {
+            "not": {
+              "required": [
+                "programmes"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "type"
+            ],
+            "properties": {
+              "type": {
+                "const": "Équipement"
+              }
+            }
+          },
+          "else": {
+            "not": {
+              "required": [
+                "ref"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "type"
+            ],
+            "properties": {
+              "type": {
+                "enum": [
+                  "Cyberdeck",
+                  "Cyberware",
+                  "Équipement"
+                ]
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "effets": {
+                "type": "array",
+                "items": {
+                  "not": {
+                    "type": "object",
+                    "required": [
+                      "pre"
+                    ],
+                    "properties": {
+                      "pre": {
+                        "const": "fw"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "type"
+            ],
+            "properties": {
+              "type": {
+                "enum": [
+                  "Cyberdeck"
+                ]
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "effets": {
+                "type": "array",
+                "items": {
+                  "not": {
+                    "type": "object",
+                    "required": [
+                      "pre"
+                    ],
+                    "properties": {
+                      "pre": {
+                        "const": "att"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "type"
+            ],
+            "properties": {
+              "type": {
+                "enum": [
+                  "Véhicule",
+                  "Drone"
+                ]
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "effets": {
+                "type": "array",
+                "items": {
+                  "not": {
+                    "type": "object",
+                    "required": [
+                      "pre"
+                    ],
+                    "properties": {
+                      "pre": {
+                        "const": "vap"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "type"
+            ],
+            "properties": {
+              "type": {
+                "enum": [
+                  "Véhicule",
+                  "Drone"
+                ]
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "effets": {
+                "type": "array",
+                "items": {
+                  "not": {
+                    "type": "object",
+                    "required": [
+                      "pre"
+                    ],
+                    "properties": {
+                      "pre": {
+                        "const": "vman"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "type"
+            ],
+            "properties": {
+              "type": {
+                "enum": [
+                  "Véhicule",
+                  "Drone"
+                ]
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "effets": {
+                "type": "array",
+                "items": {
+                  "not": {
+                    "type": "object",
+                    "required": [
+                      "pre"
+                    ],
+                    "properties": {
+                      "pre": {
+                        "const": "vvit"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "type"
+            ],
+            "properties": {
+              "type": {
+                "enum": [
+                  "Véhicule",
+                  "Drone"
+                ]
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "effets": {
+                "type": "array",
+                "items": {
+                  "not": {
+                    "type": "object",
+                    "required": [
+                      "pre"
+                    ],
+                    "properties": {
+                      "pre": {
+                        "const": "vbl"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "type"
+            ],
+            "properties": {
+              "type": {
+                "enum": [
+                  "Véhicule",
+                  "Drone"
+                ]
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "effets": {
+                "type": "array",
+                "items": {
+                  "not": {
+                    "type": "object",
+                    "required": [
+                      "pre"
+                    ],
+                    "properties": {
+                      "pre": {
+                        "const": "vvol"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "type"
+            ],
+            "properties": {
+              "type": {
+                "enum": [
+                  "Drone"
+                ]
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "effets": {
+                "type": "array",
+                "items": {
+                  "not": {
+                    "type": "object",
+                    "required": [
+                      "pre"
+                    ],
+                    "properties": {
+                      "pre": {
+                        "const": "drn"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "type"
+            ],
+            "properties": {
+              "type": {
+                "enum": [
+                  "Véhicule",
+                  "Drone"
+                ]
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "effets": {
+                "type": "array",
+                "items": {
+                  "not": {
+                    "type": "object",
+                    "required": [
+                      "pre"
+                    ],
+                    "properties": {
+                      "pre": {
+                        "const": "mnt"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "type"
+            ],
+            "properties": {
+              "type": {
+                "enum": [
+                  "Véhicule",
+                  "Drone"
+                ]
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "effets": {
+                "type": "array",
+                "items": {
+                  "not": {
+                    "type": "object",
+                    "required": [
+                      "pre"
+                    ],
+                    "properties": {
+                      "pre": {
+                        "const": "mam"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "arme": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "nom": {
+          "type": "string"
+        },
+        "actif": {
+          "type": "boolean"
+        },
+        "categorie": {
+          "enum": [
+            "arme",
+            "arme_specialiste",
+            "sort",
+            "forme_complexe"
+          ]
+        },
+        "type_arme": {
+          "enum": [
+            "nues",
+            "injecteur",
+            "courtes",
+            "longues",
+            "contact+",
+            "jet",
+            "arc",
+            "arbalete",
+            "taser",
+            "poche",
+            "leger",
+            "auto",
+            "lourd",
+            "mitraillette",
+            "assaut",
+            "shotgun",
+            "precision",
+            "mitrailleuse",
+            "grenade",
+            "gaz",
+            "lgrenade",
+            "roquette"
+          ]
+        },
+        "vd": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "portees": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": {
+            "$ref": "#/$defs/portee"
+          }
+        },
+        "specialisation": {
+          "type": "string"
+        },
+        "toxine": {
+          "type": "boolean"
+        },
+        "description": {
+          "type": "string"
+        },
+        "monte_ref": {
+          "type": "string"
+        },
+        "monte_sur": {
+          "type": "string"
+        },
+        "type_sort": {
+          "enum": [
+            "combat",
+            "détection",
+            "illusion",
+            "manipulation",
+            "santé"
+          ]
+        },
+        "seuil": {
+          "type": "string"
+        },
+        "aire": {
+          "type": "boolean"
+        },
+        "taille": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "nom",
+        "categorie"
+      ],
+      "description": "Armes : `type_arme` fixe VD, portées et spécialisation ; sans `type_arme`, `vd` et `portees` sont obligatoires. Sorts : `type_sort`, `seuil`. Formes complexes : `seuil`.",
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "categorie": {
+                "enum": [
+                  "arme",
+                  "arme_specialiste"
+                ]
+              }
+            }
+          },
+          "then": {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "type_sort"
+                  ]
+                },
+                {
+                  "required": [
+                    "seuil"
+                  ]
+                },
+                {
+                  "required": [
+                    "aire"
+                  ]
+                },
+                {
+                  "required": [
+                    "taille"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "categorie": {
+                "enum": [
+                  "arme",
+                  "arme_specialiste"
+                ]
+              }
+            },
+            "required": [
+              "categorie"
+            ],
+            "not": {
+              "required": [
+                "type_arme"
+              ]
+            }
+          },
+          "then": {
+            "required": [
+              "vd",
+              "portees"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "categorie": {
+                "const": "sort"
+              }
+            },
+            "required": [
+              "categorie"
+            ]
+          },
+          "then": {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "type_arme"
+                  ]
+                },
+                {
+                  "required": [
+                    "vd"
+                  ]
+                },
+                {
+                  "required": [
+                    "portees"
+                  ]
+                },
+                {
+                  "required": [
+                    "toxine"
+                  ]
+                },
+                {
+                  "required": [
+                    "monte_ref"
+                  ]
+                },
+                {
+                  "required": [
+                    "monte_sur"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "categorie": {
+                "const": "forme_complexe"
+              }
+            },
+            "required": [
+              "categorie"
+            ]
+          },
+          "then": {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "type_arme"
+                  ]
+                },
+                {
+                  "required": [
+                    "type_sort"
+                  ]
+                },
+                {
+                  "required": [
+                    "vd"
+                  ]
+                },
+                {
+                  "required": [
+                    "portees"
+                  ]
+                },
+                {
+                  "required": [
+                    "toxine"
+                  ]
+                },
+                {
+                  "required": [
+                    "aire"
+                  ]
+                },
+                {
+                  "required": [
+                    "taille"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

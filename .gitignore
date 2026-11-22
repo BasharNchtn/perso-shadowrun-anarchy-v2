@@ -1,6 +1,7 @@
 *.json
 !package.json
 !package-lock.json
+!format_pj_v2.schema.json
 !tests/exemples/*.json
 tests/prives/
 node_modules/

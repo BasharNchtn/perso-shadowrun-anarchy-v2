@@ -8,6 +8,9 @@ Principes :
 - Les nombres sont de vrais nombres JSON. Les niveaux d'atout sont des entiers.
 - Les armes, armures, équipements et atouts ont un **`id`** (texte court généré par l'application). Il sert à les relier entre eux : renommer un élément ne casse pas les liens.
 - Exemples fictifs : `tests/exemples/ex_samourai.json`, `ex_mage.json`, `ex_decker.json`, `ex_adepte.json` (ensemble, un exemple de chaque type d'atout, dont un type personnalisé et un véhicule avec arme montée).
+- À l'ouverture, l'application signale (bannière) les champs inconnus et les valeurs hors liste sans refuser le fichier ; seul un `format` incorrect ou une `version` supérieure à la sienne le fait refuser.
+- Pour générer un fichier depuis un autre programme ou une IA : `generer_un_personnage.md` (guide, exemples, valeurs permises) et `node outils/verifier.js fichier.json` (vérification avec les règles de l'application).
+- Schéma JSON : `format_pj_v2.schema.json` (généré à partir de l'application, à utiliser pour valider un fichier produit par un autre programme ; ce document en est la description lisible).
 
 ---
 

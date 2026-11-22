@@ -121,16 +121,29 @@ Aucune ressource externe n'est chargée : la police de caractères est embarqué
 
 ## Documentation
 
+- [`generer_un_personnage.md`](generer_un_personnage.md) : guide pour générer un fichier JSON depuis un autre programme ou une IA.
 - [`format_pj_v2.md`](format_pj_v2.md) : description du format JSON d'un personnage.
 - [`releve_regles_creation.md`](releve_regles_creation.md) : règles de création utilisées (coûts, limites, effets, types d'armes et de véhicules).
 
+## Générer des fichiers depuis un autre programme ou une IA
+
+Point d'entrée : **[`generer_un_personnage.md`](generer_un_personnage.md)**, un guide pour un programme ou une IA (principes, exemples, valeurs permises, erreurs fréquentes, validation). Il s'appuie sur la description du format [`format_pj_v2.md`](format_pj_v2.md) et sur les règles [`releve_regles_creation.md`](releve_regles_creation.md).
+
+**Valider un fichier avec les vraies règles de l'application** : `node outils/verifier.js mon_fichier.json` (après `npm install`) affiche les anomalies, les limites dépassées, le budget dépensé et restant, et l'Essence ; code de sortie 0 si tout est valide ; option `--json` pour une sortie lisible par un programme.
+
+Le format est aussi décrit par un **schéma JSON** lisible par une machine est fourni : [`format_pj_v2.schema.json`](format_pj_v2.schema.json) (JSON Schema 2020-12). Il vérifie les noms de champs, les types, et les valeurs imposées : compétences et spécialisations officielles, types d'atouts, codes d'effets, types d'armes, de sorts et de véhicules, etc. Seul `format` est obligatoire : l'application complète le reste (compétences officielles, `id`, niveaux de base des atouts, niveaux des effets prédéfinis).
+
+L'application, elle, est tolérante : elle ouvre toujours le fichier (un type d'atout mal orthographié devient par exemple un type personnalisé), mais elle **signale à l'ouverture** tout ce qu'elle ne reconnaît pas : une bannière orange liste les anomalies (champ inconnu, valeur hors liste, lien rompu, nombre écrit en texte…) et la puce du personnage porte un ⚠. Ce rapport couvre les mêmes erreurs que le schéma. Pour valider un fichier hors de l'application : `npx ajv-cli validate --spec=draft2020 -s format_pj_v2.schema.json -d mon_fichier.json`.
+
+Le schéma et la section « Valeurs permises » du guide sont **générés** à partir des données de `index.html` (`npm run schema`) et un test vérifie qu'ils sont à jour : ils ne doivent pas être modifiés à la main.
+
 ## Tests
 
-Les tests vérifient quatre personnages fictifs (`tests/exemples/` : un samouraï, une mage, un decker, un adepte), qui utilisent ensemble tous les types d'atouts : aucun avertissement, nuyens restants attendus, enregistrement du fichier, gestion de la version du format, gestion de plusieurs personnages (ouverture, changement, fermeture, comparaison, copie locale), fichiers liés (mémorisation après rechargement, tout enregistrer, ouverture d'un dossier), fiches de PNJ (formule du seuil fixe, valeurs affichées, sélection) et impression en 2 pages A4 par fiche, y compris l'impression groupée.
+Les tests vérifient quatre personnages fictifs (`tests/exemples/` : un samouraï, une mage, un decker, un adepte), qui utilisent ensemble tous les types d'atouts : aucun avertissement, nuyens restants attendus, enregistrement du fichier, gestion de la version du format, gestion de plusieurs personnages (ouverture, changement, fermeture, comparaison, copie locale), fichiers liés (mémorisation après rechargement, tout enregistrer, ouverture d'un dossier), fiches de PNJ (formule du seuil fixe, valeurs affichées, sélection), schéma JSON (à jour, fichiers valides acceptés, erreurs typiques rejetées), rapport d'anomalies à l'ouverture, commande de vérification et guide de génération et impression en 2 pages A4 par fiche, y compris l'impression groupée.
 
 ```
 npm install
-npm test                  # logique, enregistrement, version du format, plusieurs personnages, PNJ
+npm test                  # logique, enregistrement, version du format, plusieurs personnages, PNJ, schéma, anomalies, vérificateur, guide
 npm run test:impression   # impression (nécessite pdfinfo, du paquet poppler-utils)
 ```
 
