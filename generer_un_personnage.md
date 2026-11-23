@@ -195,6 +195,8 @@ Effets prédéfinis (`pre`) :
 | `mnt` | Monture d’arme supplémentaire | 1 | 6 | Véhicule, Drone |
 | `mam` | Amélioration de monture d’arme | 1 | 6 | Véhicule, Drone |
 
+Effet narratif (`nar`) : le champ `texte` décrit l'effet (conservé tel quel). Le premier effet `nar` d'un atout de type Trait, Cyberware, Bioware, Pouvoir d'adepte est **inclus sans coût** (niveau 0) ; tout autre effet narratif coûte 1 niveau.
+
 Bonus typés (`bonus.type`) et leur coût :
 
 - `rr` avec `specialisation` : RR sur une spécialisation (2 par RR, max 3)

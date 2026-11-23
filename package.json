@@ -3,7 +3,7 @@
   "private": true,
   "description": "Tests de l'application de création de personnages Shadowrun Anarchy 2.0",
   "scripts": {
-    "test": "node tests/logique.js && node tests/fichier.js && node tests/multi.js && node tests/fichiers.js && node tests/pnj.js && node tests/schema.js && node tests/anomalies.js && node tests/verifier.js && node tests/guide.js",
+    "test": "node tests/logique.js && node tests/fichier.js && node tests/multi.js && node tests/fichiers.js && node tests/pnj.js && node tests/schema.js && node tests/anomalies.js && node tests/verifier.js && node tests/guide.js && node tests/evolutions.js",
     "test:impression": "node tests/impression.js",
     "schema": "node outils/genere_schema.js",
     "verifier": "node outils/verifier.js"

@@ -149,7 +149,7 @@ function valeurs() {
   const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
   const w = new JSDOM(html, { runScripts: 'dangerously', url: 'http://localhost/' }).window;
   const J = e => JSON.parse(JSON.stringify(w.eval(e)));
-  const niv = J('NIV'), meta = J('META'), cat = J('CATALOGUE'), atypes = J('ATYPES'), efp = J('EFP'), wt = J('WT'), vmod = J('VMOD'), tsort = J('TSORT'), keys = J('KEYS');
+  const niv = J('NIV'), meta = J('META'), cat = J('CATALOGUE'), atypes = J('ATYPES'), efp = J('EFP'), wt = J('WT'), vmod = J('VMOD'), tsort = J('TSORT'), keys = J('KEYS'), narr = J('NARR_INCLUS');
   w.close();
   const n = x => String(x).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
   const L = [];
@@ -167,6 +167,7 @@ function valeurs() {
   L.push('### Effets d\'atouts', '', 'Un effet a l\'une de ces trois formes : `{"pre": "<code>", "qte": 1}` (effet prédéfini), `{"bonus": {...}}` (bonus typé) ou `{"texte": "...", "niveau": 2}` (effet personnalisé, coût saisi). Le niveau des deux premières formes est calculé par l\'appli.', '');
   L.push('Effets prédéfinis (`pre`) :', '', '| Code | Effet | Niveaux par unité | `qte` max | Réservé aux types |', '|---|---|---|---|---|');
   for (const e of efp.filter(x => x.id)) L.push(`| \`${e.id}\` | ${e.t} | ${e.n} | ${e.max === undefined ? '1' : e.max === 'S' ? 'structure' : e.max} | ${e.only ? e.only.join(', ') : 'tous'} |`);
+  L.push('', 'Effet narratif (`nar`) : le champ `texte` décrit l\'effet (conservé tel quel). Le premier effet `nar` d\'un atout de type ' + narr.join(', ') + ' est **inclus sans coût** (niveau 0) ; tout autre effet narratif coûte 1 niveau.');
   const mapType = e => e.k === 'rra' ? 'rr_attribut' : e.k;
   L.push('', 'Bonus typés (`bonus.type`) et leur coût :', '');
   for (const e of efp.filter(x => x.k)) L.push(`- \`${mapType(e)}\`${e.k === 'rr' ? (e.spe ? ' avec `specialisation`' : ' sans `specialisation` (RR de compétence)') : ''} : ${e.l}`);

@@ -39,6 +39,11 @@ Une fois le personnage créé, l'onglet **Fiche** permet de consulter une versio
 
 La fiche est accessible directement dans le navigateur et peut être exportée en PDF pour être imprimée ou conservée sous forme numérique.
 
+### Effet narratif et personnages qui évoluent
+
+- Un atout avec un effet narratif dispose d'un champ pour **décrire cet effet**, repris sur la fiche. Les atouts de type Trait, Cyberware, Bioware et Pouvoir d'adepte incluent un effet narratif de base, **sans niveau supplémentaire** : le champ est proposé d'office. Pour les autres types, l'effet narratif coûte 1 niveau.
+- Quand on décoche **Appliquer les limites du niveau de jeu** (personnage qui a évolué), l'application n'affiche plus de nuyens restants ni de budget disponible : seulement le total dépensé et sa part du niveau Runner, dans la création, sur la fiche et dans Comparer.
+
 ### Plusieurs personnages en même temps
 
 - **Ouvrir** accepte plusieurs fichiers JSON à la fois ; **Dossier** ouvre d'un coup tous les personnages d'un dossier (les autres fichiers sont ignorés) ; **Nouveau** ajoute un personnage sans fermer les autres.
@@ -139,7 +144,7 @@ Le schéma et la section « Valeurs permises » du guide sont **générés** à 
 
 ## Tests
 
-Les tests vérifient quatre personnages fictifs (`tests/exemples/` : un samouraï, une mage, un decker, un adepte), qui utilisent ensemble tous les types d'atouts : aucun avertissement, nuyens restants attendus, enregistrement du fichier, gestion de la version du format, gestion de plusieurs personnages (ouverture, changement, fermeture, comparaison, copie locale), fichiers liés (mémorisation après rechargement, tout enregistrer, ouverture d'un dossier), fiches de PNJ (formule du seuil fixe, valeurs affichées, sélection), schéma JSON (à jour, fichiers valides acceptés, erreurs typiques rejetées), rapport d'anomalies à l'ouverture, commande de vérification et guide de génération et impression en 2 pages A4 par fiche, y compris l'impression groupée.
+Les tests vérifient quatre personnages fictifs (`tests/exemples/` : un samouraï, une mage, un decker, un adepte), qui utilisent ensemble tous les types d'atouts : aucun avertissement, nuyens restants attendus, enregistrement du fichier, gestion de la version du format, gestion de plusieurs personnages (ouverture, changement, fermeture, comparaison, copie locale), fichiers liés (mémorisation après rechargement, tout enregistrer, ouverture d'un dossier), fiches de PNJ (formule du seuil fixe, valeurs affichées, sélection), schéma JSON (à jour, fichiers valides acceptés, erreurs typiques rejetées), effet narratif et nuyens sans limites, rapport d'anomalies à l'ouverture, commande de vérification et guide de génération et impression en 2 pages A4 par fiche, y compris l'impression groupée.
 
 ```
 npm install

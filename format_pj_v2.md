@@ -38,7 +38,7 @@ Portrait : `portrait` (image JPEG en data URL, format 3:4), `portrait_x` et `por
 Les points d'Anarchy ne sont pas stockés : 4 pour un Humain, 3 sinon.
 
 ### `niveau_de_jeu`
-`nom` (`Rue`, `Runner`, `Élite` ou `Choix`), `limites_actives` (booléen, `true` par défaut : à `false`, le tableau des limites affiche seulement les valeurs actuelles), `nuyens` (nuyens de départ), `nb_attributs_max`, `indice_max_competence`, `rr_max_competence`, `rr_max_specialisation`.
+`nom` (`Rue`, `Runner`, `Élite` ou `Choix`), `limites_actives` (booléen, `true` par défaut : à `false`, le tableau des limites affiche seulement les valeurs actuelles et plus aucun nombre de nuyens restants : l'application montre le total dépensé et sa part du niveau Runner), `nuyens` (nuyens de départ), `nb_attributs_max`, `indice_max_competence`, `rr_max_competence`, `rr_max_specialisation`.
 
 ---
 
@@ -109,6 +109,8 @@ Un effet est de l'un des trois types suivants.
 | `mam` | Amélioration de monture d'arme (véhicule, drone) | 1 par amélioration | |
 
 3. **Effet personnalisé** : `{ texte, niveau }`, sans `bonus` ni `pre`. Le niveau est saisi à la main (négatif possible). C'est le seul effet dont le coût est libre.
+
+**Effet narratif (`nar`)** : le champ `texte` de l'effet décrit l'effet (par exemple `{ "pre": "nar", "qte": 1, "texte": "Vision thermographique" }`) et est conservé tel quel ; sans texte, le libellé « Effet narratif » est utilisé. Le **premier** effet `nar` d'un atout de type `Trait`, `Cyberware`, `Bioware` ou `Pouvoir d'adepte` est **inclus sans coût** (niveau 0) ; tout autre effet narratif coûte 1 niveau (y compris le premier sur les autres types et sur un type personnalisé).
 
 Plafonds : VD +2, armure +1, RR sur attribut 1, RR sur compétence 1, RR sur spécialisation 3, case de blessure 1 de chaque gravité, portée : 2 changements par portée. Un dépassement est signalé dans le panneau Limites. Sur la fiche, un RR cumulé (attribut + compétence + spécialisation) ne dépasse jamais 3.
 

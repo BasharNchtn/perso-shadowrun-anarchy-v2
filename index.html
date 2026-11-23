@@ -225,7 +225,11 @@ const vLvl=a=>0;
 const vPlus=a=>{const q=id=>(a.effets||[]).filter(e=>e.pre===id).reduce((t,e)=>t+(e.qte||1),0);return{autopilote:q('vap'),maniabilite:q('vman'),vitesse:q('vvit'),blindage:q('vbl'),volant:q('vvol')>0}};
 const emax=(x,a)=>x.max==='S'?((a.vehicule&&a.vehicule.base&&a.vehicule.base.structure)||0):x.max;
 const VSTATIDS=['vap','vman','vvit','vbl','vvol','fw','att'];
-const lvl=a=>(a.niveau_base||0)+(a.effets||[]).reduce((t,e)=>t+(e.niveau||0),0)+vLvl(a);
+/* Effet narratif : le premier est inclus d'office (niveau 0) dans les atouts Trait, Cyberware, Bioware et Pouvoir d'adepte. */
+const NARR_INCLUS=['Trait','Cyberware','Bioware',"Pouvoir d'adepte"];
+const narInc=a=>NARR_INCLUS.includes(a.type)&&!a.type_perso?(a.effets||[]).findIndex(e=>e.pre==='nar'):-1;
+const effNiv=(a,j)=>j===narInc(a)?0:(((a.effets||[])[j]||{}).niveau||0);
+const lvl=a=>(a.niveau_base||0)+(a.effets||[]).reduce((t,e,j)=>t+effNiv(a,j),0)+vLvl(a);
 const TC={trait:'#E8710A',"pouvoir d'adepte":'#7C3AED'},TP=['#0F766E','#BE123C','#A16207','#2563EB'];
 const tcol=t=>{if(!t)return null;const k=norm(t);return TC[k]||TP[[...k].reduce((a,c)=>a+c.charCodeAt(0),0)%TP.length]};
 const RRT=`<table class=rrt><tr><th>RR</th><th class=c1>Faible</th><th class=c2>Normal</th><th class=c3>Fort</th><th class=c4>Extrême</th></tr><tr><td>0</td><td class=c1>1 dé</td><td class=c2>2 dés</td><td class=c3>4 dés</td><td class=c4>6+ dés</td></tr><tr><td>1</td><td class=c1>3 dés</td><td class=c2>5 dés</td><td class=c3>7 dés</td><td class=c4>10+ dés</td></tr><tr><td>2</td><td class=c1>5 dés</td><td class=c2>8 dés</td><td class=c3>11 dés</td><td class=c4>13+ dés</td></tr><tr><td>3</td><td class=c1>8 dés</td><td class=c2>12 dés</td><td class=c3>15 dés</td><td class=c4>N/A</td></tr></table>`;
@@ -328,15 +332,15 @@ function render(p){
   const fld=(l,v,c)=>`<div class="fld${c?' '+c:''}"><span>${l}</span><b>${esc(v||'')}</b></div>`;
   const kws=[I.metatype,...(I.mots_cles||[])].filter(Boolean).map(k=>`<span class=kwd>${esc(k)}</span>`).join('');
   const pic=PORT||I.portrait,pos=`${I.portrait_x??50}% ${I.portrait_y??50}%`;
-  const nuy=`${fmt(C.reste)} / ${fmt(p.gains||0)}`;
+  const lim=(p.niveau_de_jeu||{}).limites_actives!==false,nuy=lim?`${fmt(C.reste)} / ${fmt(p.gains||0)}`:fmt(C.total);
   const ctc=(p.contacts||[]).filter(act),blank=Math.max(0,7-ctc.length);
   const contacts=`<table class=wt><colgroup><col style="width:28%"><col style="width:20%"><col></colgroup><thead><tr><th>Nom</th><th>Type</th><th>Description</th></tr></thead><tbody>${ctc.map(c=>{const i=p.contacts.indexOf(c);return `<tr><td><b>${esc(c.nom)}</b>${badge(D.ctBadge[i])}</td><td>${esc(c.type||'')}</td><td style="text-align:left">${esc(c.description||'')}</td></tr>`}).join('')}${'<tr class=bk><td></td><td></td><td></td></tr>'.repeat(blank)}</tbody></table>`;
-  const nuyBlock=`<div class=idg>${fld('Nuyens dispo',fmt(C.reste),'s3')}${fld('Nuyens total',fmt(p.gains||0),'s3')}</div><div class=lines style="min-height:26mm;margin-top:6px"></div>`;
+  const nuyBlock=`<div class=idg>${fld(lim?'Nuyens dispo':'Nuyens dépensés',fmt(lim?C.reste:C.total),'s3')}${fld('Nuyens total',fmt(p.gains||0),'s3')}</div><div class=lines style="min-height:26mm;margin-top:6px"></div>`;
   $('#out').innerHTML=`<div class=sheet><div class=pg1>
 <div class=hd><div><h1>${esc(I.pseudo)}</h1><div class=sub>${esc(I.nom)}</div></div><div class=logo>Shadowrun Anarchy 2.0</div></div>
 <div class=r2><div class=por>${pic?`<img src="${esc(pic)}" style="object-position:${pos};transform:scale(${(+I.portrait_zoom||100)/100});transform-origin:${pos}">`:'Portrait'}</div>
 <div class=mid><div class="fr attrs">${Object.keys(AT).map(k=>`<div class=attr><small><span class=ac>${AN[k][0]}</span>${AN[k][1]}</small><b>${at[k]??''}</b><i>max ${mx[AT_I(k)]??'?'}</i></div>`).join('')}<div class="attr o"><small><span class=ac>Anarchy</span></small><b>${I.metatype==='Humain'?4:3}</b><i>&nbsp;</i></div><div class="attr o"><small><span class=ac>Essence</span></small><b>${D.ess}</b><i>&nbsp;</i></div></div>
-<div class=fr><div class=idg>${fld('Train de vie',I.train_de_vie,'s3')}${fld('Nuyens (dispo / total)',nuy,'s3')}${fld('Naissance',I.naissance,'s2')}${fld('Taille',I.taille,'s2')}${fld('Poids',I.poids,'s2')}${fld('Particularités',I.particularites,'s6')}</div></div></div>
+<div class=fr><div class=idg>${fld('Train de vie',I.train_de_vie,'s3')}${fld(lim?'Nuyens (dispo / total)':'Nuyens dépensés',nuy,'s3')}${fld('Naissance',I.naissance,'s2')}${fld('Taille',I.taille,'s2')}${fld('Poids',I.poids,'s2')}${fld('Particularités',I.particularites,'s6')}</div></div></div>
 <div class=stretch>${sec('Mots-clés',kws)}</div></div>
 <div class=r3>${sec('Répliques',li(I.repliques||[]))}${sec('Comportements',li(I.comportements||[]))}</div>
 <div class=ra><div>${sec('Compétences',comps)}</div>
@@ -458,9 +462,11 @@ function autoCost(b){const v=b.valeur||1;
   if(b.type==='portee')return 2*v;
   if(b.type==='armure')return (b.portee==='tous'?2:1)*v;
   return v}
+/* Part des nuyens dépensés par rapport au niveau de jeu Runner (référence quand les limites sont désactivées). */
+const pctRunner=C=>Math.round((C.total||0)/NIV.Runner[0]*100);
 function syncEf(e){
 if(e.bonus){e.texte=bonusText(e.bonus);e.niveau=autoCost(e.bonus)}
-else if(e.pre){const x=EFP.find(y=>y.id===e.pre);if(x){const q=e.qte||1;e.niveau=x.n*q;e.texte=x.u?x.u+q:(q>1?x.t+' ×'+q:x.t)}}
+else if(e.pre){const x=EFP.find(y=>y.id===e.pre);if(x){const q=e.qte||1;e.niveau=x.n*q;const dflt=x.u?x.u+q:(q>1?x.t+' ×'+q:x.t);e.texte=x.id==='nar'&&e.texte&&e.texte!==x.t?e.texte:dflt}}
 }
 function migVeh(a){
 if(a.vehicule||!a.stats||!/^(Véhicule|Drone)$/.test(a.type||''))return;
@@ -617,7 +623,7 @@ ${F('Portrait',`<input id=pic type=file accept="image/*" style="width:auto"> ${I
 <table class=nv><tr><th></th>${['Rue','Runner','Élite'].map(n=>`<th>${n}<button class=btn data-act=preset data-n="${n}" title="Copier cette colonne dans « Choix »"${nv.limites_actives===false?' disabled':''}>copier</button></th>`).join('')}<th>Choix (MJ)</th></tr>${NIVK.map((k,i)=>`<tr><td>${NIVL[i]}</td>${['Rue','Runner','Élite'].map(n=>`<td>${i?NIV[n][i]:fmt(NIV[n][i])}</td>`).join('')}<td>${Nu('niveau_de_jeu.'+k,0,i?20:2000000,i?1:5000).replace('<input',i&&nv.limites_actives===false?'<input disabled':'<input')}</td></tr>`).join('')}</table>
 <div class=row><label class=mini><input data-act=limtog data-p="niveau_de_jeu.limites_actives" type=checkbox${nv.limites_actives!==false?' checked':''}> Appliquer les limites du niveau de jeu</label></div><div class=hint>À décocher quand le personnage évolue au-delà de la création : le tableau des limites n’affiche alors que les valeurs actuelles, sans contrôle.</div>
 <div class=row><span class=n>Gains (somme globale)</span>${Nu('gains',0,9999999,500)}</div>
-<div class=row><span class=n>Nuyens disponibles</span><span class=cv data-v=dispo></span></div></section>`;
+${nv.limites_actives!==false?'<div class=row><span class=n>Nuyens disponibles</span><span class=cv data-v=dispo></span></div>':''}</section>`;
   const att=`<section><h2>Attributs <small class=pr>10 000 ¥ par point · 20 000 ¥ pour le dernier point au maximum</small></h2><table><tr><th>Attribut</th><th>Valeur</th><th>Max</th><th>Coût</th></tr>${KEYS.map((k,i)=>`<tr><td><span class=ac>${AN[k][0]}</span>${AN[k][1]}</td><td>${Nu('attributs.'+k,0,15)}</td><td>${custom?Nu('attributs_max.'+k,1,15):mx[i]}</td><td class=cv data-v="att.${k}"></td></tr>`).join('')}</table></section>`;
   const comps=p.competences.map((c,i)=>{const ct=catOf(c.nom),perso=!ct;
     const specs=c.specialites.map((s,j)=>{const pre=`competences.${i}.specialites.${j}`,sp=ct?ct.specs:[];
@@ -641,6 +647,7 @@ ${F('Portrait',`<input id=pic type=file accept="image/*" style="width:auto"> ${I
     else if(b&&b.type==='armure')body=`Armure + ${NV(pre,1,b.valeur)||'1'} ${Sl(pre+'.bonus.portee',[['physique','physique'],['mental','mentale'],['tous','tous dommages']],b.portee)}`;
     else if(b&&b.type==='case')body=`Case de blessure ${Sl(pre+'.bonus.gravite',GRAV.map(x=>[x[0],x[1]]),b.gravite)} + ${NV(pre,1,b.valeur)||'1'}`;
     else if(b&&b.type==='portee')body=`Portée ${Sl(pre+'.bonus.rang',['Contact','Courte','Moyenne','Longue'].map(r=>[r,r]),b.rang)} ${wl(PJ.atouts[i])?' <span class=mini>sur l’arme de cet atout</span>':` sur <input data-p="${pre}.bonus.cible" list=cibles type=text placeholder="arme" value="${esc(b.cible||'')}">`}`;
+ else if(e.pre==='nar')body=`<span class=mini>${narInc(PJ.atouts[i])===j?'Effet narratif inclus :':'Effet narratif :'}</span> <input class=n data-p="${pre}.texte" type=text placeholder="Décrire l’effet narratif" value="${esc(e.texte&&e.texte!=='Effet narratif'?e.texte:'')}">`;
  else if(e.pre){const x=EFP.find(y=>y.id===e.pre)||{};body=`<b>${esc(x.u||x.t||e.texte)}</b>${emax(x,PJ.atouts[i])>1?(x.u?'':' ×')+' '+SN(pre+'.qte',rng(emax(x,PJ.atouts[i]),e.qte),e.qte||1):''}`}
 else body=`<input class=n data-p="${pre}.texte" type=text placeholder="Effet (texte libre)" value="${esc(e.texte)}">`;
     return `<div class="row eline"><div class=eb>${body}</div><div class=ec><span class=mini>niv.</span>${b||e.pre?`<b data-v="ef.${i}.${j}"></b>`:Nu(pre+'.niveau',-20,40,1)}<button class=btn data-act=delef data-i=${i} data-j=${j}>✕</button></div></div>`};
@@ -656,7 +663,7 @@ else body=`<input class=n data-p="${pre}.texte" type=text placeholder="Effet (te
   const atRow=(a,i)=>{const pr=ATYPES.find(x=>x[0]===a.type),cu=a.type_perso||(a.type&&!pr),sk=STK[a.type],fxB=pr&&!cu&&!['Éveil','Trait'].includes(a.type)&&a.niveau_base===pr[1],fxE=pr&&!cu&&(a.perte_essence||0)===pr[2];
     return `<div class=cb data-row="atouts.${i}"><div class=row>${Ck(`atouts.${i}.actif`)}<select class=ty data-act=atype data-i=${i}>${opt([['','— type —'],...ATYPES.map(x=>[x[0],x[0]]),['__autre','Personnalisé…']],cu?'__autre':(a.type||''))}</select>${cu?`<input class=ty data-p="atouts.${i}.type" type=text placeholder="Type" value="${esc(a.type||'')}">`:''}${a.type==='Équipement'?`<select class=nm data-act=aref data-i=${i}>${arefOpts(PJ,a)}</select>`:`<input class=nm data-p="atouts.${i}.nom" type=text placeholder="Nom de l’atout" value="${esc(a.nom)}">`}${fxB?`<span class=mini>base</span><b>${a.niveau_base}</b>`:`<span class=mini>base</span>${Nu(`atouts.${i}.niveau_base`,-10,30,1)}`}${fxE?(pr[2]?`<span class=mini>ess.</span><b>−${pr[2]}</b>`:''):`<span class=mini>ess.</span>${Nu(`atouts.${i}.perte_essence`,0,6,.25)}`}<span class=rdv data-v="atout.${i}.niv"></span><span class=cv data-v="atout.${i}.cost"></span><button class=btn data-act=delatout data-i=${i}>✕</button></div>
 ${a.vehicule?vEd(a,i):''}${a.type==='Cyberdeck'?`<div class="row sp ef"><span class=mini>Programmes (un par ligne)</span><textarea class=n data-l="atouts.${i}.programmes" style="height:44px">${esc((a.programmes||[]).join('\n'))}</textarea></div>`:''}${a.type==='Cyberdeck'&&!a.stats?`<div class="row sp"><div class=st><span>Firewall <i>${vStats(a).firewall}</i></span><span>Attaque <i>${vStats(a).attaque}</i></span></div><span class=mini>base : Firewall 1, Attaque 0 · améliorations par les effets « Firewall + » et « Attaque + »</span></div>`:''}${sk&&a.stats&&!a.vehicule?`<div class="row sp">${sk.map(k=>`<span class=mini>${STL[k]}</span>${Nu(`atouts.${i}.stats.${k}`,0,30)}`).join('')}</div>`:''}
-${(a.effets||[]).map((e,j)=>efRow(i,j,e)).join('')}
+${NARR_INCLUS.includes(a.type)&&!a.type_perso&&narInc(a)<0?`<div class="row eline"><div class=eb><span class=mini>Effet narratif inclus :</span> <input class=n data-act=narinc data-i=${i} type=text placeholder="Décrire l’effet narratif (inclus, sans coût)"></div><div class=ec><span class=mini>niv.</span><b>0</b></div></div>`:''}${(a.effets||[]).map((e,j)=>efRow(i,j,e)).join('')}
 <select data-act=efadd data-i=${i} class=ty style="margin:3px 0 2px 20px;max-width:340px"><option value="">+ ajouter un effet ou un bonus…</option>${EFP.map((x,n)=>(!x.only||x.only.includes(a.type))?`<option value="${n}">${esc(x.l)}</option>`:'').join('')}</select></div>`};
   const ctc=`<section><h2>Contacts</h2><div class=hint>Un contact peut aussi être un atout de type Contact portant le même nom : il apporte alors ses RR et autres effets.</div><datalist id=ctypes>${['Fixer','Contrebandier','Informateur','Mentor','Médecin','Technicien','Corporatiste','Policier','Journaliste','Magicien','Autre'].map(x=>`<option>${x}`).join('')}</datalist>${p.contacts.map((c,i)=>`<div class=row data-row="contacts.${i}" style="flex-wrap:wrap">${Ck(`contacts.${i}.actif`)}<input class=nm data-p="contacts.${i}.nom" type=text placeholder="Nom" value="${esc(c.nom)}" style="flex:1 1 110px"><input data-p="contacts.${i}.type" list=ctypes type=text placeholder="Type" value="${esc(c.type||'')}" style="width:120px;flex:none"><input data-p="contacts.${i}.description" type=text placeholder="Description" value="${esc(c.description||'')}" style="flex:3 1 220px;min-width:150px"><button class=btn data-act=delcontact data-i=${i}>✕</button></div>`).join('')}<button class=btn data-act=addcontact style="margin-top:4px">+ contact</button></section>`;
   const atouts=`<section><h2>Atouts, véhicules, drones, cyberdecks <small class=pr>5 000 ¥ par niveau</small></h2><div class=hint>Le type fixe le niveau de base et la perte d’Essence (modifiables seulement pour Éveil, Trait, type personnalisé ou valeur hors règle). Chaque effet a son niveau, même négatif ; le texte et le coût restent libres, et les spécialisations visées par un RR peuvent être saisies librement (« Autre… »).</div><datalist id=cibles>${cibles.map(c=>`<option>${esc(c)}`).join('')}</datalist>${p.atouts.map(atRow).join('')}<button class=btn data-act=addatout>+ atout</button></section>`;
@@ -691,7 +698,7 @@ function vv_(k,C){const[t,a,b]=k.split('.');
   if(t==='comp')return b==='cost'?fmt(C.comp[a].cost):'RD '+C.comp[a].rd;
   if(t==='spec'){const w=k.split('.')[3],s=C.comp[a].specs[b];return w==='cost'?fmt(s.cost):'RD '+s.rd}
   if(t==='atout')return b==='niv'?'niv. '+C.atouts[a].niv:fmt(C.atouts[a].cost);
-  if(t==='ef')return String(PJ.atouts[a].effets[b].niveau||0);
+  if(t==='ef')return String(effNiv(PJ.atouts[a],b));
 
 if(t==='arme')return fmt(C.armes[a]);
   if(t==='equip')return C.equip[a]===null?'offert':fmt(C.equip[a]);
@@ -711,9 +718,9 @@ function panel(C,D){
   const rc=D.lim.comp,rs=D.lim.spec;
   chk('RR max sur une compétence',rc,lim.rr_max_competence);
   chk('RR max sur une spécialisation',rs,lim.rr_max_specialisation);
-  if(mi>8)add('Indice de compétence au-delà de 8 (maximum absolu)',false);capWarns(PJ).forEach(w=>add(w,false));add(`Essence : ${D.ess}`,D.ess>=0);add(`Nuyens restants : ${fmt(C.reste)}`,C.reste>=0);
-  const bad=L.filter(x=>x.includes('class=ko')).length;$('#mini').innerHTML=`Dépensé ${fmt(C.total)} · Reste <span class="${C.reste<0?'ko':'ok'}">${fmt(C.reste)}</span>${bad?` · <span class=ko>✖ ${bad} limite(s)</span>`:''}`;
-  $('#panel').innerHTML=`<section><h2>Coûts</h2><table class=ctab>${rows.map(r=>`<tr><td>${r[0]}</td><td>${fmt(r[1])}</td><td>${r[2]}</td></tr>`).join('')}<tr class=tot><td>Dépensé</td><td>${fmt(C.total)}</td><td></td></tr><tr class=tot><td>Disponible</td><td>${fmt(C.dispo)}</td><td></td></tr><tr class=tot><td>Reste</td><td class="${C.reste<0?'ko':'ok'}">${fmt(C.reste)}</td><td></td></tr></table></section>
+  if(mi>8)add('Indice de compétence au-delà de 8 (maximum absolu)',false);capWarns(PJ).forEach(w=>add(w,false));add(`Essence : ${D.ess}`,D.ess>=0);if(LA)add(`Nuyens restants : ${fmt(C.reste)}`,C.reste>=0);
+  const bad=L.filter(x=>x.includes('class=ko')).length;$('#mini').innerHTML=`Dépensé ${fmt(C.total)} · ${LA?`Reste <span class="${C.reste<0?'ko':'ok'}">${fmt(C.reste)}</span>`:`${pctRunner(C)} % du niveau Runner`}${bad?` · <span class=ko>✖ ${bad} limite(s)</span>`:''}`;
+  $('#panel').innerHTML=`<section><h2>Coûts</h2><table class=ctab>${rows.map(r=>`<tr><td>${r[0]}</td><td>${fmt(r[1])}</td><td>${r[2]}</td></tr>`).join('')}<tr class=tot><td>Dépensé</td><td>${fmt(C.total)}</td><td></td></tr>${LA?`<tr class=tot><td>Disponible</td><td>${fmt(C.dispo)}</td><td></td></tr><tr class=tot><td>Reste</td><td class="${C.reste<0?'ko':'ok'}">${fmt(C.reste)}</td><td></td></tr>`:`<tr class=tot><td>Part du niveau Runner</td><td>${pctRunner(C)} %</td><td>référence : ${fmt(NIV.Runner[0])}</td></tr>`}</table></section>
 <section><h2>Limites</h2><ul>${L.join('')}</ul></section>${D.W.length?`<section><h2>Avertissements</h2><ul>${D.W.map(w=>`<li class=m>⚠ ${esc(w)}</li>`).join('')}</ul></section>`:''}`;
 }
 function refresh(){
@@ -752,6 +759,7 @@ form.addEventListener('input',e=>upd(e.target));
 form.addEventListener('change',e=>{
   const t=e.target,a=t.dataset.act;
   if(a==='limtog'){touch(true)}
+  else if(a==='narinc'){const v=t.value.trim();if(!v)return;const at=PJ.atouts[t.dataset.i];at.effets=at.effets||[];const e={pre:'nar',qte:1,texte:v};syncEf(e);at.effets.unshift(e);touch(true)}
   else if(a==='meta'){const I=PJ.identite;if(t.value==='Personnalisé'){const m=maxOf(PJ);PJ.attributs_max=Object.fromEntries(KEYS.map((k,i)=>[k,m[i]||4]));I.metatype=META[I.metatype]?'Personnalisé':I.metatype}else{I.metatype=t.value;PJ.attributs_max=null}touch(true)}
   else if(a==='specsel'){const s=PJ.competences[t.dataset.i].specialites[t.dataset.j],ct=catOf(PJ.competences[t.dataset.i].nom);
     if(t.value==='__autre'){s.perso=true;s.nom=''}else{s.perso=false;s.nom=t.value;const x=ct&&ct.specs.find(y=>y.nom===t.value);if(x)s.attribut=x.attribut}touch(true)}
@@ -1116,7 +1124,8 @@ function renderComp(){
   h+=sec('Ressources');
   h+=row('Essence',sc(c=>c.D.ess,null,true));
   h+=row('Nuyens dépensés',sc(c=>c.C.total,fmt));
-  h+=row('Nuyens restants',sc(c=>c.C.reste,fmt));
+  h+=row('Part du niveau Runner',sc(c=>pctRunner(c.C)+' %'));
+  h+=row('Nuyens restants',cols.map(c=>c.p.niveau_de_jeu.limites_actives===false?{k:'-',h:'–'}:{k:String(c.C.reste),h:fmt(c.C.reste)}));
   h+=row('Niveau de jeu',sc(c=>c.p.niveau_de_jeu.nom||''));
   h+=sec('Attributs');
   KEYS.forEach(k=>{h+=row(KL[k],sc(c=>c.p.attributs[k]||0,null,true))});
