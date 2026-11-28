@@ -10,7 +10,7 @@ const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
 
 function verifie(texte, nom = '') {
   const w = new JSDOM(html, { runScripts: 'dangerously', url: 'http://localhost/' }).window;
-  const r = { fichier: nom, ouvert: false, erreur: null, pseudo: null, anomalies: [], limites: [], avertissements: [], nuyens: null, essence: null, limites_actives: true, valide: false };
+  const r = { fichier: nom, ouvert: false, erreur: null, pseudo: null, anomalies: [], limites: [], avertissements: [], nuyens: null, essence: null, limites_actives: true, budget: true, valide: false };
   try {
     r.ouvert = w.openText(texte, null, true);
     if (!r.ouvert) {
@@ -26,8 +26,9 @@ function verifie(texte, nom = '') {
     const C = w.eval('costs(PJ)'), D = w.eval('derive(PJ)');
     r.avertissements = [...new Set(D.W.map(propre))].filter(x => !r.limites.includes(x));
     r.limites_actives = w.eval('PJ.niveau_de_jeu.limites_actives!==false');
-    // Limites désactivées (personnage qui a évolué) : pas de reste de nuyens, seulement le total dépensé et sa part du niveau Runner.
-    r.nuyens = r.limites_actives ? { depenses: C.total, disponibles: C.dispo, restants: C.reste } : { depenses: C.total, part_niveau_runner: w.eval('pctRunner(costs(PJ))') };
+    // Limites désactivées et pas de gains : pas de reste de nuyens, seulement le total dépensé et sa part du niveau Runner.
+    r.budget = w.eval('budget(PJ)');
+    r.nuyens = r.budget ? { depenses: C.total, disponibles: C.dispo, restants: C.reste } : { depenses: C.total, part_niveau_runner: w.eval('pctRunner(costs(PJ))') };
     r.essence = D.ess;
     r.valide = !r.anomalies.length && !r.limites.length && !r.avertissements.length;
   } catch (e) { r.erreur = 'Vérification impossible : ' + e.message; }
@@ -40,9 +41,9 @@ function texte(r) {
   if (!r.ouvert) return `✖ ${titre} : ${r.erreur}`;
   L.push(`${r.valide ? '✔' : '✖'} ${titre}${r.pseudo ? ' (« ' + r.pseudo + ' »)' : ''} : ${r.valide ? 'valide' : 'à corriger'}`);
   const n = x => x.toLocaleString('fr-FR').replace(/\u202f|\u00a0/g, ' ');
-  L.push(r.limites_actives
+  L.push(r.budget
     ? `  Nuyens : ${n(r.nuyens.depenses)} dépensés sur ${n(r.nuyens.disponibles)} (reste ${n(r.nuyens.restants)}) · Essence : ${r.essence}`
-    : `  Nuyens : ${n(r.nuyens.depenses)} dépensés (${r.nuyens.part_niveau_runner} % du niveau Runner ; limites du niveau de jeu désactivées) · Essence : ${r.essence}`);
+    : `  Nuyens : ${n(r.nuyens.depenses)} dépensés (${r.nuyens.part_niveau_runner} % du niveau Runner ; limites du niveau de jeu désactivées, pas de gains) · Essence : ${r.essence}`);
   for (const [t, l] of [['Anomalies du fichier', r.anomalies], ['Limites et budget', r.limites], ['Avertissements', r.avertissements]])
     if (l.length) { L.push(`  ${t} :`); l.forEach(x => L.push('   - ' + x)); }
   return L.join('\n');

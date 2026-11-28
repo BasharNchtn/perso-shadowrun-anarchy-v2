@@ -92,10 +92,30 @@ const lvl = (w, i) => w.eval(`lvl(PJ.atouts[${i}])`);
   verifie('limites réactivées : « Reste » et « Disponible » reviennent', /Reste/.test(doc.querySelector('#panel').textContent) && /Disponible/.test(doc.querySelector('#panel').textContent));
   w.close();
 }
+// ---- Limites désactivées mais gains renseignés : le suivi des nuyens (départ + gains) reste affiché, sans les limites
+{
+  const w = nouveau(), doc = w.document;
+  ouvre(w, { niveau_de_jeu: { nom: 'Choix', nuyens: 1000, nb_attributs_max: 0, limites_actives: false }, gains: 20000, attributs: { force: 4, agilite: 4, volonte: 4, logique: 3, charisme: 3 }, identite: { pseudo: 'Joueur' } });
+  w.showTab('crea');
+  const panneau = doc.querySelector('#panel').textContent, total = w.eval('costs(PJ).total');
+  verifie('gains renseignés : « Disponible » et « Reste » reviennent', /Disponible/.test(panneau) && /Reste/.test(panneau) && !/Part du niveau Runner/.test(panneau), panneau.slice(0, 200));
+  verifie('disponible = nuyens de départ + gains', w.eval('costs(PJ).dispo') === 21000 && w.eval('costs(PJ).reste') === 21000 - total);
+  verifie('budget dépassé : alerte « Nuyens restants »', [...doc.querySelectorAll('#panel li.ko')].some(x => /Nuyens restants/.test(x.textContent)));
+  verifie('les limites du niveau de jeu restent désactivées (aucune autre alerte)', [...doc.querySelectorAll('#panel li.ko')].every(x => /Nuyens restants/.test(x.textContent)));
+  verifie('création : ligne « Nuyens disponibles » présente', /Nuyens disponibles/.test(doc.querySelector('#form').textContent));
+  verifie('barre du haut : reste affiché', /Reste/.test(doc.querySelector('#mini').textContent));
+  w.showTab('fiche');
+  verifie('fiche : « Nuyens (dispo / total) » comme pour un PJ avec gains', /Nuyens \(dispo \/ total\).*20\s?000/.test(doc.querySelector('#out').textContent.replace(/\u202f|\u00a0/g, ' ')));
+  w.eval('PJ.gains=0;touch(true)'); w.showTab('crea');
+  verifie('gains remis à zéro : le suivi disparaît de nouveau', !/Reste|Disponible/.test(doc.querySelector('#panel').textContent));
+  w.close();
+}
 // ---- Commande de vérification : limites désactivées
 {
   const { verifie: v } = require('../outils/verifier.js');
   const r = v(JSON.stringify({ format: 'anarchy-pj', niveau_de_jeu: { nom: 'Choix', nuyens: 1000, nb_attributs_max: 0, limites_actives: false }, attributs: { force: 4, agilite: 4, volonte: 4, logique: 3, charisme: 3 } }), 'x.json');
   verifie('vérificateur : limites désactivées, budget dépassé non signalé', r.valide && r.limites_actives === false && r.nuyens.restants === undefined && r.nuyens.part_niveau_runner > 0 && r.limites.length === 0, JSON.stringify(r));
+  const g = v(JSON.stringify({ format: 'anarchy-pj', niveau_de_jeu: { nom: 'Choix', nuyens: 1000, nb_attributs_max: 0, limites_actives: false }, gains: 20000, attributs: { force: 4, agilite: 4, volonte: 4, logique: 3, charisme: 3 } }), 'y.json');
+  verifie('vérificateur : limites désactivées avec gains, budget suivi (seule alerte : nuyens restants)', g.budget === true && g.limites_actives === false && g.nuyens.restants < 0 && g.limites.length === 1 && /Nuyens restants/.test(g.limites[0]), JSON.stringify(g));
 }
 process.exit(echecs ? 1 : 0);

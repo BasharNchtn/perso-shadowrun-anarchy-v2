@@ -42,7 +42,7 @@ La fiche est accessible directement dans le navigateur et peut être exportée e
 ### Effet narratif et personnages qui évoluent
 
 - Un atout avec un effet narratif dispose d'un champ pour **décrire cet effet**, repris sur la fiche. Les atouts de type Trait, Cyberware, Bioware et Pouvoir d'adepte incluent un effet narratif de base, **sans niveau supplémentaire** : le champ est proposé d'office. Pour les autres types, l'effet narratif coûte 1 niveau.
-- Quand on décoche **Appliquer les limites du niveau de jeu** (personnage qui a évolué), l'application n'affiche plus de nuyens restants ni de budget disponible : seulement le total dépensé et sa part du niveau Runner, dans la création, sur la fiche et dans Comparer.
+- **Appliquer les limites du niveau de jeu** (maximums d'attributs, d'indices et de RR) peut être décoché pour un personnage qui a évolué. Le suivi des nuyens est indépendant : il reste affiché (nuyens de départ + **gains**, disponible, reste) dès que des gains sont renseignés. Sans limites et sans gains (un PNJ, par exemple), l'application n'affiche plus de nuyens restants, seulement le total dépensé et sa part du niveau Runner, dans la création, sur la fiche et dans Comparer.
 
 ### Plusieurs personnages en même temps
 

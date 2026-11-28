@@ -332,7 +332,7 @@ function render(p){
   const fld=(l,v,c)=>`<div class="fld${c?' '+c:''}"><span>${l}</span><b>${esc(v||'')}</b></div>`;
   const kws=[I.metatype,...(I.mots_cles||[])].filter(Boolean).map(k=>`<span class=kwd>${esc(k)}</span>`).join('');
   const pic=PORT||I.portrait,pos=`${I.portrait_x??50}% ${I.portrait_y??50}%`;
-  const lim=(p.niveau_de_jeu||{}).limites_actives!==false,nuy=lim?`${fmt(C.reste)} / ${fmt(p.gains||0)}`:fmt(C.total);
+  const lim=budget(p),nuy=lim?`${fmt(C.reste)} / ${fmt(p.gains||0)}`:fmt(C.total);
   const ctc=(p.contacts||[]).filter(act),blank=Math.max(0,7-ctc.length);
   const contacts=`<table class=wt><colgroup><col style="width:28%"><col style="width:20%"><col></colgroup><thead><tr><th>Nom</th><th>Type</th><th>Description</th></tr></thead><tbody>${ctc.map(c=>{const i=p.contacts.indexOf(c);return `<tr><td><b>${esc(c.nom)}</b>${badge(D.ctBadge[i])}</td><td>${esc(c.type||'')}</td><td style="text-align:left">${esc(c.description||'')}</td></tr>`}).join('')}${'<tr class=bk><td></td><td></td><td></td></tr>'.repeat(blank)}</tbody></table>`;
   const nuyBlock=`<div class=idg>${fld(lim?'Nuyens dispo':'Nuyens dépensés',fmt(lim?C.reste:C.total),'s3')}${fld('Nuyens total',fmt(p.gains||0),'s3')}</div><div class=lines style="min-height:26mm;margin-top:6px"></div>`;
@@ -464,6 +464,9 @@ function autoCost(b){const v=b.valeur||1;
   return v}
 /* Part des nuyens dépensés par rapport au niveau de jeu Runner (référence quand les limites sont désactivées). */
 const pctRunner=C=>Math.round((C.total||0)/NIV.Runner[0]*100);
+/* Suivi des nuyens (disponible, reste) : actif avec les limites du niveau de jeu, ou dès que des gains sont renseignés
+   (budget = nuyens de départ + gains). Sans limites et sans gains, seul le total dépensé est affiché. */
+const budget=p=>(p.niveau_de_jeu||{}).limites_actives!==false||(+p.gains||0)>0;
 function syncEf(e){
 if(e.bonus){e.texte=bonusText(e.bonus);e.niveau=autoCost(e.bonus)}
 else if(e.pre){const x=EFP.find(y=>y.id===e.pre);if(x){const q=e.qte||1;e.niveau=x.n*q;const dflt=x.u?x.u+q:(q>1?x.t+' ×'+q:x.t);e.texte=x.id==='nar'&&e.texte&&e.texte!==x.t?e.texte:dflt}}
@@ -623,7 +626,7 @@ ${F('Portrait',`<input id=pic type=file accept="image/*" style="width:auto"> ${I
 <table class=nv><tr><th></th>${['Rue','Runner','Élite'].map(n=>`<th>${n}<button class=btn data-act=preset data-n="${n}" title="Copier cette colonne dans « Choix »"${nv.limites_actives===false?' disabled':''}>copier</button></th>`).join('')}<th>Choix (MJ)</th></tr>${NIVK.map((k,i)=>`<tr><td>${NIVL[i]}</td>${['Rue','Runner','Élite'].map(n=>`<td>${i?NIV[n][i]:fmt(NIV[n][i])}</td>`).join('')}<td>${Nu('niveau_de_jeu.'+k,0,i?20:2000000,i?1:5000).replace('<input',i&&nv.limites_actives===false?'<input disabled':'<input')}</td></tr>`).join('')}</table>
 <div class=row><label class=mini><input data-act=limtog data-p="niveau_de_jeu.limites_actives" type=checkbox${nv.limites_actives!==false?' checked':''}> Appliquer les limites du niveau de jeu</label></div><div class=hint>À décocher quand le personnage évolue au-delà de la création : le tableau des limites n’affiche alors que les valeurs actuelles, sans contrôle.</div>
 <div class=row><span class=n>Gains (somme globale)</span>${Nu('gains',0,9999999,500)}</div>
-${nv.limites_actives!==false?'<div class=row><span class=n>Nuyens disponibles</span><span class=cv data-v=dispo></span></div>':''}</section>`;
+${budget(PJ)?'<div class=row><span class=n>Nuyens disponibles</span><span class=cv data-v=dispo></span></div>':''}</section>`;
   const att=`<section><h2>Attributs <small class=pr>10 000 ¥ par point · 20 000 ¥ pour le dernier point au maximum</small></h2><table><tr><th>Attribut</th><th>Valeur</th><th>Max</th><th>Coût</th></tr>${KEYS.map((k,i)=>`<tr><td><span class=ac>${AN[k][0]}</span>${AN[k][1]}</td><td>${Nu('attributs.'+k,0,15)}</td><td>${custom?Nu('attributs_max.'+k,1,15):mx[i]}</td><td class=cv data-v="att.${k}"></td></tr>`).join('')}</table></section>`;
   const comps=p.competences.map((c,i)=>{const ct=catOf(c.nom),perso=!ct;
     const specs=c.specialites.map((s,j)=>{const pre=`competences.${i}.specialites.${j}`,sp=ct?ct.specs:[];
@@ -718,9 +721,9 @@ function panel(C,D){
   const rc=D.lim.comp,rs=D.lim.spec;
   chk('RR max sur une compétence',rc,lim.rr_max_competence);
   chk('RR max sur une spécialisation',rs,lim.rr_max_specialisation);
-  if(mi>8)add('Indice de compétence au-delà de 8 (maximum absolu)',false);capWarns(PJ).forEach(w=>add(w,false));add(`Essence : ${D.ess}`,D.ess>=0);if(LA)add(`Nuyens restants : ${fmt(C.reste)}`,C.reste>=0);
-  const bad=L.filter(x=>x.includes('class=ko')).length;$('#mini').innerHTML=`Dépensé ${fmt(C.total)} · ${LA?`Reste <span class="${C.reste<0?'ko':'ok'}">${fmt(C.reste)}</span>`:`${pctRunner(C)} % du niveau Runner`}${bad?` · <span class=ko>✖ ${bad} limite(s)</span>`:''}`;
-  $('#panel').innerHTML=`<section><h2>Coûts</h2><table class=ctab>${rows.map(r=>`<tr><td>${r[0]}</td><td>${fmt(r[1])}</td><td>${r[2]}</td></tr>`).join('')}<tr class=tot><td>Dépensé</td><td>${fmt(C.total)}</td><td></td></tr>${LA?`<tr class=tot><td>Disponible</td><td>${fmt(C.dispo)}</td><td></td></tr><tr class=tot><td>Reste</td><td class="${C.reste<0?'ko':'ok'}">${fmt(C.reste)}</td><td></td></tr>`:`<tr class=tot><td>Part du niveau Runner</td><td>${pctRunner(C)} %</td><td>référence : ${fmt(NIV.Runner[0])}</td></tr>`}</table></section>
+  if(mi>8)add('Indice de compétence au-delà de 8 (maximum absolu)',false);capWarns(PJ).forEach(w=>add(w,false));add(`Essence : ${D.ess}`,D.ess>=0);if(budget(PJ))add(`Nuyens restants : ${fmt(C.reste)}`,C.reste>=0);
+  const bad=L.filter(x=>x.includes('class=ko')).length;$('#mini').innerHTML=`Dépensé ${fmt(C.total)} · ${budget(PJ)?`Reste <span class="${C.reste<0?'ko':'ok'}">${fmt(C.reste)}</span>`:`${pctRunner(C)} % du niveau Runner`}${bad?` · <span class=ko>✖ ${bad} limite(s)</span>`:''}`;
+  $('#panel').innerHTML=`<section><h2>Coûts</h2><table class=ctab>${rows.map(r=>`<tr><td>${r[0]}</td><td>${fmt(r[1])}</td><td>${r[2]}</td></tr>`).join('')}<tr class=tot><td>Dépensé</td><td>${fmt(C.total)}</td><td></td></tr>${budget(PJ)?`<tr class=tot><td>Disponible</td><td>${fmt(C.dispo)}</td><td></td></tr><tr class=tot><td>Reste</td><td class="${C.reste<0?'ko':'ok'}">${fmt(C.reste)}</td><td></td></tr>`:`<tr class=tot><td>Part du niveau Runner</td><td>${pctRunner(C)} %</td><td>référence : ${fmt(NIV.Runner[0])}</td></tr>`}</table></section>
 <section><h2>Limites</h2><ul>${L.join('')}</ul></section>${D.W.length?`<section><h2>Avertissements</h2><ul>${D.W.map(w=>`<li class=m>⚠ ${esc(w)}</li>`).join('')}</ul></section>`:''}`;
 }
 function refresh(){
@@ -1125,7 +1128,7 @@ function renderComp(){
   h+=row('Essence',sc(c=>c.D.ess,null,true));
   h+=row('Nuyens dépensés',sc(c=>c.C.total,fmt));
   h+=row('Part du niveau Runner',sc(c=>pctRunner(c.C)+' %'));
-  h+=row('Nuyens restants',cols.map(c=>c.p.niveau_de_jeu.limites_actives===false?{k:'-',h:'–'}:{k:String(c.C.reste),h:fmt(c.C.reste)}));
+  h+=row('Nuyens restants',cols.map(c=>!budget(c.p)?{k:'-',h:'–'}:{k:String(c.C.reste),h:fmt(c.C.reste)}));
   h+=row('Niveau de jeu',sc(c=>c.p.niveau_de_jeu.nom||''));
   h+=sec('Attributs');
   KEYS.forEach(k=>{h+=row(KL[k],sc(c=>c.p.attributs[k]||0,null,true))});

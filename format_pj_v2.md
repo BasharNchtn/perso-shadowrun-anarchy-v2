@@ -38,7 +38,7 @@ Portrait : `portrait` (image JPEG en data URL, format 3:4), `portrait_x` et `por
 Les points d'Anarchy ne sont pas stockés : 4 pour un Humain, 3 sinon.
 
 ### `niveau_de_jeu`
-`nom` (`Rue`, `Runner`, `Élite` ou `Choix`), `limites_actives` (booléen, `true` par défaut : à `false`, le tableau des limites affiche seulement les valeurs actuelles et plus aucun nombre de nuyens restants : l'application montre le total dépensé et sa part du niveau Runner), `nuyens` (nuyens de départ), `nb_attributs_max`, `indice_max_competence`, `rr_max_competence`, `rr_max_specialisation`.
+`nom` (`Rue`, `Runner`, `Élite` ou `Choix`), `limites_actives` (booléen, `true` par défaut : à `false`, les limites ne sont plus contrôlées et le tableau des limites affiche seulement les valeurs actuelles ; tant que `gains` est nul, l'application n'affiche plus de nuyens restants mais le total dépensé et sa part du niveau Runner ; dès que `gains` est renseigné, le suivi du budget (nuyens de départ + gains) revient), `nuyens` (nuyens de départ), `nb_attributs_max`, `indice_max_competence`, `rr_max_competence`, `rr_max_specialisation`.
 
 ---
 
